@@ -1,8 +1,9 @@
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
+/** @jsxRuntime classic /
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 
 const App = () => {
   function ErrorFallback({ error, resetErrorBoundary }) {
