@@ -1,3 +1,6 @@
 import { combineReducers } from "redux";
+import incrementReducer from "./errorReducer";
 
-export default combineReducers({});
+export default combineReducers({
+  error: incrementReducer,
+});
