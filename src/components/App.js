@@ -22,8 +22,9 @@ const Div = styled.div`
   overscroll-behavior-y: none;
   overflow-y: "hidden";
   grid-template-areas:
-    "Header Header"
+    "sidebar Header"
     "sidebar main";
+  box-sizing: border-box;
 `;
 
 function ErrorFallback({ error, resetErrorBoundary }) {
@@ -70,6 +71,8 @@ const App = () => {
             position: "sticky",
             top: "0",
             width: "100%",
+            boxShadow:
+              "0 4px 8px 0 (0, 0, 0, 0.2), 0 6px 20px 0 (0, 0, 0, 0.2)",
           }}
         >
           Header
@@ -77,7 +80,7 @@ const App = () => {
         <div>
           <SideBarMemoized css={{ gridArea: "sidebar" }} />
         </div>
-        <div css={{ gridArea: "main" }}>
+        <div css={{ gridArea: "main", padding: "0 2rem 0 2rem" }}>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/discover" exact component={Serach} />

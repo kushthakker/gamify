@@ -4,7 +4,7 @@ import React from "react";
 import { css, jsx } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, useColorMode } from "@chakra-ui/react";
+import { Button, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const Div = styled.div({
@@ -17,6 +17,12 @@ const Div = styled.div({
   alignItems: "center",
   position: "sticky",
   top: "50px",
+  backgroundColor: "#171d28",
+  height: "100vh",
+  boxShadow: "0 4px 8px 0 black, 0 6px 20px 0 black",
+  // marginRight: "1rem"
+  // borderRadius: "1rem",
+  // marginLeft: "1rem",
 });
 
 const H1 = styled.h1({
@@ -26,6 +32,7 @@ const H1 = styled.h1({
 
 function ToogleMode() {
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <header>
       <Button size="sm" onClick={toggleColorMode}>

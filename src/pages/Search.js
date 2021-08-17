@@ -8,13 +8,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import api from "../api/api";
 import { Spinner, Kbd } from "@chakra-ui/react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { Link } from "react-router-dom";
 
-const Item = styled.div({
-  display: "grid",
-  gridTemplateRows: "auto auto",
-  maxWidth: "20rem",
-  backgroundColor: "rgb(20,25,35)",
-  borderRadius: "1rem",
+const Items = (props) => (
+  <div
+    css={{
+      display: "grid",
+      gridTemplateRows: "auto 1fr",
+      maxWidth: "20rem",
+      backgroundColor: "rgb(20,25,35)",
+      borderRadius: "1rem",
+      // minHeight: "auto",
+      // maxHeight: "32rem",
+      overflow: "hidden",
+      filter: "drop-shadow(0 0 0.75rem crimson)",
+    }}
+    {...props}
+  ></div>
+);
+
+const H3 = styled.h3({
+  marginRight: "1rem",
+  fontSize: "1.2rem",
+  fontWeight: "bold",
 });
 
 const MyListData = ({ searchResult }) => {
@@ -30,9 +48,9 @@ const MyListData = ({ searchResult }) => {
     position: "relative",
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
-    gridTemplateRows: "auto",
+    gridAutoFlow: "row dense",
     gap: "3rem",
-    margin: "5rem",
+    padding: "3rem",
   });
 
   return (
@@ -61,66 +79,117 @@ const MyListData = ({ searchResult }) => {
 
           const uniquePlatform = [...new Set(platformsStored)];
 
+          const Metacritic = (
+            <div css={{ width: "50px", height: "50px" }}>
+              <CircularProgressbar
+                value={item.metacritic}
+                text={item.metacritic}
+                styles={buildStyles({
+                  strokeLinecap: "butt",
+
+                  textSize: "2rem",
+
+                  pathColor: `white`,
+                  textColor: "white",
+                  trailColor: "black",
+                  backgroundColor: "#3e98c7",
+                })}
+              />
+            </div>
+          );
+
           return (
-            <Item key={`item-${index}`}>
-              <div>
-                <img
-                  src={item.background_image}
-                  alt={item.name}
+            <Link to={`/game/${item.id}`}>
+              <Items key={`item-${index}`}>
+                <div css={{ width: "20rem", height: "100%" }}>
+                  <img
+                    src={item.background_image}
+                    alt={item.name}
+                    css={{
+                      borderRadius: "1rem 1rem 0 0",
+                      width: "100%",
+                      maxHeight: "15rem",
+                      objectFit: "fill",
+                    }}
+                  />
+                </div>
+                <div
                   css={{
-                    borderRadius: "1rem 1rem 0 0",
-                    objectFit: "fit",
+                    padding: "1rem",
+                    maxHeight: "20rem",
+                    overflow: "hidden",
                   }}
-                />
-              </div>
-              <div
-                css={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr auto",
-                  color: "white",
-                }}
-              >
-                <h1 css={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-                  {item?.name}
-                </h1>
-                <h3>
-                  {" "}
-                  {item?.metacritic ? `Metacritic: ${item.metacritic}` : null}
-                </h3>
-              </div>
-              <h3>
-                {item?.released ? `Release Date: ${item.released}` : null}
-              </h3>
-              <h3>
-                {item?.esrb_rating
-                  ? `Ratings: ${item?.esrb_rating.name}`
-                  : null}
-              </h3>
-              <div
-                css={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <h3> Genres : </h3>
-                {item?.genres?.map((ele) => (
-                  <div css={{ margin: "0 10px 0 10px" }}>{ele.name}</div>
-                ))}
-              </div>
-              <div
-                css={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <h3>Platforms : </h3>
-                {uniquePlatform.map((ele) => (
-                  <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
-                ))}
-              </div>
-            </Item>
+                >
+                  <div
+                    css={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      color: "white",
+                      width: "100%",
+                    }}
+                  >
+                    <div>
+                      <h1
+                        css={{
+                          fontWeight: "bold",
+                          fontSize: "1.8rem",
+                          width: "auto",
+                        }}
+                      >
+                        {item?.name}
+                      </h1>
+                    </div>
+                    <div css={{ marginLeft: "0.5rem" }}>
+                      {item.metacritic === null ? null : Metacritic}
+                    </div>
+                  </div>
+                  <div
+                    css={{
+                      display: "flex",
+                      color: "white",
+                      width: "100%",
+                      alignItems: "center",
+                    }}
+                  >
+                    {item?.released ? <H3>Release Date : </H3> : null}
+                    {item.released}
+                  </div>
+                  <H3>
+                    {item?.esrb_rating ? `${item?.esrb_rating.name}` : null}
+                  </H3>
+                  <div
+                    css={{
+                      display: "flex",
+                      flexFlow: "row wrap",
+                      alignItems: "center",
+                      width: "100%",
+                      color: "white",
+                    }}
+                  >
+                    {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
+
+                    {item.genres.map((ele) => (
+                      <div css={{ margin: "0 10px 0 10px" }}>{ele.name}</div>
+                    ))}
+                  </div>
+                  <div
+                    css={{
+                      display: "flex",
+                      alignItems: "center",
+                      width: "100%",
+                      marginTop: "0.5rem",
+                      color: "white",
+                    }}
+                  >
+                    {uniquePlatform.length === 0
+                      ? null
+                      : uniquePlatform.map((ele) => (
+                          <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
+                        ))}
+                  </div>
+                </div>
+              </Items>
+            </Link>
           );
         })}
       </List>
@@ -249,3 +318,5 @@ const Search = () => {
 };
 
 export default Search;
+
+// TODO: on submit the query will be pushed to url like discoved/cyberpunk then the api gets called from that url extract so every time we go back from any game it goes to search item rather then plane discover page
