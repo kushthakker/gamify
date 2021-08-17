@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 /** @jsxRuntime classic /
 /** @jsx jsx */
@@ -22,7 +22,7 @@ const Div = styled.div`
   overscroll-behavior-y: none;
   overflow-y: "hidden";
   grid-template-areas:
-    "sidebar Header"
+    "sidebar main"
     "sidebar main";
   box-sizing: border-box;
 `;
@@ -65,22 +65,20 @@ const App = () => {
   return (
     <Div>
       <BrowserRouter>
-        <div
+        {/* <div
           css={{
             gridArea: "Header",
-            position: "sticky",
-            top: "0",
             width: "100%",
             boxShadow:
               "0 4px 8px 0 (0, 0, 0, 0.2), 0 6px 20px 0 (0, 0, 0, 0.2)",
           }}
         >
           Header
-        </div>
+        </div> */}
         <div>
           <SideBarMemoized css={{ gridArea: "sidebar" }} />
         </div>
-        <div css={{ gridArea: "main", padding: "0 2rem 0 2rem" }}>
+        <div css={{ gridArea: "main" }}>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/discover" exact component={Serach} />

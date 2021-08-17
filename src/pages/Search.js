@@ -7,7 +7,7 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import api from "../api/api";
-import { Spinner, Kbd } from "@chakra-ui/react";
+import { Spinner, CloseIcon } from "@chakra-ui/react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ const Items = (props) => (
       backgroundColor: "rgb(20,25,35)",
       borderRadius: "1rem",
       // minHeight: "auto",
-      // maxHeight: "32rem",
+      // maxHeight: "34rem",
       overflow: "hidden",
       filter: "drop-shadow(0 0 0.75rem crimson)",
     }}
@@ -115,9 +115,9 @@ const MyListData = ({ searchResult }) => {
                 </div>
                 <div
                   css={{
-                    padding: "1rem",
                     maxHeight: "20rem",
                     overflow: "hidden",
+                    padding: "1rem",
                   }}
                 >
                   <div
@@ -155,7 +155,11 @@ const MyListData = ({ searchResult }) => {
                     {item.released}
                   </div>
                   <H3>
-                    {item?.esrb_rating ? `${item?.esrb_rating.name}` : null}
+                    {item?.esrb_rating ? (
+                      <div css={{ color: "white" }}>
+                        {item?.esrb_rating.name}
+                      </div>
+                    ) : null}
                   </H3>
                   <div
                     css={{
@@ -239,8 +243,15 @@ const Result = ({ status, inputValue, setValue }) => {
 
 const Output = ({ status, searchResult }) => {
   const isSuccess = status === "success";
+  const isError = status === "error";
   return (
     <div>
+      {isError ? (
+        <div css={{ color: "red" }}>
+          Sorry, it looks like a network error. Please try again after
+          sometimes.
+        </div>
+      ) : null}
       {isSuccess ? (
         searchResult?.length ? (
           <div css={{ marginTop: "3rem" }}>
@@ -273,11 +284,17 @@ const Search = () => {
             page_size: 50,
           },
         });
-        if (req.status !== 200) throw new Error(req.statusText);
         console.log(req);
-        setSearchResult(req.data.results);
-        setStatus("success");
-        inputValue.current.value = "";
+        if (!req.status) {
+          setStatus("error");
+          console.log(`hi`);
+          throw new Error(req.statusText);
+        } else {
+          console.log(req);
+          setSearchResult(req.data.results);
+          setStatus("success");
+          inputValue.current.value = "";
+        }
       } catch (err) {
         console.log(err);
       }
@@ -309,6 +326,7 @@ const Search = () => {
       css={{
         overflow: "auto",
         maxHeight: "100vh",
+        // padding: "3rem",
       }}
     >
       <Result setValue={setValue} status={status} inputValue={inputValue} />
