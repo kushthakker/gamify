@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { ErrorBoundary } from "react-error-boundary";
-<<<<<<< HEAD
 import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { error } from "../actions";
@@ -13,12 +12,6 @@ import Game from "../pages/Game";
 import Home from "../pages/Home";
 import Serach from "../pages/Search";
 import ErrorPage from "../pages/Error";
-=======
-/** @jsxRuntime classic /
-/** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import styled from "@emotion/styled/macro";
->>>>>>> 809b5ec0ecfa23857cf36efcf9d2a5d9c6bbbdf4
 
 const Div = styled.div`
   /* minheight: 100vh; */
