@@ -219,6 +219,7 @@ const Result = ({ status, inputValue, setValue }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        marginTop: "2rem",
       }}
     >
       <form type="search" onSubmit={onSubmit}>
@@ -227,14 +228,11 @@ const Result = ({ status, inputValue, setValue }) => {
             variant="outline"
             ref={inputValue}
             placeholder={`Search |  Press control/alt + Enter to serach from anywhere`}
-            errorBorderColor="red"
             css={{
               width: "500px",
             }}
           />
-          <InputRightElement
-            children={isLoading ? <Spinner color="white" /> : null}
-          />
+          <InputRightElement children={isLoading ? <Spinner /> : null} />
         </InputGroup>
       </form>
     </div>
