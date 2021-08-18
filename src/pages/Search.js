@@ -11,9 +11,128 @@ import { Spinner, CloseIcon } from "@chakra-ui/react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link, useHistory } from "react-router-dom";
+import { motion } from "framer-motion";
+
+const transition = {
+  duration: 0.4,
+  ease: [0.43, 0.13, 0.23, 0.96],
+};
+
+const Item = ({ index, item, uniquePlatform, Metacritic }) => {
+  return (
+    <Items
+      key={`item-${index}`}
+      whileHover={{ scale: 1.1 }}
+      transition={transition}
+    >
+      <div css={{ width: "20rem", height: "100%" }}>
+        <img
+          key={`item-${index}`}
+          src={item.background_image}
+          alt={item.name}
+          css={{
+            borderRadius: "1rem 1rem 0 0",
+            width: "100%",
+            maxHeight: "15rem",
+            objectFit: "fill",
+          }}
+        />
+      </div>
+      <div
+        css={{
+          maxHeight: "20rem",
+          overflow: "hidden",
+          padding: "1rem",
+        }}
+      >
+        <div
+          css={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            color: "white",
+            justifyContent: "space-between",
+          }}
+        >
+          <div css={{ display: "flex" }}>
+            {uniquePlatform.length === 0
+              ? null
+              : uniquePlatform.map((ele) => (
+                  <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
+                ))}
+          </div>
+          <div>
+            <div css={{ marginLeft: "0.5rem" }}>
+              {item.metacritic === null ? null : Metacritic}
+            </div>
+          </div>
+        </div>
+        <div
+          css={{
+            display: "flex",
+            // justifyContent: "space-between",
+            color: "white",
+            width: "100%",
+          }}
+        >
+          <div>
+            <h1
+              css={{
+                fontWeight: "bold",
+                fontSize: "1.8rem",
+                width: "auto",
+                marginBottom: "0.5rem",
+              }}
+            >
+              {item?.name}
+            </h1>
+          </div>
+          {/* <div css={{ marginLeft: "0.5rem" }}>
+          {item.metacritic === null ? null : Metacritic}
+        </div> */}
+        </div>
+        <div
+          css={{
+            display: "flex",
+            color: "white",
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          {item?.released ? <H3>Release Date : </H3> : null}
+          {item.released}
+        </div>
+        {/* <H3>
+        {item?.esrb_rating ? (
+          <div css={{ color: "white" }}>
+            {item?.esrb_rating.name}
+          </div>
+        ) : null}
+      </H3> */}
+        <div
+          css={{
+            display: "flex",
+            flexFlow: "row wrap",
+            alignItems: "center",
+            width: "100%",
+            color: "white",
+          }}
+        >
+          {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
+
+          {item.genres.map((ele) => (
+            <div css={{ margin: "0 10px 0 10px" }}>{ele.name}</div>
+          ))}
+        </div>
+      </div>
+    </Items>
+  );
+};
+
+const ItemsMemo = React.memo(Item);
 
 const Items = (props) => (
-  <div
+  <motion.div
     css={{
       display: "grid",
       gridTemplateRows: "auto 1fr",
@@ -26,7 +145,7 @@ const Items = (props) => (
       filter: "drop-shadow(0 0 0.75rem crimson)",
     }}
     {...props}
-  ></div>
+  ></motion.div>
 );
 
 const H3 = styled.h3({
@@ -37,6 +156,7 @@ const H3 = styled.h3({
 
 const MyListData = ({ searchResult }) => {
   const listRef = useRef();
+  // const [imageData, setImageData] = useState(null);
   const rowVirtualizer = useVirtual({
     size: searchResult.length,
     parentRef: listRef,
@@ -44,18 +164,25 @@ const MyListData = ({ searchResult }) => {
     overscan: 5,
   });
 
-  const List = styled.div({
-    position: "relative",
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gridAutoFlow: "row dense",
-    gap: "3rem",
-    padding: "3rem",
-  });
+  const List = (props) => {
+    return (
+      <motion.div
+        css={{
+          position: "relative",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gridAutoFlow: "row dense",
+          gap: "3rem",
+          padding: "3rem",
+        }}
+        {...props}
+      ></motion.div>
+    );
+  };
 
   return (
     <div ref={listRef}>
-      <List>
+      <List exit={{ opacity: 0 }} transition={transition}>
         {rowVirtualizer.virtualItems.map(({ index, size, start }) => {
           const item = searchResult[index];
           const Xbox = <i className="fab fa-xbox" />;
@@ -97,110 +224,14 @@ const MyListData = ({ searchResult }) => {
               />
             </div>
           );
-
           return (
-            <Link to={`/game/${item.id}`}>
-              <Items key={`item-${index}`}>
-                <div css={{ width: "20rem", height: "100%" }}>
-                  <img
-                    src={item.background_image}
-                    alt={item.name}
-                    css={{
-                      borderRadius: "1rem 1rem 0 0",
-                      width: "100%",
-                      maxHeight: "15rem",
-                      objectFit: "fill",
-                    }}
-                  />
-                </div>
-                <div
-                  css={{
-                    maxHeight: "20rem",
-                    overflow: "hidden",
-                    padding: "1rem",
-                  }}
-                >
-                  <div
-                    css={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "100%",
-                      color: "white",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div css={{ display: "flex" }}>
-                      {uniquePlatform.length === 0
-                        ? null
-                        : uniquePlatform.map((ele) => (
-                            <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
-                          ))}
-                    </div>
-                    <div>
-                      <div css={{ marginLeft: "0.5rem" }}>
-                        {item.metacritic === null ? null : Metacritic}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    css={{
-                      display: "flex",
-                      // justifyContent: "space-between",
-                      color: "white",
-                      width: "100%",
-                    }}
-                  >
-                    <div>
-                      <h1
-                        css={{
-                          fontWeight: "bold",
-                          fontSize: "1.8rem",
-                          width: "auto",
-                          marginBottom: "0.5rem",
-                        }}
-                      >
-                        {item?.name}
-                      </h1>
-                    </div>
-                    {/* <div css={{ marginLeft: "0.5rem" }}>
-                      {item.metacritic === null ? null : Metacritic}
-                    </div> */}
-                  </div>
-                  <div
-                    css={{
-                      display: "flex",
-                      color: "white",
-                      width: "100%",
-                      alignItems: "center",
-                    }}
-                  >
-                    {item?.released ? <H3>Release Date : </H3> : null}
-                    {item.released}
-                  </div>
-                  {/* <H3>
-                    {item?.esrb_rating ? (
-                      <div css={{ color: "white" }}>
-                        {item?.esrb_rating.name}
-                      </div>
-                    ) : null}
-                  </H3> */}
-                  <div
-                    css={{
-                      display: "flex",
-                      flexFlow: "row wrap",
-                      alignItems: "center",
-                      width: "100%",
-                      color: "white",
-                    }}
-                  >
-                    {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
-
-                    {item.genres.map((ele) => (
-                      <div css={{ margin: "0 10px 0 10px" }}>{ele.name}</div>
-                    ))}
-                  </div>
-                </div>
-              </Items>
+            <Link to={`/games/${item.id}`}>
+              <ItemsMemo
+                index={index}
+                item={item}
+                uniquePlatform={uniquePlatform}
+                Metacritic={Metacritic}
+              />
             </Link>
           );
         })}
@@ -273,6 +304,8 @@ const Output = ({ status, searchResult }) => {
   );
 };
 
+const OutputMemo = React.memo(Output);
+
 const Search = ({ match }) => {
   const [value, setValue] = useState(null);
   const [searchResult, setSearchResult] = useState(0);
@@ -286,6 +319,7 @@ const Search = ({ match }) => {
     setStatus("loading");
     const fetchApi = async function () {
       try {
+        console.log(value, query);
         const req = await api.get("/games", {
           params: {
             search: value
@@ -295,10 +329,9 @@ const Search = ({ match }) => {
             page_size: 50,
           },
         });
-        console.log(req);
+
         if (!req.status) {
           setStatus("error");
-          console.log(`hi`);
           throw new Error(req.statusText);
         } else {
           console.log(req);
@@ -319,9 +352,9 @@ const Search = ({ match }) => {
 
   useEffect(() => {
     setQuery(match.params.q);
-  }, [match.params.q]);
-
-  console.log(query);
+    console.log(match);
+    if (match.path === "/discover" && !match.params.q) setStatus("idle");
+  }, [match, match.params.q]);
 
   const keyDownFnc = (e) => {
     if (e.key === "Enter" && e.ctrlKey) {
@@ -352,7 +385,7 @@ const Search = ({ match }) => {
         inputValue={inputValue}
         match={query}
       />
-      <Output status={status} searchResult={searchResult} />
+      <OutputMemo status={status} searchResult={searchResult} />
     </div>
   );
 };

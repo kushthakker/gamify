@@ -12,6 +12,7 @@ import Game from "../pages/Game";
 import Home from "../pages/Home";
 import Serach from "../pages/Search";
 import ErrorPage from "../pages/Error";
+import { AnimatePresence } from "framer-motion";
 
 const Div = styled.div`
   /* minheight: 100vh; */
@@ -81,12 +82,15 @@ const App = () => {
         <div css={{ gridArea: "main" }}>
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route
-              path={["/discover", "/discover/:q"]}
-              exact
-              component={Serach}
-            />
-            <Route path="/game/:id" exact component={Game} />
+            <AnimatePresence exitBeforeEnter>
+              <Route
+                path={["/discover", "/discover/:q"]}
+                exact
+                component={Serach}
+                key={"1"}
+              />
+              <Route path="/games/:id" exact component={Game} key={"2"} />
+            </AnimatePresence>
             <Route path="*" component={ErrorPage} />
           </Switch>
         </div>

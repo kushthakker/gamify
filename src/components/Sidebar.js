@@ -18,7 +18,7 @@ const Div = styled.div({
   overflowY: "hidden",
   justifyContent: "center",
   alignItems: "center",
-  // position: "sticky",
+  position: "sticky",
   // top: "50px",
   // backgroundColor: "#171d28",
   height: "100vh",
