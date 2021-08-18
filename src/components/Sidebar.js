@@ -6,6 +6,9 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, useColorMode } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { Magic } from "magic-sdk";
+
+const m = new Magic("pk_live_8BB9335EFCCF939E"); // ✨
 
 const Div = styled.div({
   display: "grid",
@@ -44,6 +47,44 @@ function ToogleMode() {
 }
 
 const Sidebar = () => {
+  React.useState(() => {
+    const login = async function () {
+      try {
+        if (await m.user.isLoggedIn()) {
+          const didToken = await m.user.getIdToken();
+
+          // Do something with the DID token.
+          // For instance, this could be a `fetch` call
+          // to a protected backend endpoint.
+          console.log(didToken);
+          console.log(`is logged in`);
+        } else {
+          const user = await m.auth.loginWithMagicLink(
+            "codingpurposebykush@gmail.com"
+          );
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    login();
+  });
+
+  const onClick = async () => {
+    try {
+      await m.auth.loginWithMagicLink({
+        email: "codingpurposebykush@gmail.com",
+        showUI: true,
+        redirectURI: "http://localhost:3000/",
+      });
+      const idToken = await m.user.getIdToken();
+      const { issuer, email, publicAddress } = await m.user.getMetadata();
+      console.log(idToken, issuer, email, publicAddress);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Div>
       <ToogleMode />
@@ -54,7 +95,8 @@ const Sidebar = () => {
         <H1>Search</H1>
       </Link>
       <div>
-        <H1>Profile Name</H1>
+        <H1 onClick={() => onClick()}>Login</H1>
+        <h3 onClick={() => m.user.logout()}>Logout</h3>
         <h3>Wishlist</h3>
         <h3>library</h3>
       </div>

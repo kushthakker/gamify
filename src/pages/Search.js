@@ -10,7 +10,7 @@ import api from "../api/api";
 import { Spinner, CloseIcon } from "@chakra-ui/react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Items = (props) => (
   <div
@@ -123,7 +123,29 @@ const MyListData = ({ searchResult }) => {
                   <div
                     css={{
                       display: "flex",
+                      alignItems: "center",
+                      width: "100%",
+                      color: "white",
                       justifyContent: "space-between",
+                    }}
+                  >
+                    <div css={{ display: "flex" }}>
+                      {uniquePlatform.length === 0
+                        ? null
+                        : uniquePlatform.map((ele) => (
+                            <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
+                          ))}
+                    </div>
+                    <div>
+                      <div css={{ marginLeft: "0.5rem" }}>
+                        {item.metacritic === null ? null : Metacritic}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    css={{
+                      display: "flex",
+                      // justifyContent: "space-between",
                       color: "white",
                       width: "100%",
                     }}
@@ -134,14 +156,15 @@ const MyListData = ({ searchResult }) => {
                           fontWeight: "bold",
                           fontSize: "1.8rem",
                           width: "auto",
+                          marginBottom: "0.5rem",
                         }}
                       >
                         {item?.name}
                       </h1>
                     </div>
-                    <div css={{ marginLeft: "0.5rem" }}>
+                    {/* <div css={{ marginLeft: "0.5rem" }}>
                       {item.metacritic === null ? null : Metacritic}
-                    </div>
+                    </div> */}
                   </div>
                   <div
                     css={{
@@ -154,13 +177,13 @@ const MyListData = ({ searchResult }) => {
                     {item?.released ? <H3>Release Date : </H3> : null}
                     {item.released}
                   </div>
-                  <H3>
+                  {/* <H3>
                     {item?.esrb_rating ? (
                       <div css={{ color: "white" }}>
                         {item?.esrb_rating.name}
                       </div>
                     ) : null}
-                  </H3>
+                  </H3> */}
                   <div
                     css={{
                       display: "flex",
@@ -176,21 +199,6 @@ const MyListData = ({ searchResult }) => {
                       <div css={{ margin: "0 10px 0 10px" }}>{ele.name}</div>
                     ))}
                   </div>
-                  <div
-                    css={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "100%",
-                      marginTop: "0.5rem",
-                      color: "white",
-                    }}
-                  >
-                    {uniquePlatform.length === 0
-                      ? null
-                      : uniquePlatform.map((ele) => (
-                          <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
-                        ))}
-                  </div>
                 </div>
               </Items>
             </Link>
@@ -203,14 +211,16 @@ const MyListData = ({ searchResult }) => {
 
 const Data = React.memo(MyListData);
 
-const Result = ({ status, inputValue, setValue }) => {
+const Result = ({ status, inputValue, setValue, match }) => {
   const isLoading = status === "loading";
+  const history = useHistory();
 
   const onSubmit = (event) => {
     console.log(`render`);
     event.preventDefault();
     const value = inputValue.current.value;
     setValue(value);
+    history.push(`/discover/${value}`);
   };
 
   return (
@@ -263,21 +273,24 @@ const Output = ({ status, searchResult }) => {
   );
 };
 
-const Search = () => {
+const Search = ({ match }) => {
   const [value, setValue] = useState(null);
   const [searchResult, setSearchResult] = useState(0);
+  const [query, setQuery] = useState(null);
   const [status, setStatus] = React.useState("idle");
   const inputValue = useRef();
 
   const fetchGames = useCallback(() => {
     console.log(`render1`);
-    if (!value) return;
+    if (!value && !query) return;
     setStatus("loading");
     const fetchApi = async function () {
       try {
         const req = await api.get("/games", {
           params: {
-            search: encodeURIComponent(value),
+            search: value
+              ? encodeURIComponent(value)
+              : encodeURIComponent(query),
             // search_precise: true,
             page_size: 50,
           },
@@ -298,11 +311,17 @@ const Search = () => {
       }
     };
     fetchApi();
-  }, [value]);
+  }, [query, value]);
 
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
+
+  useEffect(() => {
+    setQuery(match.params.q);
+  }, [match.params.q]);
+
+  console.log(query);
 
   const keyDownFnc = (e) => {
     if (e.key === "Enter" && e.ctrlKey) {
@@ -327,7 +346,12 @@ const Search = () => {
         // padding: "3rem",
       }}
     >
-      <Result setValue={setValue} status={status} inputValue={inputValue} />
+      <Result
+        setValue={setValue}
+        status={status}
+        inputValue={inputValue}
+        match={query}
+      />
       <Output status={status} searchResult={searchResult} />
     </div>
   );

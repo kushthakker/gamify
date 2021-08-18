@@ -81,7 +81,11 @@ const App = () => {
         <div css={{ gridArea: "main" }}>
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/discover" exact component={Serach} />
+            <Route
+              path={["/discover", "/discover/:q"]}
+              exact
+              component={Serach}
+            />
             <Route path="/game/:id" exact component={Game} />
             <Route path="*" component={ErrorPage} />
           </Switch>
