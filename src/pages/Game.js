@@ -7,7 +7,11 @@ import { useInView } from "react-intersection-observer";
 import { useSelector, useDispatch } from "react-redux";
 import api from "../api/api";
 import { motion, useAnimation } from "framer-motion";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, Button } from "@chakra-ui/react";
+import gog from "../img/gog.svg";
+import epicGames from "../img/epic-games.svg";
+import nintendoSwitch from "../img/nintendo-switch.svg";
+import ModalImage from "react-modal-image";
 
 const transition = {
   duration: 1.2,
@@ -30,6 +34,7 @@ const SubHeadings = styled.h2({
   fontSize: "2.4rem",
   fontFamily: "Staatliches",
   letterSpacing: "0.3rem",
+  marginBottom: "2rem",
 });
 
 function FadeInWhenVisible({ children }) {
@@ -62,7 +67,143 @@ function FadeInWhenVisible({ children }) {
   );
 }
 
-const ShowData = ({ data }) => {
+const findName = (id, url) => {
+  switch (id) {
+    case 1:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={<i className="fab fa-steam"></i>}
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>Steam</span>
+        </Button>
+      );
+
+    case 2:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={<i className="fab fa-xbox"></i>}
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>Xbox Store</span>
+        </Button>
+      );
+    case 3:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={<i className="fab fa-playstation"></i>}
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>Playstation Store</span>
+        </Button>
+      );
+    case 11:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={
+            <img
+              src={epicGames}
+              alt="Epic Games"
+              css={{ width: "22px", height: "22px" }}
+              key={Math.random()}
+            />
+          }
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>Epic Games</span>
+        </Button>
+      );
+    case 5:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={
+            <img src={gog} alt="GOG" css={{ width: "22px", height: "22px" }} />
+          }
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>GOG</span>
+        </Button>
+      );
+    case 6:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={
+            <img
+              src={nintendoSwitch}
+              alt="Nintendo Switch"
+              css={{ width: "22px", height: "22px" }}
+            />
+          }
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>Nintendo Store</span>
+        </Button>
+      );
+    default:
+      return "";
+  }
+};
+
+const ShowData = ({ data, img, storeData, Fetch }) => {
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const image = React.useRef();
+
+  // const modal = (ele, img) => {
+  //   console.log(img);
+  //   return (
+  //     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
+  //       <ModalOverlay />
+  //       <ModalContent maxW="1024px" maxH="1080px">
+  //         {/* <ModalHeader>ScreenShot</ModalHeader> */}
+  //         {/* <ModalCloseButton /> */}
+  //         <ModalBody>
+  //           <img
+  //             src={ele.image}
+  //             alt={ele.id}
+  //             css={{ borderRadius: "0.3rem" }}
+  //           />
+  //         </ModalBody>
+
+  //         <ModalFooter>
+  //           <Button colorScheme="red" mr={3} onClick={onClose}>
+  //             Close
+  //           </Button>
+  //         </ModalFooter>
+  //       </ModalContent>
+  //     </Modal>
+  //   );
+  // };
+
   return (
     <div
       css={{
@@ -133,15 +274,86 @@ const ShowData = ({ data }) => {
             <div css={{ fontSize: "1.2rem" }}>{data.description_raw}</div>
           </FadeInWhenVisible>
         </div>
-        <div className="side-2"></div>
+        <div className="side-2">
+          <div className="side-2-a">
+            <FadeInWhenVisible>
+              <SubHeadings>Screenshots</SubHeadings>
+              <div
+                css={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "1rem",
+                  gridAutoFlow: "dense",
+                }}
+              >
+                {img.map((ele, index) => {
+                  return (
+                    <div key={Math.random()}>
+                      <ModalImage
+                        small={ele.image}
+                        large={ele.image}
+                        // alt={ele.id}
+                        ref={image}
+                        hideDownload="true"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </FadeInWhenVisible>
+          </div>
+          <div className="side-2-b">
+            <FadeInWhenVisible>
+              <SubHeadings css={{ marginTop: "2rem", padding: "1rem" }}>
+                Where to buy
+              </SubHeadings>
+              <div
+                className="Buttons"
+                css={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gridAutoFlow: "dense",
+                  gap: "1rem",
+                  padding: "0 1rem",
+                }}
+              >
+                {storeData.map((ele) => {
+                  return findName(ele.store_id, ele.url);
+                })}
+              </div>
+            </FadeInWhenVisible>
+          </div>
+        </div>
       </motion.div>
     </div>
   );
 };
 
+const DataMemoized = React.memo(ShowData);
+
 const Game = ({ match }) => {
   const [data, setData] = useState(null);
-  const [clips, setClips] = useState(null);
+  const [img, setImg] = useState(null);
+  const [storeData, setStoreData] = useState(null);
+
+  const Fetch = function (id) {
+    try {
+      const req = api
+        .get(`/stores/${id}`, {
+          params: {
+            id: id,
+            // search_precise: true,
+          },
+        })
+        .then((data) => console.log(data));
+      console.log(req);
+      // setStoreName(req.name);
+      // return req.name;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const fetch = async function () {
       try {
@@ -158,12 +370,21 @@ const Game = ({ match }) => {
             // search_precise: true,
           },
         });
+
+        const stores = await api.get(`/games/${gameId}/stores`, {
+          params: {
+            id: gameId,
+            // search_precise: true,
+          },
+        });
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
           console.log(req);
+          console.log(stores);
           setData(req.data);
-          setClips(clipsReq);
+          setImg(clipsReq.data.results);
+          setStoreData(stores.data.results);
         }
       } catch (err) {
         console.log(err);
@@ -172,10 +393,10 @@ const Game = ({ match }) => {
     fetch();
   }, [match.params.id]);
 
-  console.log(clips);
+  // console.log(img);
 
-  return data ? (
-    <ShowData data={data} />
+  return data && img && storeData && Fetch ? (
+    <DataMemoized data={data} img={img} storeData={storeData} Fetch={Fetch} />
   ) : (
     <div
       css={{

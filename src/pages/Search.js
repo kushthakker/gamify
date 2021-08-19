@@ -21,7 +21,7 @@ const transition = {
 const Item = ({ index, item, uniquePlatform, Metacritic }) => {
   return (
     <Items
-      key={`item-${index}`}
+      key={Math.random()}
       whileHover={{ scale: 1.1 }}
       transition={transition}
     >
@@ -58,7 +58,9 @@ const Item = ({ index, item, uniquePlatform, Metacritic }) => {
             {uniquePlatform.length === 0
               ? null
               : uniquePlatform.map((ele) => (
-                  <div css={{ margin: "0 10px 0 10px" }}>{ele}</div>
+                  <div css={{ margin: "0 10px 0 10px" }} key={Math.random()}>
+                    {ele}
+                  </div>
                 ))}
           </div>
           <div>
@@ -121,7 +123,9 @@ const Item = ({ index, item, uniquePlatform, Metacritic }) => {
           {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
 
           {item.genres.map((ele) => (
-            <div css={{ margin: "0 10px 0 10px" }}>{ele.name}</div>
+            <div css={{ margin: "0 10px 0 10px" }} key={Math.random()}>
+              {ele.name}
+            </div>
           ))}
         </div>
       </div>
@@ -129,7 +133,7 @@ const Item = ({ index, item, uniquePlatform, Metacritic }) => {
   );
 };
 
-const ItemsMemo = React.memo(Item);
+// const ItemsMemo = React.memo(Item);
 
 const Items = (props) => (
   <motion.div
@@ -224,9 +228,10 @@ const MyListData = ({ searchResult }) => {
               />
             </div>
           );
+
           return (
-            <Link to={`/games/${item.id}`}>
-              <ItemsMemo
+            <Link to={`/games/${item.id}`} key={Math.random()}>
+              <Item
                 index={index}
                 item={item}
                 uniquePlatform={uniquePlatform}
@@ -319,7 +324,6 @@ const Search = ({ match }) => {
     setStatus("loading");
     const fetchApi = async function () {
       try {
-        console.log(value, query);
         const req = await api.get("/games", {
           params: {
             search: value
@@ -352,9 +356,7 @@ const Search = ({ match }) => {
 
   useEffect(() => {
     setQuery(match.params.q);
-    console.log(match);
-    if (match.path === "/discover" && !match.params.q) setStatus("idle");
-  }, [match, match.params.q]);
+  }, [match.params.q]);
 
   const keyDownFnc = (e) => {
     if (e.key === "Enter" && e.ctrlKey) {
