@@ -123,9 +123,7 @@ const Item = ({ index, item, uniquePlatform, Metacritic }) => {
           {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
 
           {item.genres.map((ele) => (
-            <div css={{ margin: "0 10px 0 10px" }} key={Math.random()}>
-              {ele.name}
-            </div>
+            <div key={Math.random()}>{ele.name}</div>
           ))}
         </div>
       </div>
@@ -174,10 +172,11 @@ const MyListData = ({ searchResult }) => {
         css={{
           position: "relative",
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gridAutoFlow: "row dense",
-          gap: "3rem",
-          padding: "3rem",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gridAutoFlow: "dense",
+          columnGap: "1.5rem",
+          rowGap: "2.5rem",
+          padding: "2rem",
         }}
         {...props}
       ></motion.div>
@@ -378,6 +377,7 @@ const Search = ({ match }) => {
       css={{
         overflow: "auto",
         maxHeight: "100vh",
+        width: "100vw",
         // padding: "3rem",
       }}
     >

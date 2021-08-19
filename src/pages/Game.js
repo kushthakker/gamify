@@ -7,7 +7,16 @@ import { useInView } from "react-intersection-observer";
 import { useSelector, useDispatch } from "react-redux";
 import api from "../api/api";
 import { motion, useAnimation } from "framer-motion";
-import { Spinner, Button } from "@chakra-ui/react";
+import {
+  Spinner,
+  Button,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
+} from "@chakra-ui/react";
 import gog from "../img/gog.svg";
 import epicGames from "../img/epic-games.svg";
 import nintendoSwitch from "../img/nintendo-switch.svg";
@@ -28,6 +37,7 @@ const By = styled.h3({
   fontSize: "1.5rem",
   fontFamily: "Staatliches",
   letterSpacing: "0.3rem",
+  marginBottom: "1rem",
 });
 
 const SubHeadings = styled.h2({
@@ -36,6 +46,22 @@ const SubHeadings = styled.h2({
   letterSpacing: "0.3rem",
   marginBottom: "2rem",
 });
+
+const ScoreGrid = styled.div((props) => ({
+  border: `${
+    props.data >= 80
+      ? "2px solid green"
+      : props.data < 80 && props.data >= 50
+      ? "2px solid yellow"
+      : "2px solid red"
+  }`,
+  borderRadius: "0.4rem",
+  padding: "0.5rem",
+  width: "3rem",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
 
 function FadeInWhenVisible({ children }) {
   const controls = useAnimation();
@@ -209,7 +235,6 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
       css={{
         overflow: "auto",
         height: "100vh",
-        padding: "2rem",
         boxSizing: "border-box",
       }}
     >
@@ -250,7 +275,7 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
           src={data.background_image}
           alt={data.name}
           css={{
-            height: "500px",
+            height: "600px",
             width: "100%",
             objectFit: "cover",
             filter: `drop-shadow(0 0 0.75rem rgba(255,255,255,0.75))`,
@@ -260,19 +285,110 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 1, y: 460 }}
+        initial={{ opacity: 1, y: 560 }}
         css={{
-          padding: "2rem",
+          padding: "3rem",
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           columnGap: "1rem",
         }}
       >
         <div className="side-1">
+          <div className="side-1-a">
+            <FadeInWhenVisible>
+              <SubHeadings>About</SubHeadings>
+              <div css={{ fontSize: "1.2rem" }}>{data.description_raw}</div>
+            </FadeInWhenVisible>
+          </div>
           <FadeInWhenVisible>
-            <SubHeadings>About</SubHeadings>
-            <div css={{ fontSize: "1.2rem" }}>{data.description_raw}</div>
+            <div
+              className="side-1-b"
+              css={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+                gridAutoFlow: "dense",
+                marginTop: "2rem",
+              }}
+            >
+              <div>
+                <By>MetaScore</By>
+                <ScoreGrid data={data.metacritic}>
+                  <p
+                    css={{
+                      color: `${
+                        data.metacritic >= 80
+                          ? "green"
+                          : data.metacritic < 80 && data.metacritic >= 50
+                          ? "yellow"
+                          : "red"
+                      }`,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {data.metacritic}
+                  </p>
+                </ScoreGrid>
+              </div>
+              <div>
+                <By>Release Date</By>
+                <div>{data.released}</div>
+              </div>
+              <div>
+                <By>Genre</By>
+                <div>
+                  {data.genres.map((ele) => {
+                    return (
+                      <div
+                        css={{ fontSize: "1.1rem", opacity: "0.8" }}
+                        key={Math.random()}
+                      >
+                        {ele.name}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div>
+                <By>Platforms</By>
+                <div>
+                  {data.parent_platforms.map((ele) => {
+                    return (
+                      <div
+                        css={{ fontSize: "1.1rem", opacity: "0.8" }}
+                        key={Math.random()}
+                      >
+                        {ele.platform.name}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div>
+                <By>Age Rating</By>
+                <div>{data.esrb_rating.name}</div>
+              </div>
+              <div>
+                <By>Publisher</By>
+                <div>
+                  {data.publishers.map((ele) => {
+                    return <div key={Math.random()}>{ele.name}</div>;
+                  })}
+                </div>
+              </div>
+              <div>
+                <By>SubReddit</By>
+                <a target="_blank" href={data.reddit_url} rel="noreferrer">
+                  {data.reddit_name}
+                </a>
+              </div>
+            </div>
           </FadeInWhenVisible>
+          {/* <FadeInWhenVisible>
+            <div className="side-1-c">
+              <SubHeadings>Minimum Requirements</SubHeadings>
+            </div>
+          </FadeInWhenVisible> */}
         </div>
         <div className="side-2">
           <div className="side-2-a">
@@ -324,6 +440,77 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
             </FadeInWhenVisible>
           </div>
         </div>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 1, y: 620 }}
+        css={{
+          padding: "3rem",
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <FadeInWhenVisible>
+          <div className="accordion" css={{ width: "700px" }}>
+            {data.platforms.map((ele) => {
+              return ele.platform.name === "PC" && ele.requirements.minimum ? (
+                <div key={Math.random()}>
+                  <SubHeadings>System Requirements</SubHeadings>
+                  <Accordion defaultIndex={[0]} allowMultiple>
+                    <AccordionItem key={Math.random()}>
+                      <h2>
+                        <AccordionButton>
+                          <Box flex="1" textAlign="left">
+                            <h2
+                              css={{
+                                fontSize: "2rem",
+                                fontFamily: "Staatliches",
+                                letterSpacing: "0.3rem",
+                              }}
+                            >
+                              {ele.platform.name}
+                            </h2>
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        <h3
+                          css={{
+                            fontSize: "1.2rem",
+                            fontFamily: "Staatliches",
+                            letterSpacing: "0.3rem",
+                          }}
+                        >
+                          Minimum
+                        </h3>
+                        <span>
+                          {ele.requirements.minimum.replace("Minimum:", "")}
+                        </span>
+                        <h3
+                          css={{
+                            fontSize: "1.2rem",
+                            fontFamily: "Staatliches",
+                            letterSpacing: "0.3rem",
+                            marginTop: "2rem",
+                          }}
+                        >
+                          Recommended
+                        </h3>
+                        <span>
+                          {ele.requirements.recommended.replace(
+                            "Recommended:",
+                            ""
+                          )}
+                        </span>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+              ) : null;
+            })}
+          </div>
+        </FadeInWhenVisible>
       </motion.div>
     </div>
   );
@@ -404,6 +591,7 @@ const Game = ({ match }) => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        margin: "0",
       }}
     >
       <Spinner />

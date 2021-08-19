@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 /** @jsxRuntime classic /
 /** @jsx jsx */
@@ -13,18 +13,13 @@ import Home from "../pages/Home";
 import Serach from "../pages/Search";
 import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
+import { useToast } from "@chakra-ui/react";
 
 const Div = styled.div`
-  /* minheight: 100vh; */
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  grid-auto-rows: 3.5rem 1fr;
-  justify-content: center;
+  width: 100vw;
+  height: 100vh;
   overscroll-behavior-y: none;
   overflow-y: "hidden";
-  grid-template-areas:
-    "sidebar main"
-    "sidebar main";
   box-sizing: border-box;
 `;
 
@@ -62,24 +57,33 @@ const App = () => {
   //     </ErrorBoundary>
   //   </div>
   // );
+  const toast = useToast();
+  const toastIdRef = React.useRef();
+  function addToast() {
+    toastIdRef.current = toast({
+      description: "Press control/alt + S to open side menu",
+    });
+  }
+
+  useState(() => {
+    addToast();
+  });
 
   return (
     <Div>
       <BrowserRouter>
-        {/* <div
+        <div
           css={{
-            gridArea: "Header",
-            width: "100%",
-            boxShadow:
-              "0 4px 8px 0 (0, 0, 0, 0.2), 0 6px 20px 0 (0, 0, 0, 0.2)",
+            zIndex: "100",
+            position: "sticky",
+            top: "20px",
+            left: "1rem",
+            width: "2rem",
           }}
         >
-          Header
-        </div> */}
-        <div>
-          <SideBarMemoized css={{ gridArea: "sidebar" }} />
+          <SideBarMemoized />
         </div>
-        <div css={{ gridArea: "main" }}>
+        <div>
           <Switch>
             <Route path="/" exact component={Home} />
             <AnimatePresence exitBeforeEnter>
