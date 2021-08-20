@@ -16,6 +16,9 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  MenuButton,
+  HamburgerIcon,
+  IconButton,
 } from "@chakra-ui/react";
 import { findAllByTestId } from "@testing-library/react";
 
@@ -50,12 +53,12 @@ function ToogleMode() {
 
   return (
     <header>
-      <Button
-        size="sm"
-        onClick={toggleColorMode}
-        css={{ zIndex: 100, width: "auto" }}
-      >
-        Toggle {colorMode === "light" ? "Dark" : "Light"}
+      <Button size="sm" onClick={toggleColorMode} css={{ width: "auto" }}>
+        {colorMode === "light" ? (
+          <i class="fas fa-moon"></i>
+        ) : (
+          <i class="fas fa-sun"></i>
+        )}
       </Button>
     </header>
   );
@@ -127,8 +130,18 @@ const Sidebar = () => {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
-        Open
+      <Button
+        onClick={onOpen}
+        colorScheme="facebook"
+        css={{
+          zIndex: "99",
+          maxWidth: "3rem",
+          position: "fixed",
+          top: "2rem",
+          left: "2rem",
+        }}
+      >
+        <i class="fas fa-bars"></i>
       </Button>
       <Drawer
         placement={"left"}
@@ -138,13 +151,17 @@ const Sidebar = () => {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Gamify</DrawerHeader>
-          <DrawerCloseButton />
+          <DrawerHeader borderBottomWidth="1px" d="flex">
+            <ToogleMode />
+            <div css={{ position: "relative", left: "4.5rem", width: "100%" }}>
+              Gamify
+            </div>
+            <DrawerCloseButton height="3rem" width="3rem" verticalAlign />
+          </DrawerHeader>
           <DrawerBody>
             <Div>
-              <ToogleMode />
               <Link to={"/"}>
-                <H1 onClick={onClose}>Gamify</H1>
+                <H1 onClick={onClose}>Home</H1>
               </Link>
               <Link to={"/discover"}>
                 <H1 onClick={onClose}>Search</H1>

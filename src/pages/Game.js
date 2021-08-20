@@ -20,6 +20,8 @@ import {
   Image,
   useToast,
   Tooltip,
+  ButtonGroup,
+  IconButton,
 } from "@chakra-ui/react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import gog from "../img/gog.svg";
@@ -301,8 +303,8 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
   return (
     <div
       css={{
-        overflow: "auto",
-        height: "100vh",
+        overflowY: "scroll",
+        maxHeight: "100vh",
         boxSizing: "border-box",
       }}
       transition={transition}
@@ -327,6 +329,56 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
         <By>By {data.developers[0].name}</By>
       </motion.div>
       <motion.div
+        initial={{ opacity: 0, y: 200 }}
+        animate={{
+          opacity: 1,
+          y: 180,
+          transition: { delay: 1.2, ...transition },
+        }}
+      >
+        <ButtonGroup
+          css={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+          variant="outline"
+          colorScheme="blue"
+        >
+          <ButtonGroup isAttached>
+            <Button variant="outline" colorScheme="blue" mr="-px">
+              Add to Uncategorized
+            </Button>
+            <IconButton
+              aria-label="Add to friends"
+              colorScheme="blue"
+              icon={<i class="fas fa-plus"></i>}
+            />
+          </ButtonGroup>
+          <ButtonGroup isAttached>
+            <Button variant="outline" colorScheme="blue" mr="-px">
+              Add to Wishlist
+            </Button>
+            <IconButton
+              aria-label="Add to Wishlist"
+              colorScheme="blue"
+              icon={<i class="fas fa-gift"></i>}
+            />
+          </ButtonGroup>
+          <ButtonGroup isAttached>
+            <Button variant="outline" colorScheme="blue" mr="-px">
+              Save to Collection
+            </Button>
+            <IconButton
+              aria-label="Save to Collection"
+              colorScheme="blue"
+              icon={<i class="fas fa-folder-open"></i>}
+            />
+          </ButtonGroup>
+        </ButtonGroup>
+      </motion.div>
+      <motion.div
         initial={{
           x: "25%",
           y: "50%",
@@ -349,7 +401,6 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
             width: "100%",
             objectFit: "cover",
             filter: `drop-shadow(0 0 0.75rem rgba(255,255,255,0.75))`,
-            // position: "relative",
           }}
         />
       </motion.div>
@@ -752,7 +803,7 @@ const Game = ({ match }) => {
   // console.log(img);
 
   return data && img && storeData && Fetch && dlcs ? (
-    <div key={location.key}>
+    <div key={location.key} css={{ maxHeight: "100vh" }}>
       <DataMemoized
         data={data}
         img={img}

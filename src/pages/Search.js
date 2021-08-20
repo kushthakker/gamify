@@ -7,7 +7,7 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import api from "../api/api";
-import { Spinner, CloseIcon } from "@chakra-ui/react";
+import { Spinner, CloseIcon, Box, Badge, Image } from "@chakra-ui/react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link, useHistory } from "react-router-dom";
@@ -19,118 +19,118 @@ const transition = {
   ease: [0.43, 0.13, 0.23, 0.96],
 };
 
-const Item = ({ index, item, uniquePlatform, Metacritic }) => {
-  return (
-    <Items
-      key={Math.random()}
-      whileHover={{ scale: 1.1 }}
-      transition={transition}
-    >
-      <div css={{ width: "20rem", height: "100%" }}>
-        <img
-          key={`item-${index}`}
-          src={item.background_image}
-          alt={item.name}
-          css={{
-            borderRadius: "1rem 1rem 0 0",
-            width: "100%",
-            maxHeight: "15rem",
-            objectFit: "fill",
-          }}
-        />
-      </div>
-      <div
-        css={{
-          maxHeight: "20rem",
-          overflow: "hidden",
-          padding: "1rem",
-        }}
-      >
-        <div
-          css={{
-            display: "flex",
-            alignItems: "center",
-            width: "100%",
-            color: "white",
-            justifyContent: "space-between",
-          }}
-        >
-          <div css={{ display: "flex" }}>
-            {uniquePlatform.length === 0
-              ? null
-              : uniquePlatform.map((ele) => (
-                  <div css={{ margin: "0 10px 0 10px" }} key={Math.random()}>
-                    {ele}
-                  </div>
-                ))}
-          </div>
-          <div>
-            <div css={{ marginLeft: "0.5rem" }}>
-              {item.metacritic === null ? null : Metacritic}
-            </div>
-          </div>
-        </div>
-        <div
-          css={{
-            display: "flex",
-            // justifyContent: "space-between",
-            color: "white",
-            width: "100%",
-          }}
-        >
-          <div>
-            <h1
-              css={{
-                fontWeight: "bold",
-                fontSize: "1.8rem",
-                width: "auto",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {item?.name}
-            </h1>
-          </div>
-          {/* <div css={{ marginLeft: "0.5rem" }}>
-          {item.metacritic === null ? null : Metacritic}
-        </div> */}
-        </div>
-        <div
-          css={{
-            display: "flex",
-            color: "white",
-            width: "100%",
-            alignItems: "center",
-          }}
-        >
-          {item?.released ? <H3>Release Date : </H3> : null}
-          {item.released}
-        </div>
-        {/* <H3>
-        {item?.esrb_rating ? (
-          <div css={{ color: "white" }}>
-            {item?.esrb_rating.name}
-          </div>
-        ) : null}
-      </H3> */}
-        <div
-          css={{
-            display: "flex",
-            flexFlow: "row wrap",
-            alignItems: "center",
-            width: "100%",
-            color: "white",
-          }}
-        >
-          {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
+// const Item = ({ index, item, uniquePlatform, Metacritic }) => {
+//   return (
+//     <Items
+//       key={Math.random()}
+//       whileHover={{ scale: 1.1 }}
+//       transition={transition}
+//     >
+//       <div css={{ width: "20rem", height: "100%" }}>
+//         <img
+//           key={`item-${index}`}
+//           src={item.background_image}
+//           alt={item.name}
+//           css={{
+//             borderRadius: "1rem 1rem 0 0",
+//             width: "100%",
+//             maxHeight: "15rem",
+//             objectFit: "fill",
+//           }}
+//         />
+//       </div>
+//       <div
+//         css={{
+//           maxHeight: "20rem",
+//           overflow: "hidden",
+//           padding: "1rem",
+//         }}
+//       >
+//         <div
+//           css={{
+//             display: "flex",
+//             alignItems: "center",
+//             width: "100%",
+//             color: "white",
+//             justifyContent: "space-between",
+//           }}
+//         >
+//           <div css={{ display: "flex" }}>
+//             {uniquePlatform.length === 0
+//               ? null
+//               : uniquePlatform.map((ele) => (
+//                   <div css={{ margin: "0 10px 0 10px" }} key={Math.random()}>
+//                     {ele}
+//                   </div>
+//                 ))}
+//           </div>
+//           <div>
+//             <div css={{ marginLeft: "0.5rem" }}>
+//               {item.metacritic === null ? null : Metacritic}
+//             </div>
+//           </div>
+//         </div>
+//         <div
+//           css={{
+//             display: "flex",
+//             // justifyContent: "space-between",
+//             color: "white",
+//             width: "100%",
+//           }}
+//         >
+//           <div>
+//             <h1
+//               css={{
+//                 fontWeight: "bold",
+//                 fontSize: "1.8rem",
+//                 width: "auto",
+//                 marginBottom: "0.5rem",
+//               }}
+//             >
+//               {item?.name}
+//             </h1>
+//           </div>
+//           {/* <div css={{ marginLeft: "0.5rem" }}>
+//           {item.metacritic === null ? null : Metacritic}
+//         </div> */}
+//         </div>
+//         <div
+//           css={{
+//             display: "flex",
+//             color: "white",
+//             width: "100%",
+//             alignItems: "center",
+//           }}
+//         >
+//           {item?.released ? <H3>Release Date : </H3> : null}
+//           {item.released}
+//         </div>
+//         {/* <H3>
+//         {item?.esrb_rating ? (
+//           <div css={{ color: "white" }}>
+//             {item?.esrb_rating.name}
+//           </div>
+//         ) : null}
+//       </H3> */}
+//         <div
+//           css={{
+//             display: "flex",
+//             flexFlow: "row wrap",
+//             alignItems: "center",
+//             width: "100%",
+//             color: "white",
+//           }}
+//         >
+//           {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
 
-          {item.genres.map((ele) => (
-            <div key={Math.random()}>{ele.name}</div>
-          ))}
-        </div>
-      </div>
-    </Items>
-  );
-};
+//           {item.genres.map((ele) => (
+//             <div key={Math.random()}>{ele.name}</div>
+//           ))}
+//         </div>
+//       </div>
+//     </Items>
+//   );
+// };
 
 // const ItemsMemo = React.memo(Item);
 
@@ -213,7 +213,7 @@ const MyListData = ({ searchResult }) => {
           const uniquePlatform = [...new Set(platformsStored)];
 
           const Metacritic = (
-            <div css={{ width: "50px", height: "50px" }}>
+            <div css={{ width: "40px", height: "40px" }}>
               <CircularProgressbar
                 value={item.metacritic}
                 text={item.metacritic}
@@ -233,12 +233,92 @@ const MyListData = ({ searchResult }) => {
 
           return (
             <Link to={`/games/${item.id}`} key={Math.random()}>
-              <Item
+              {/* <Item
                 index={index}
                 item={item}
                 uniquePlatform={uniquePlatform}
                 Metacritic={Metacritic}
-              />
+              /> */}
+              <Box
+                w="20rem"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+              >
+                <img
+                  src={item.background_image}
+                  alt={item.name}
+                  css={{
+                    width: "100%",
+                    maxHeight: "15rem",
+                    objectFit: "fill",
+                  }}
+                />
+
+                <Box p="6">
+                  <Box d="flex" alignItems="baseline">
+                    {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                      Release
+                    </Badge> */}
+                    <Box
+                      color="gray.500"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      ml="2"
+                    >
+                      {item.released}
+                    </Box>
+                  </Box>
+
+                  <Box
+                    mt="1"
+                    fontWeight="bold"
+                    as="h"
+                    lineHeight="tight"
+                    // isTruncated
+                    d="grid"
+                    gridTemplateColumns="1fr 1fr"
+                    justifyItems="flex-end"
+                    width="100%"
+                  >
+                    <div
+                      css={{
+                        position: "relative",
+                        left: "0.3rem",
+                        fontSize: "1.5rem",
+                        width: "auto",
+                      }}
+                    >
+                      {item.name}
+                    </div>
+                    {item.metacritic === null ? null : Metacritic}
+                  </Box>
+                  <Box mt="1rem">
+                    <Badge
+                      borderRadius="full"
+                      px="2"
+                      colorScheme="teal"
+                      mb="0.5rem"
+                    >
+                      Platforms
+                    </Badge>
+                    <Box d="flex">
+                      {uniquePlatform.length === 0
+                        ? null
+                        : uniquePlatform.map((ele) => (
+                            <div
+                              css={{ margin: "0 10px 0 10px" }}
+                              key={Math.random()}
+                            >
+                              {ele}
+                            </div>
+                          ))}
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             </Link>
           );
         })}

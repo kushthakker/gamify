@@ -15,11 +15,12 @@ import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
 
 const Div = styled.div`
-  max-width: 100vw;
+  ${
+    "" /* width: 100vw;
   height: 100vh;
   overscroll-behavior-y: none;
-  overflow-y: "hidden";
-  box-sizing: border-box;
+  box-sizing: border-box; */
+  }
 `;
 
 function ErrorFallback({ error, resetErrorBoundary }) {
@@ -58,21 +59,11 @@ const App = () => {
   // );
 
   return (
-    <Div>
+    <div>
       <BrowserRouter>
-        <div
-          css={{
-            zIndex: "100",
-            position: "sticky",
-            top: "20px",
-            left: "1rem",
-            width: "2rem",
-          }}
-        >
-          <SideBarMemoized />
-        </div>
-        <div>
-          <AnimatePresence exitBeforeEnter>
+        <SideBarMemoized />
+        <div css={{ height: "100vh" }}>
+          <AnimatePresence initial={false} exitBeforeEnter>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route
@@ -81,15 +72,14 @@ const App = () => {
                 component={Serach}
                 key={"1"}
               />
-              <AnimatePresence exitBeforeEnter>
-                <Route path="/games/:id" exact component={Game} key={"3"} />
-              </AnimatePresence>
+
+              <Route path="/games/:id" exact component={Game} key={"3"} />
               <Route path="*" component={ErrorPage} />
             </Switch>
           </AnimatePresence>
         </div>
       </BrowserRouter>
-    </Div>
+    </div>
   );
 };
 
