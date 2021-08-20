@@ -55,9 +55,9 @@ function ToogleMode() {
     <header>
       <Button size="sm" onClick={toggleColorMode} css={{ width: "auto" }}>
         {colorMode === "light" ? (
-          <i class="fas fa-moon"></i>
+          <i className="fas fa-moon"></i>
         ) : (
-          <i class="fas fa-sun"></i>
+          <i className="fas fa-sun"></i>
         )}
       </Button>
     </header>
@@ -141,7 +141,7 @@ const Sidebar = () => {
           left: "2rem",
         }}
       >
-        <i class="fas fa-bars"></i>
+        <i className="fas fa-bars"></i>
       </Button>
       <Drawer
         placement={"left"}

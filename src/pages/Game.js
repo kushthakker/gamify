@@ -22,6 +22,10 @@ import {
   Tooltip,
   ButtonGroup,
   IconButton,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Menu,
 } from "@chakra-ui/react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import gog from "../img/gog.svg";
@@ -346,36 +350,45 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
           variant="outline"
           colorScheme="blue"
         >
-          <ButtonGroup isAttached>
-            <Button variant="outline" colorScheme="blue" mr="-px">
-              Add to Uncategorized
-            </Button>
-            <IconButton
+          <Menu placement="auto">
+            <MenuButton
+              as={Button}
+              variant="outline"
+              colorScheme="blue"
+              rightIcon={<i className="fas fa-plus"></i>}
+            >
+              Add to my games
+            </MenuButton>
+            <MenuList>
+              <MenuItem command="⌘T">Uncategorized</MenuItem>
+              <MenuItem command="⌘N">Currently Playing</MenuItem>
+              <MenuItem command="⌘⇧N">Finished</MenuItem>
+              <MenuItem command="⌘O">Not played yet</MenuItem>
+            </MenuList>
+            {/* <IconButton
               aria-label="Add to friends"
               colorScheme="blue"
               icon={<i class="fas fa-plus"></i>}
-            />
-          </ButtonGroup>
-          <ButtonGroup isAttached>
-            <Button variant="outline" colorScheme="blue" mr="-px">
-              Add to Wishlist
-            </Button>
-            <IconButton
-              aria-label="Add to Wishlist"
-              colorScheme="blue"
-              icon={<i class="fas fa-gift"></i>}
-            />
-          </ButtonGroup>
-          <ButtonGroup isAttached>
-            <Button variant="outline" colorScheme="blue" mr="-px">
-              Save to Collection
-            </Button>
-            <IconButton
-              aria-label="Save to Collection"
-              colorScheme="blue"
-              icon={<i class="fas fa-folder-open"></i>}
-            />
-          </ButtonGroup>
+            /> */}
+          </Menu>
+
+          <Button
+            variant="outline"
+            colorScheme="blue"
+            mr="-px"
+            rightIcon={<i className="fas fa-gift"></i>}
+          >
+            Add to Wishlist
+          </Button>
+
+          <Button
+            variant="outline"
+            colorScheme="blue"
+            mr="-px"
+            rightIcon={<i className="fas fa-folder-open"></i>}
+          >
+            Save to Collection
+          </Button>
         </ButtonGroup>
       </motion.div>
       <motion.div
@@ -684,7 +697,12 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
                       borderRadius="lg"
                       overflow="hidden"
                     >
-                      <Image src={ele.background_image} alt={ele.name} />
+                      <Image
+                        src={ele.background_image}
+                        alt={ele.name}
+                        maxH="241px"
+                        w="100%"
+                      />
 
                       <Box p="6">
                         <Box d="flex" alignItems="baseline">

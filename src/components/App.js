@@ -63,7 +63,7 @@ const App = () => {
       <BrowserRouter>
         <SideBarMemoized />
         <div css={{ height: "100vh" }}>
-          <AnimatePresence initial={false} exitBeforeEnter>
+          <AnimatePresence exitBeforeEnter>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route

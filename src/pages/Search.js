@@ -252,6 +252,7 @@ const MyListData = ({ searchResult }) => {
                     width: "100%",
                     maxHeight: "15rem",
                     objectFit: "fill",
+                    minHeight: "200px",
                   }}
                 />
 
@@ -279,7 +280,7 @@ const MyListData = ({ searchResult }) => {
                     lineHeight="tight"
                     // isTruncated
                     d="grid"
-                    gridTemplateColumns="1fr 1fr"
+                    gridTemplateColumns="1fr auto"
                     justifyItems="flex-end"
                     width="100%"
                   >
@@ -289,6 +290,8 @@ const MyListData = ({ searchResult }) => {
                         left: "0.3rem",
                         fontSize: "1.5rem",
                         width: "auto",
+                        display: "flex",
+                        justifySelf: "flex-start",
                       }}
                     >
                       {item.name}
@@ -402,34 +405,36 @@ const Search = ({ match }) => {
 
   const fetchGames = useCallback(() => {
     console.log(`render1`);
-    if (!value && !query) return;
-    setStatus("loading");
-    const fetchApi = async function () {
-      try {
-        const req = await api.get("/games", {
-          params: {
-            search: value
-              ? encodeURIComponent(value)
-              : encodeURIComponent(query),
-            // search_precise: true,
-            page_size: 50,
-          },
-        });
+    if (!query) setStatus("idle");
+    else {
+      setStatus("loading");
+      const fetchApi = async function () {
+        try {
+          const req = await api.get("/games", {
+            params: {
+              search: value
+                ? encodeURIComponent(value)
+                : encodeURIComponent(query),
+              // search_precise: true,
+              page_size: 50,
+            },
+          });
 
-        if (!req.status) {
-          setStatus("error");
-          throw new Error(req.statusText);
-        } else {
-          console.log(req);
-          setSearchResult(req.data.results);
-          setStatus("success");
-          inputValue.current.value = "";
+          if (!req.status) {
+            setStatus("error");
+            throw new Error(req.statusText);
+          } else {
+            console.log(req);
+            setSearchResult(req.data.results);
+            inputValue.current.value = "";
+            setStatus("success");
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
+      };
+      fetchApi();
+    }
   }, [query, value]);
 
   useEffect(() => {
@@ -439,6 +444,8 @@ const Search = ({ match }) => {
   useEffect(() => {
     setQuery(match.params.q);
   }, [match.params.q]);
+
+  console.log(query, value);
 
   const keyDownFnc = (e) => {
     if (e.key === "Enter" && e.ctrlKey) {
@@ -454,6 +461,12 @@ const Search = ({ match }) => {
       document.documentElement.removeEventListener("keydown", keyDownFnc);
     };
   }, []);
+
+  // useState(() => {
+  //   value === null && query === undefined
+  //     ? setStatus("idle")
+  //     : setStatus("loading");
+  // });
 
   Prompt("Press control/alt + enter to Search", "searchPrompt");
 
