@@ -600,3 +600,6 @@ const Game = ({ match }) => {
 };
 
 export default Game;
+
+// TODO: try adding video to the game page
+// TODO: add wishlist and currently playing or played button (need to implemnet login functionality for this)

@@ -66,7 +66,14 @@ const App = () => {
   }
 
   useState(() => {
-    addToast();
+    const prompt = localStorage.getItem("prompt");
+    console.log(prompt);
+    if (prompt === "1") return;
+    else {
+      console.log(`hello`);
+      addToast();
+      localStorage.setItem("prompt", "1");
+    }
   });
 
   return (
