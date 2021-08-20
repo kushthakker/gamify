@@ -21,7 +21,7 @@ import {
   useToast,
   Tooltip,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import gog from "../img/gog.svg";
 import epicGames from "../img/epic-games.svg";
 import nintendoSwitch from "../img/nintendo-switch.svg";
@@ -38,6 +38,7 @@ const transition = {
 };
 
 const Title = styled.h1({
+  textAlign: "center",
   fontSize: "4.5rem",
   fontFamily: "Staatliches",
   letterSpacing: "0.3rem",
@@ -234,6 +235,7 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
+  const history = useHistory();
 
   // const modal = (ele, img) => {
   //   console.log(img);
@@ -303,6 +305,7 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
         height: "100vh",
         boxSizing: "border-box",
       }}
+      transition={transition}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -315,6 +318,7 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
           width: "100%",
           display: "grid",
           justifyItems: "center",
+          alignItems: "center",
           position: "relative",
           top: "5rem",
         }}
@@ -603,6 +607,7 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
               DLC's And GOTY edition
             </SubHeadings>
           ) : null}
+
           <div
             css={{
               display: "grid",
@@ -677,6 +682,8 @@ const Game = ({ match }) => {
   const [storeData, setStoreData] = useState(null);
   const [dlcs, setDlcs] = useState(null);
 
+  const location = useLocation();
+
   const Fetch = function (id) {
     try {
       const req = api
@@ -744,14 +751,16 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return data && img && storeData && Fetch ? (
-    <DataMemoized
-      data={data}
-      img={img}
-      storeData={storeData}
-      Fetch={Fetch}
-      dlcs={dlcs}
-    />
+  return data && img && storeData && Fetch && dlcs ? (
+    <div key={location.key}>
+      <DataMemoized
+        data={data}
+        img={img}
+        storeData={storeData}
+        Fetch={Fetch}
+        dlcs={dlcs}
+      />
+    </div>
   ) : (
     <div
       css={{
@@ -761,6 +770,7 @@ const Game = ({ match }) => {
         height: "100vh",
         margin: "0",
       }}
+      key={location.key}
     >
       <Spinner />
     </div>

@@ -72,25 +72,21 @@ const App = () => {
           <SideBarMemoized />
         </div>
         <div>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <AnimatePresence exitBeforeEnter>
+          <AnimatePresence exitBeforeEnter>
+            <Switch>
+              <Route path="/" exact component={Home} />
               <Route
                 path={["/discover", "/discover/:q"]}
                 exact
                 component={Serach}
                 key={"1"}
               />
-              {/* <Route
-                path={"/discover/:q"}
-                exact
-                component={Serach}
-                key={"2"}
-              /> */}
-              <Route path="/games/:id" exact component={Game} key={"3"} />
-            </AnimatePresence>
-            <Route path="*" component={ErrorPage} />
-          </Switch>
+              <AnimatePresence exitBeforeEnter>
+                <Route path="/games/:id" exact component={Game} key={"3"} />
+              </AnimatePresence>
+              <Route path="*" component={ErrorPage} />
+            </Switch>
+          </AnimatePresence>
         </div>
       </BrowserRouter>
     </Div>
