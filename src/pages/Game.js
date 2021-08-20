@@ -770,7 +770,6 @@ const Game = ({ match }) => {
         height: "100vh",
         margin: "0",
       }}
-      key={location.key}
     >
       <Spinner />
     </div>
