@@ -12,6 +12,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link, useHistory } from "react-router-dom";
 import { motion } from "framer-motion";
+import Prompt from "../components/Prompt";
 
 const transition = {
   duration: 0.4,
@@ -162,8 +163,8 @@ const MyListData = ({ searchResult }) => {
   const rowVirtualizer = useVirtual({
     size: searchResult.length,
     parentRef: listRef,
-    estimatedSize: React.useCallback(() => 5, []),
-    overscan: 5,
+    estimatedSize: React.useCallback(() => 20, []),
+    overscan: 10,
   });
 
   const List = (props) => {
@@ -173,7 +174,9 @@ const MyListData = ({ searchResult }) => {
           position: "relative",
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
-          gridAutoFlow: "dense",
+          gridAutoFlow: "dense row",
+          gridTemplateRows: "masonry",
+          masonryAutoFlow: "next",
           columnGap: "1.5rem",
           rowGap: "2.5rem",
           padding: "2rem",
@@ -272,7 +275,7 @@ const Result = ({ status, inputValue, setValue, match }) => {
           <Input
             variant="outline"
             ref={inputValue}
-            placeholder={`Search |  Press control/alt + Enter to serach from anywhere`}
+            placeholder={`Search`}
             css={{
               width: "500px",
             }}
@@ -371,6 +374,8 @@ const Search = ({ match }) => {
       document.documentElement.removeEventListener("keydown", keyDownFnc);
     };
   }, []);
+
+  Prompt("Press control/alt + enter to Search", "searchPrompt");
 
   return (
     <div

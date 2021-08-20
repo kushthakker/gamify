@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import App from "./components/App";
 import reducers from "./reducers";
 import { ChakraProvider } from "@chakra-ui/react";
-import "./index.css";
+// import "./index.css";
 import thunk from "redux-thunk";
 import theme from "./theme";
 import { ColorModeScript } from "@chakra-ui/react";

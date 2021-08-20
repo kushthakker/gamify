@@ -16,11 +16,21 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
+  Badge,
+  Image,
+  useToast,
+  Tooltip,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import gog from "../img/gog.svg";
 import epicGames from "../img/epic-games.svg";
 import nintendoSwitch from "../img/nintendo-switch.svg";
+import itchIo from "../img/itch-io.svg";
+import "../index.css";
+
 import ModalImage from "react-modal-image";
+// import Prompt from "../components/Prompt";
+import { InView } from "react-intersection-observer";
 
 const transition = {
   duration: 1.2,
@@ -195,14 +205,35 @@ const findName = (id, url) => {
           <span css={{ fontSize: "1.2rem" }}>Nintendo Store</span>
         </Button>
       );
+    case 9:
+      return (
+        <Button
+          colorScheme="white"
+          variant="outline"
+          rightIcon={
+            <img
+              src={itchIo}
+              alt="Nintendo Switch"
+              css={{ width: "22px", height: "22px" }}
+            />
+          }
+          w="300"
+          h="50"
+          onClick={() => window.open(url)}
+          key={Math.random()}
+        >
+          <span css={{ fontSize: "1.2rem" }}>Itch Io</span>
+        </Button>
+      );
     default:
       return "";
   }
 };
 
-const ShowData = ({ data, img, storeData, Fetch }) => {
+const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
+  const toast = useToast();
 
   // const modal = (ele, img) => {
   //   console.log(img);
@@ -229,6 +260,41 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
   //     </Modal>
   //   );
   // };
+
+  function useHorizontalScroll() {
+    const elRef = React.useRef();
+    useEffect(() => {
+      const el = elRef.current;
+      if (el) {
+        const onWheel = (e) => {
+          if (e.deltaY === 0) return;
+          e.preventDefault();
+          el.scrollTo({
+            left: el.scrollLeft + e.deltaY,
+          });
+        };
+        el.addEventListener("wheel", onWheel);
+        return () => el.removeEventListener("wheel", onWheel);
+      }
+    }, []);
+    return elRef;
+  }
+
+  function showImgNote() {
+    const prompt = localStorage.getItem("imgInfo");
+    if (prompt === "1") return;
+    else {
+      console.log(prompt);
+      toast({
+        title: "Note",
+        description: "You can close image by clicking outside of the image",
+        status: "info",
+        duration: 5000,
+        isClosable: true,
+      });
+      localStorage.setItem(`imgInfo`, "1");
+    }
+  }
 
   return (
     <div
@@ -311,25 +377,28 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                 marginTop: "2rem",
               }}
             >
-              <div>
-                <By>MetaScore</By>
-                <ScoreGrid data={data.metacritic}>
-                  <p
-                    css={{
-                      color: `${
-                        data.metacritic >= 80
-                          ? "green"
-                          : data.metacritic < 80 && data.metacritic >= 50
-                          ? "yellow"
-                          : "red"
-                      }`,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {data.metacritic}
-                  </p>
-                </ScoreGrid>
-              </div>
+              {data.metacritic ? (
+                <div>
+                  <By>MetaScore</By>
+                  <ScoreGrid data={data.metacritic}>
+                    <p
+                      css={{
+                        color: `${
+                          data.metacritic >= 80
+                            ? "green"
+                            : data.metacritic < 80 && data.metacritic >= 50
+                            ? "yellow"
+                            : "red"
+                        }`,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {data.metacritic}
+                    </p>
+                  </ScoreGrid>{" "}
+                </div>
+              ) : null}
+
               <div>
                 <By>Release Date</By>
                 <div>{data.released}</div>
@@ -364,10 +433,13 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                   })}
                 </div>
               </div>
-              <div>
-                <By>Age Rating</By>
-                <div>{data.esrb_rating.name}</div>
-              </div>
+              {data?.esrb_rating?.name ? (
+                <div>
+                  <By>Age Rating</By>
+                  <div>{data.esrb_rating.name}</div>
+                </div>
+              ) : null}
+
               <div>
                 <By>Publisher</By>
                 <div>
@@ -376,12 +448,14 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                   })}
                 </div>
               </div>
-              <div>
-                <By>SubReddit</By>
-                <a target="_blank" href={data.reddit_url} rel="noreferrer">
-                  {data.reddit_name}
-                </a>
-              </div>
+              {data.reddit_url ? (
+                <div>
+                  <By>SubReddit</By>
+                  <a target="_blank" href={data.reddit_url} rel="noreferrer">
+                    {data.reddit_name}
+                  </a>
+                </div>
+              ) : null}
             </div>
           </FadeInWhenVisible>
           {/* <FadeInWhenVisible>
@@ -405,13 +479,21 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                 {img.map((ele, index) => {
                   return (
                     <div key={Math.random()}>
-                      <ModalImage
-                        small={ele.image}
-                        large={ele.image}
-                        // alt={ele.id}
-                        ref={image}
-                        hideDownload="true"
-                      />
+                      <Tooltip
+                        label="Click to view in enlarge mode"
+                        aria-label="A tooltip"
+                      >
+                        <div onClick={() => showImgNote()}>
+                          <ModalImage
+                            small={ele.image}
+                            large={ele.image}
+                            // alt={ele.id}
+                            ref={image}
+                            hideDownload="true"
+                            css={{ height: "180px", width: "100% " }}
+                          />
+                        </div>
+                      </Tooltip>
                     </div>
                   );
                 })}
@@ -485,7 +567,7 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                           Minimum
                         </h3>
                         <span>
-                          {ele.requirements.minimum.replace("Minimum:", "")}
+                          {ele.requirements?.minimum?.replace("Minimum:", "")}
                         </span>
                         <h3
                           css={{
@@ -498,7 +580,7 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                           Recommended
                         </h3>
                         <span>
-                          {ele.requirements.recommended.replace(
+                          {ele.requirements?.recommended?.replace(
                             "Recommended:",
                             ""
                           )}
@@ -508,6 +590,77 @@ const ShowData = ({ data, img, storeData, Fetch }) => {
                   </Accordion>
                 </div>
               ) : null;
+            })}
+          </div>
+        </FadeInWhenVisible>
+      </motion.div>
+      <motion.div initial={{ opacity: 1, y: 660 }}>
+        <FadeInWhenVisible>
+          {dlcs.length !== 0 ? (
+            <SubHeadings
+              css={{ display: "grid", justifyItems: "center", width: "100%" }}
+            >
+              DLC's And GOTY edition
+            </SubHeadings>
+          ) : null}
+          <div
+            css={{
+              display: "grid",
+              gridAutoFlow: "column",
+              gap: "1rem",
+              overflowX: "scroll",
+              minWidth: "100%",
+              justifyItems: "center",
+            }}
+            ref={useHorizontalScroll()}
+          >
+            {dlcs.map((ele, i) => {
+              const rowLen = ele.length;
+              return (
+                <Link to={`/games/${ele.id}`}>
+                  <div
+                    key={Math.random()}
+                    css={{ marginRight: `${rowLen === i ? "3rem" : "0"}` }}
+                  >
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image src={ele.background_image} alt={ele.name} />
+
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          <Badge borderRadius="full" px="2" colorScheme="teal">
+                            DLC
+                          </Badge>
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {ele.released}
+                          </Box>
+                        </Box>
+
+                        <Box
+                          mt="1"
+                          fontWeight="semibold"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
+                        >
+                          {ele.name}
+                        </Box>
+                      </Box>
+                    </Box>
+                  </div>
+                </Link>
+              );
             })}
           </div>
         </FadeInWhenVisible>
@@ -522,6 +675,7 @@ const Game = ({ match }) => {
   const [data, setData] = useState(null);
   const [img, setImg] = useState(null);
   const [storeData, setStoreData] = useState(null);
+  const [dlcs, setDlcs] = useState(null);
 
   const Fetch = function (id) {
     try {
@@ -564,11 +718,19 @@ const Game = ({ match }) => {
             // search_precise: true,
           },
         });
+        const dlcs = await api.get(`/games/${gameId}/additions`, {
+          params: {
+            id: gameId,
+            // search_precise: true,
+          },
+        });
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
           console.log(req);
           console.log(stores);
+          console.log(dlcs);
+          setDlcs(dlcs.data.results);
           setData(req.data);
           setImg(clipsReq.data.results);
           setStoreData(stores.data.results);
@@ -583,7 +745,13 @@ const Game = ({ match }) => {
   // console.log(img);
 
   return data && img && storeData && Fetch ? (
-    <DataMemoized data={data} img={img} storeData={storeData} Fetch={Fetch} />
+    <DataMemoized
+      data={data}
+      img={img}
+      storeData={storeData}
+      Fetch={Fetch}
+      dlcs={dlcs}
+    />
   ) : (
     <div
       css={{

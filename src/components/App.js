@@ -13,10 +13,9 @@ import Home from "../pages/Home";
 import Serach from "../pages/Search";
 import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
-import { useToast } from "@chakra-ui/react";
 
 const Div = styled.div`
-  width: 100vw;
+  max-width: 100vw;
   height: 100vh;
   overscroll-behavior-y: none;
   overflow-y: "hidden";
@@ -57,24 +56,6 @@ const App = () => {
   //     </ErrorBoundary>
   //   </div>
   // );
-  const toast = useToast();
-  const toastIdRef = React.useRef();
-  function addToast() {
-    toastIdRef.current = toast({
-      description: "Press control/alt + S to open side menu",
-    });
-  }
-
-  useState(() => {
-    const prompt = localStorage.getItem("prompt");
-    console.log(prompt);
-    if (prompt === "1") return;
-    else {
-      console.log(`hello`);
-      addToast();
-      localStorage.setItem("prompt", "1");
-    }
-  });
 
   return (
     <Div>
@@ -100,7 +81,13 @@ const App = () => {
                 component={Serach}
                 key={"1"}
               />
-              <Route path="/games/:id" exact component={Game} key={"2"} />
+              {/* <Route
+                path={"/discover/:q"}
+                exact
+                component={Serach}
+                key={"2"}
+              /> */}
+              <Route path="/games/:id" exact component={Game} key={"3"} />
             </AnimatePresence>
             <Route path="*" component={ErrorPage} />
           </Switch>
