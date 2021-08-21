@@ -122,7 +122,6 @@ const findName = (id, url) => {
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>Steam</span>
         </Button>
@@ -137,7 +136,6 @@ const findName = (id, url) => {
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>Xbox Store</span>
         </Button>
@@ -151,7 +149,6 @@ const findName = (id, url) => {
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>Playstation Store</span>
         </Button>
@@ -166,13 +163,11 @@ const findName = (id, url) => {
               src={epicGames}
               alt="Epic Games"
               css={{ width: "22px", height: "22px" }}
-              key={Math.random()}
             />
           }
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>Epic Games</span>
         </Button>
@@ -188,7 +183,6 @@ const findName = (id, url) => {
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>GOG</span>
         </Button>
@@ -208,7 +202,6 @@ const findName = (id, url) => {
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>Nintendo Store</span>
         </Button>
@@ -228,7 +221,6 @@ const findName = (id, url) => {
           w="300"
           h="50"
           onClick={() => window.open(url)}
-          key={Math.random()}
         >
           <span css={{ fontSize: "1.2rem" }}>Itch Io</span>
         </Button>
@@ -608,7 +600,11 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
                 }}
               >
                 {storeData.map((ele) => {
-                  return findName(ele.store_id, ele.url);
+                  return (
+                    <div key={Math.random()}>
+                      findName(ele.store_id, ele.url)
+                    </div>
+                  );
                 })}
               </div>
             </FadeInWhenVisible>
