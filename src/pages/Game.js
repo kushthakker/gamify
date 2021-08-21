@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "../api/api";
 import youtube from "../api/youtube";
 import { motion, useAnimation } from "framer-motion";
+import Vidmain from "../components/Vidmain";
+import Vidlist from "../components/Vidlist";
 import {
   Spinner,
   Button,
@@ -27,6 +29,7 @@ import {
   MenuList,
   MenuItem,
   Menu,
+  Divider,
 } from "@chakra-ui/react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import gog from "../img/gog.svg";
@@ -40,7 +43,7 @@ import ModalImage from "react-modal-image";
 import { InView } from "react-intersection-observer";
 
 const transition = {
-  duration: 1.2,
+  duration: 1,
   ease: [0.43, 0.13, 0.23, 0.96],
 };
 
@@ -230,7 +233,16 @@ const findName = (id, url) => {
   }
 };
 
-const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
+const ShowData = ({
+  data,
+  img,
+  storeData,
+  dlcs,
+  gameInSeries,
+  videos,
+  current,
+  setCurrent,
+}) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
@@ -261,27 +273,9 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
   //   );
   // };
 
-  useEffect(() => {
-    const fetch = async function () {
-      try {
-        const yt = await youtube.get(`/search`, {
-          params: {
-            q: "Cyberpunk",
-          },
-        });
-        if (yt.data.items.length === 0) {
-          throw new Error(`Please search another query!`);
-        } else {
-          const data = yt.data.items;
-          console.log(data);
-          setYtData(data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetch();
-  }, []);
+  const showDetail = (video) => {
+    setCurrent(video);
+  };
 
   function useHorizontalScroll() {
     const elRef = React.useRef();
@@ -682,7 +676,37 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 660 }}>
+      <motion.div
+        initial={{ opacity: 1, y: 660 }}
+        css={{ display: "flex", justifyContent: "center" }}
+      >
+        <FadeInWhenVisible>
+          <SubHeadings
+            css={{ display: "grid", justifyItems: "center", width: "100%" }}
+          >
+            Videos
+          </SubHeadings>
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            d="flex"
+            justfy="center"
+            align="center"
+            maxH="1100px"
+            maxW="1300px"
+            p="2rem"
+          >
+            <Vidmain videos={videos} current={current} />
+            <Divider orientation="vertical" />
+            <Vidlist
+              videos={videos}
+              current={current}
+              onVideoSelect={showDetail}
+            />
+          </Box>
+        </FadeInWhenVisible>
+      </motion.div>
+      <motion.div initial={{ opacity: 1, y: 760 }}>
         <FadeInWhenVisible>
           {dlcs.length !== 0 ? (
             <SubHeadings
@@ -759,7 +783,8 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 720 }}>
+
+      <motion.div initial={{ opacity: 1, y: 820 }}>
         <FadeInWhenVisible>
           {gameInSeries.length !== 0 ? (
             <SubHeadings
@@ -848,6 +873,8 @@ const Game = ({ match }) => {
   const [storeData, setStoreData] = useState(null);
   const [dlcs, setDlcs] = useState(null);
   const [gameInSeries, setGameInSeries] = useState(null);
+  const [videos, setVideos] = React.useState([]);
+  const [current, setCurrent] = React.useState(null);
 
   const location = useLocation();
 
@@ -903,6 +930,13 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
+        const yt = await youtube.get(`/search`, {
+          params: {
+            q: req.data.name,
+          },
+        });
+
+        const dataYt = yt.data.items;
 
         if (!req.status) {
           throw new Error(req.statusText);
@@ -910,7 +944,9 @@ const Game = ({ match }) => {
           console.log(req);
           console.log(stores);
           console.log(dlcs);
-
+          console.log(yt);
+          setVideos(dataYt);
+          setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
@@ -926,7 +962,8 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return data && img && storeData && Fetch && dlcs && gameInSeries ? (
+  return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
+    // videos
     <div key={location.key} css={{ maxHeight: "100vh" }}>
       <DataMemoized
         data={data}
@@ -935,6 +972,9 @@ const Game = ({ match }) => {
         Fetch={Fetch}
         dlcs={dlcs}
         gameInSeries={gameInSeries}
+        videos={videos}
+        current={current}
+        setCurrent={setCurrent}
       />
     </div>
   ) : (
