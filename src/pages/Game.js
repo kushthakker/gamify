@@ -833,17 +833,15 @@ const ShowData = ({
       <motion.div initial={{ opacity: 1, y: 780 }}>
         <FadeInWhenVisible>
           <Box
-            w="700px"
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
-            d="grid"
-            templateRows="500px 50px 300px"
+            d="flex"
             justfy="center"
             align="center"
           >
             <Vidmain videos={videos} current={current} />
-            <Divider orientation="horizontal" />
+            <Divider orientation="vertical" />
             <Vidlist
               videos={videos}
               current={current}
