@@ -712,7 +712,7 @@ const ShowData = ({
             <SubHeadings
               css={{ display: "grid", justifyItems: "center", width: "100%" }}
             >
-              DLC's And GOTY edition
+              DLC's And Special edition
             </SubHeadings>
           ) : null}
 

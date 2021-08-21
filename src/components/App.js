@@ -14,25 +14,6 @@ import Serach from "../pages/Search";
 import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
 
-const Div = styled.div`
-  ${
-    "" /* width: 100vw;
-  height: 100vh;
-  overscroll-behavior-y: none;
-  box-sizing: border-box; */
-  }
-`;
-
-function ErrorFallback({ error, resetErrorBoundary }) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
-
 const App = () => {
   // const dispatch = useDispatch();
 
@@ -58,28 +39,40 @@ const App = () => {
   //   </div>
   // );
 
-  return (
-    <div>
-      <BrowserRouter>
-        <SideBarMemoized />
-        <div css={{ height: "100vh" }}>
-          <AnimatePresence exitBeforeEnter>
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route
-                path={["/discover", "/discover/:q"]}
-                exact
-                component={Serach}
-                key={"1"}
-              />
+  function ErrorFallback({ error, resetErrorBoundary }) {
+    return (
+      <div role="alert" css={{ color: "red" }}>
+        <p>Something went wrong:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    );
+  }
 
-              <Route path="/games/:id" exact component={Game} key={"3"} />
-              <Route path="*" component={ErrorPage} />
-            </Switch>
-          </AnimatePresence>
-        </div>
-      </BrowserRouter>
-    </div>
+  return (
+    <ErrorBoundary fallBackComponent={ErrorFallback}>
+      <div>
+        <BrowserRouter>
+          <SideBarMemoized />
+          <div css={{ height: "100vh" }}>
+            <AnimatePresence exitBeforeEnter>
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <Route
+                  path={["/discover", "/discover/:q"]}
+                  exact
+                  component={Serach}
+                  key={"1"}
+                />
+
+                <Route path="/games/:id" exact component={Game} key={"3"} />
+                <Route path="*" component={ErrorPage} />
+              </Switch>
+            </AnimatePresence>
+          </div>
+        </BrowserRouter>
+      </div>
+    </ErrorBoundary>
   );
 };
 
