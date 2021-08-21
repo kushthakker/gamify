@@ -5,14 +5,14 @@ const Vidlist = ({ onVideoSelect, videos, current }) => {
     if (video === current) return null;
     return (
       <div key={video.id.videoId} style={{ margin: "1rem" }}>
-        <Box w="200px" onClick={() => onVideoSelect(video)}>
+        <Box w="300px" onClick={() => onVideoSelect(video)}>
           <Image
-            boxSize="200px"
+            boxSize="300px"
             objectFit="fill"
             src={video.snippet.thumbnails.medium.url}
             alt={video.snippet.title}
           />
-          <Box maxW="200px">
+          <Box maxW="300px">
             <Text fontSize="0.7rem" fontWeight="bold">
               {video.snippet.title}
             </Text>
@@ -21,7 +21,11 @@ const Vidlist = ({ onVideoSelect, videos, current }) => {
       </div>
     );
   });
-  return <Flex justfy="space-around">{renderList}</Flex>;
+  return (
+    <Box d="grid" templateColumns="auto 200px" align="center">
+      {renderList}
+    </Box>
+  );
 };
 
 export default Vidlist;
