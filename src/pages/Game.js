@@ -43,7 +43,7 @@ import ModalImage from "react-modal-image";
 import { InView } from "react-intersection-observer";
 
 const transition = {
-  duration: 1.2,
+  duration: 1,
   ease: [0.43, 0.13, 0.23, 0.96],
 };
 
@@ -676,7 +676,37 @@ const ShowData = ({
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 660 }}>
+      <motion.div
+        initial={{ opacity: 1, y: 660 }}
+        css={{ display: "flex", justifyContent: "center" }}
+      >
+        <FadeInWhenVisible>
+          <SubHeadings
+            css={{ display: "grid", justifyItems: "center", width: "100%" }}
+          >
+            Videos
+          </SubHeadings>
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            d="flex"
+            justfy="center"
+            align="center"
+            maxH="1100px"
+            maxW="1300px"
+            p="2rem"
+          >
+            <Vidmain videos={videos} current={current} />
+            <Divider orientation="vertical" />
+            <Vidlist
+              videos={videos}
+              current={current}
+              onVideoSelect={showDetail}
+            />
+          </Box>
+        </FadeInWhenVisible>
+      </motion.div>
+      <motion.div initial={{ opacity: 1, y: 760 }}>
         <FadeInWhenVisible>
           {dlcs.length !== 0 ? (
             <SubHeadings
@@ -753,7 +783,8 @@ const ShowData = ({
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 680 }}>
+
+      <motion.div initial={{ opacity: 1, y: 820 }}>
         <FadeInWhenVisible>
           {gameInSeries.length !== 0 ? (
             <SubHeadings
@@ -830,26 +861,6 @@ const ShowData = ({
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 780 }}>
-        <FadeInWhenVisible>
-          <Box
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            d="flex"
-            justfy="center"
-            align="center"
-          >
-            <Vidmain videos={videos} current={current} />
-            <Divider orientation="vertical" />
-            <Vidlist
-              videos={videos}
-              current={current}
-              onVideoSelect={showDetail}
-            />
-          </Box>
-        </FadeInWhenVisible>
-      </motion.div>
     </div>
   );
 };
@@ -921,7 +932,7 @@ const Game = ({ match }) => {
         });
         const yt = await youtube.get(`/search`, {
           params: {
-            q: "Cyberpunk",
+            q: req.data.name,
           },
         });
 

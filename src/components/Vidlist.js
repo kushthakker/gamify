@@ -1,19 +1,29 @@
 import React from "react";
-import { Image, Box, Text, Flex } from "@chakra-ui/react";
+import { Image, Box, Text } from "@chakra-ui/react";
 const Vidlist = ({ onVideoSelect, videos, current }) => {
   const renderList = videos.map((video) => {
     if (video === current) return null;
     return (
-      <div key={video.id.videoId} style={{ margin: "1rem" }}>
-        <Box w="400px" h="200px" onClick={() => onVideoSelect(video)}>
+      <div key={video.id.videoId}>
+        <Box
+          w="auto"
+          h="auto"
+          mb="1rem"
+          ml="1.5rem"
+          borderWidth="1px"
+          borderRadius="lg"
+          cursor="pointer"
+          onClick={() => onVideoSelect(video)}
+        >
           <Image
-            boxSize="300px"
+            w="100%"
+            h="180px"
             objectFit="fill"
             src={video.snippet.thumbnails.medium.url}
             alt={video.snippet.title}
           />
-          <Box maxW="300px">
-            <Text fontSize="0.7rem" fontWeight="bold">
+          <Box maxW="auto">
+            <Text fontSize="1rem" fontWeight="bold" p="1rem">
               {video.snippet.title}
             </Text>
           </Box>
@@ -22,7 +32,11 @@ const Vidlist = ({ onVideoSelect, videos, current }) => {
     );
   });
   return (
-    <Box d="grid" templateColumns="auto 200px" align="center">
+    <Box
+      d="grid"
+      templateColumns="1fr 1fr 1fr"
+      //   align="center"
+    >
       {renderList}
     </Box>
   );
