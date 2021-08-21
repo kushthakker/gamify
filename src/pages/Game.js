@@ -926,14 +926,17 @@ const Game = ({ match }) => {
           },
         });
 
+        const dataYt = yt.data.items;
+
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
           console.log(req);
           console.log(stores);
           console.log(dlcs);
-          setVideos(yt);
-          setCurrent(yt[0]);
+          console.log(yt);
+          setVideos(dataYt);
+          setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
