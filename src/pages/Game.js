@@ -237,11 +237,10 @@ const findName = (id, url) => {
   }
 };
 
-const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
+const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
-  const history = useHistory();
 
   // const modal = (ele, img) => {
   //   console.log(img);
@@ -431,7 +430,9 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
           <div className="side-1-a">
             <FadeInWhenVisible>
               <SubHeadings>About</SubHeadings>
-              <div css={{ fontSize: "1.2rem" }}>{data.description_raw}</div>
+              <div css={{ fontSize: "1.2rem", padding: "0 2rem 0 0" }}>
+                {data.description_raw}
+              </div>
             </FadeInWhenVisible>
           </div>
           <FadeInWhenVisible>
@@ -739,6 +740,83 @@ const ShowData = ({ data, img, storeData, Fetch, dlcs }) => {
           </div>
         </FadeInWhenVisible>
       </motion.div>
+      <motion.div initial={{ opacity: 1, y: 720 }}>
+        <FadeInWhenVisible>
+          {gameInSeries.length !== 0 ? (
+            <SubHeadings
+              css={{ display: "grid", justifyItems: "center", width: "100%" }}
+            >
+              Other games in Series
+            </SubHeadings>
+          ) : null}
+
+          <div
+            css={{
+              display: "grid",
+              gridAutoFlow: "column",
+              gap: "1rem",
+              overflowX: "scroll",
+              minWidth: "100%",
+              justifyItems: "center",
+            }}
+            ref={useHorizontalScroll()}
+          >
+            {gameInSeries.map((ele, i) => {
+              const rowLen = ele.length;
+              return (
+                <Link to={`/games/${ele.id}`}>
+                  <div
+                    key={Math.random()}
+                    css={{ marginRight: `${rowLen === i ? "3rem" : "0"}` }}
+                  >
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image
+                        src={ele.background_image}
+                        alt={ele.name}
+                        h="241px"
+                        w="100%"
+                      />
+
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          <Badge borderRadius="full" px="2" colorScheme="teal">
+                            series
+                          </Badge>
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {ele.released}
+                          </Box>
+                        </Box>
+
+                        <Box
+                          mt="1"
+                          fontWeight="semibold"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
+                        >
+                          {ele.name}
+                        </Box>
+                      </Box>
+                    </Box>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </FadeInWhenVisible>
+      </motion.div>
     </div>
   );
 };
@@ -750,6 +828,7 @@ const Game = ({ match }) => {
   const [img, setImg] = useState(null);
   const [storeData, setStoreData] = useState(null);
   const [dlcs, setDlcs] = useState(null);
+  const [gameInSeries, setGameInSeries] = useState(null);
 
   const location = useLocation();
 
@@ -800,12 +879,18 @@ const Game = ({ match }) => {
             // search_precise: true,
           },
         });
+        const gameInSeries = await api.get(`/games/${gameId}/game-series`, {
+          params: {
+            id: gameId,
+          },
+        });
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
           console.log(req);
           console.log(stores);
           console.log(dlcs);
+          setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
           setImg(clipsReq.data.results);
@@ -820,7 +905,7 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return data && img && storeData && Fetch && dlcs ? (
+  return data && img && storeData && Fetch && dlcs && gameInSeries ? (
     <div key={location.key} css={{ maxHeight: "100vh" }}>
       <DataMemoized
         data={data}
@@ -828,6 +913,7 @@ const Game = ({ match }) => {
         storeData={storeData}
         Fetch={Fetch}
         dlcs={dlcs}
+        gameInSeries={gameInSeries}
       />
     </div>
   ) : (
