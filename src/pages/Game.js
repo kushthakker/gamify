@@ -6,6 +6,7 @@ import styled from "@emotion/styled/macro";
 import { useInView } from "react-intersection-observer";
 import { useSelector, useDispatch } from "react-redux";
 import api from "../api/api";
+import youtube from "../api/youtube";
 import { motion, useAnimation } from "framer-motion";
 import {
   Spinner,
@@ -241,7 +242,7 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
-
+  const [ytData, setYtData] = useState(null);
   // const modal = (ele, img) => {
   //   console.log(img);
   //   return (
@@ -267,6 +268,28 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
   //     </Modal>
   //   );
   // };
+
+  useEffect(() => {
+    const fetch = async function () {
+      try {
+        const yt = await youtube.get(`/search`, {
+          params: {
+            q: "Cyberpunk",
+          },
+        });
+        if (yt.data.items.length === 0) {
+          throw new Error(`Please search another query!`);
+        } else {
+          const data = yt.data.items;
+          console.log(data);
+          setYtData(data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetch();
+  }, []);
 
   function useHorizontalScroll() {
     const elRef = React.useRef();
@@ -884,12 +907,14 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
+
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
           console.log(req);
           console.log(stores);
           console.log(dlcs);
+
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
