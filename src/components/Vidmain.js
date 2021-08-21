@@ -5,7 +5,7 @@ const VidMain = ({ current }) => {
   if (current !== null) {
     return (
       <Box justify="center">
-        <AspectRatio w="600px" h="500px" ratio={1}>
+        <AspectRatio w="800px" h="500px" ratio={1}>
           <iframe
             src={`https://www.youtube.com/embed/${current.id.videoId}`}
             title="current player"

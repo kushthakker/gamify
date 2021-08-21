@@ -5,7 +5,7 @@ const Vidlist = ({ onVideoSelect, videos, current }) => {
     if (video === current) return null;
     return (
       <div key={video.id.videoId} style={{ margin: "1rem" }}>
-        <Box w="300px" onClick={() => onVideoSelect(video)}>
+        <Box w="400px" h="200px" onClick={() => onVideoSelect(video)}>
           <Image
             boxSize="300px"
             objectFit="fill"
