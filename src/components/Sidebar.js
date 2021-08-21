@@ -94,7 +94,7 @@ const Sidebar = () => {
       await m.auth.loginWithMagicLink({
         email: "codingpurposebykush@gmail.com",
         showUI: true,
-        redirectURI: "http://localhost:3000/",
+        redirectURI: "https://gamify-phi.vercel.app/",
       });
       const idToken = await m.user.getIdToken();
       const { issuer, email, publicAddress } = await m.user.getMetadata();
