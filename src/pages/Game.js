@@ -962,7 +962,7 @@ const Game = ({ match }) => {
         Fetch={Fetch}
         dlcs={dlcs}
         gameInSeries={gameInSeries}
-        video={videos}
+        videos={videos}
         current={current}
         setCurrent={setCurrent}
       />
