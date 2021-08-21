@@ -4,8 +4,8 @@ import { AspectRatio, Box, Text } from "@chakra-ui/react";
 const VidMain = ({ current }) => {
   if (current !== null) {
     return (
-      <Box>
-        <AspectRatio maxW="800px" ratio={1}>
+      <Box justify="center">
+        <AspectRatio w="600px" h="500px" ratio={1}>
           <iframe
             src={`https://www.youtube.com/embed/${current.id.videoId}`}
             title="current player"

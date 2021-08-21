@@ -753,7 +753,7 @@ const ShowData = ({
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 720 }}>
+      <motion.div initial={{ opacity: 1, y: 680 }}>
         <FadeInWhenVisible>
           {gameInSeries.length !== 0 ? (
             <SubHeadings
@@ -830,16 +830,17 @@ const ShowData = ({
           </div>
         </FadeInWhenVisible>
       </motion.div>
-      <motion.div initial={{ opacity: 1, y: 820 }}>
+      <motion.div initial={{ opacity: 1, y: 780 }}>
         <FadeInWhenVisible>
           <Box
-            w="1200px"
+            w="700px"
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
             d="grid"
             templateRows="500px 50px 300px"
             justfy="center"
+            align="center"
           >
             <Vidmain videos={videos} current={current} />
             <Divider orientation="horizontal" />

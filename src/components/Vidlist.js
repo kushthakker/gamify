@@ -7,13 +7,13 @@ const Vidlist = ({ onVideoSelect, videos, current }) => {
       <div key={video.id.videoId} className="vidlist">
         <Box w="300px" onClick={() => onVideoSelect(video)}>
           <Image
-            boxSize="150px"
+            boxSize="300px"
             objectFit="cover"
             src={video.snippet.thumbnails.medium.url}
             alt={video.snippet.title}
           />
-          <Box className="content">
-            <Text fontSize="1.5rem" fontWeight="bold">
+          <Box maxW="300px">
+            <Text fontSize="1rem" fontWeight="bold">
               {video.snippet.title}
             </Text>
           </Box>
