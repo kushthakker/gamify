@@ -602,7 +602,7 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
                 {storeData.map((ele) => {
                   return (
                     <div key={Math.random()}>
-                      findName(ele.store_id, ele.url)
+                      {findName(ele.store_id, ele.url)}
                     </div>
                   );
                 })}
