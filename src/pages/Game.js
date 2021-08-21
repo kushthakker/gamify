@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "../api/api";
 import youtube from "../api/youtube";
 import { motion, useAnimation } from "framer-motion";
+import Vidmain from "../components/Vidmain";
+import Vidlist from "../components/Vidlist";
 import {
   Spinner,
   Button,
@@ -27,6 +29,7 @@ import {
   MenuList,
   MenuItem,
   Menu,
+  Divider,
 } from "@chakra-ui/react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import gog from "../img/gog.svg";
@@ -230,7 +233,16 @@ const findName = (id, url) => {
   }
 };
 
-const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
+const ShowData = ({
+  data,
+  img,
+  storeData,
+  dlcs,
+  gameInSeries,
+  videos,
+  current,
+  setCurrent,
+}) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
@@ -261,27 +273,9 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
   //   );
   // };
 
-  useEffect(() => {
-    const fetch = async function () {
-      try {
-        const yt = await youtube.get(`/search`, {
-          params: {
-            q: "Cyberpunk",
-          },
-        });
-        if (yt.data.items.length === 0) {
-          throw new Error(`Please search another query!`);
-        } else {
-          const data = yt.data.items;
-          console.log(data);
-          setYtData(data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetch();
-  }, []);
+  const showDetail = (video) => {
+    setCurrent(video);
+  };
 
   function useHorizontalScroll() {
     const elRef = React.useRef();
@@ -836,6 +830,27 @@ const ShowData = ({ data, img, storeData, dlcs, gameInSeries }) => {
           </div>
         </FadeInWhenVisible>
       </motion.div>
+      <motion.div initial={{ opacity: 1, y: 820 }}>
+        <FadeInWhenVisible>
+          <Box
+            w="1200px"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            d="grid"
+            templateRows="500px 50px 300px"
+            justfy="center"
+          >
+            <Vidmain videos={videos} current={current} />
+            <Divider orientation="horizontal" />
+            <Vidlist
+              videos={videos}
+              current={current}
+              onVideoSelect={showDetail}
+            />
+          </Box>
+        </FadeInWhenVisible>
+      </motion.div>
     </div>
   );
 };
@@ -848,6 +863,8 @@ const Game = ({ match }) => {
   const [storeData, setStoreData] = useState(null);
   const [dlcs, setDlcs] = useState(null);
   const [gameInSeries, setGameInSeries] = useState(null);
+  const [videos, setVideos] = React.useState([]);
+  const [current, setCurrent] = React.useState(null);
 
   const location = useLocation();
 
@@ -903,6 +920,11 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
+        const yt = await youtube.get(`/search`, {
+          params: {
+            q: "Cyberpunk",
+          },
+        });
 
         if (!req.status) {
           throw new Error(req.statusText);
@@ -910,7 +932,8 @@ const Game = ({ match }) => {
           console.log(req);
           console.log(stores);
           console.log(dlcs);
-
+          setVideos(yt);
+          setCurrent(yt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
@@ -926,7 +949,8 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return data && img && storeData && Fetch && dlcs && gameInSeries ? (
+  return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
+    // videos
     <div key={location.key} css={{ maxHeight: "100vh" }}>
       <DataMemoized
         data={data}
@@ -935,6 +959,9 @@ const Game = ({ match }) => {
         Fetch={Fetch}
         dlcs={dlcs}
         gameInSeries={gameInSeries}
+        video={videos}
+        current={current}
+        setCurrent={setCurrent}
       />
     </div>
   ) : (
