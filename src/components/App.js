@@ -49,6 +49,8 @@ const App = () => {
     );
   }
 
+  //serach page normal
+
   return (
     <ErrorBoundary fallBackComponent={ErrorFallback}>
       <div>
