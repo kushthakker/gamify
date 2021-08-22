@@ -10,7 +10,7 @@ import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
 import Game from "../pages/Game";
 import Home from "../pages/Home";
-import Serach from "../pages/Search";
+import Results from "../pages/Results";
 import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
 
@@ -56,14 +56,14 @@ const App = () => {
       <div>
         <BrowserRouter>
           <SideBarMemoized />
-          <div css={{ height: "100vh" }}>
+          <div css={{ height: "100vh", width: "100vw" }}>
             <AnimatePresence exitBeforeEnter>
               <Switch>
                 <Route path="/" exact component={Home} />
                 <Route
-                  path={["/discover", "/discover/:q"]}
+                  path="/discover/:q"
                   exact
-                  component={Serach}
+                  component={Results}
                   key={"1"}
                 />
 

@@ -721,7 +721,7 @@ const ShowData = ({
               display: "grid",
               gridAutoFlow: "column",
               gap: "1rem",
-              overflowX: "scroll",
+              overflowX: "auto",
               minWidth: "100%",
               justifyItems: "center",
             }}
@@ -799,7 +799,7 @@ const ShowData = ({
               display: "grid",
               gridAutoFlow: "column",
               gap: "1rem",
-              overflowX: "scroll",
+              overflowX: "auto",
               minWidth: "100%",
               justifyItems: "center",
             }}

@@ -405,45 +405,45 @@ const Search = ({ match }) => {
 
   const fetchGames = useCallback(() => {
     console.log(`render1`);
-    if (!query) setStatus("idle");
-    else {
-      setStatus("loading");
-      const fetchApi = async function () {
-        try {
-          const req = await api.get("/games", {
-            params: {
-              search: value
-                ? encodeURIComponent(value)
-                : encodeURIComponent(query),
-              // search_precise: true,
-              page_size: 50,
-            },
-          });
+    if (value === null) setStatus("idle");
+    // else {
+    setStatus("loading");
+    const fetchApi = async function () {
+      try {
+        const req = await api.get("/games", {
+          params: {
+            search: value
+              ? encodeURIComponent(value)
+              : encodeURIComponent(query),
+            // search_precise: true,
+            page_size: 50,
+          },
+        });
 
-          if (!req.status) {
-            setStatus("error");
-            throw new Error(req.statusText);
-          } else {
-            console.log(req);
-            setSearchResult(req.data.results);
-            inputValue.current.value = "";
-            setStatus("success");
-          }
-        } catch (err) {
-          console.log(err);
+        if (!req.status) {
+          setStatus("error");
+          throw new Error(req.statusText);
+        } else {
+          console.log(req);
+          setSearchResult(req.data.results);
+          // inputValue.current.value = "";
+          setStatus("success");
         }
-      };
-      fetchApi();
-    }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApi();
+    // }
   }, [query, value]);
 
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
 
-  useEffect(() => {
-    setQuery(match.params.q);
-  }, [match.params.q]);
+  // useEffect(() => {
+  //   setQuery(match.params.q);
+  // }, [match.params.q]);
 
   console.log(query, value);
 
