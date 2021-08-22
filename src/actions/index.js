@@ -17,3 +17,10 @@ export const status = (value) => {
     payload: value,
   };
 };
+
+export const urlQuery = (value) => {
+  return {
+    type: "URL_QUERY",
+    payload: value,
+  };
+};

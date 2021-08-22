@@ -7,9 +7,10 @@ import styled from "@emotion/styled/macro";
 import { useVirtual } from "react-virtual";
 import { motion } from "framer-motion";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Spinner, CloseIcon, Box, Badge, Image } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
+import { urlQuery } from "../actions/index";
 
 const transition = {
   duration: 0.4,
@@ -49,6 +50,7 @@ const MyListData = ({ searchResult }) => {
 
   return (
     <div ref={listRef}>
+      {console.log(`return render`)}
       <List exit={{ opacity: 0 }} transition={transition}>
         {rowVirtualizer.virtualItems.map(({ index, size, start }) => {
           const item = searchResult[index];
@@ -94,12 +96,6 @@ const MyListData = ({ searchResult }) => {
 
           return (
             <Link to={`/games/${item.id}`} key={Math.random()}>
-              {/* <Item
-                  index={index}
-                  item={item}
-                  uniquePlatform={uniquePlatform}
-                  Metacritic={Metacritic}
-                /> */}
               <Box
                 w="20rem"
                 borderWidth="1px"
@@ -193,7 +189,7 @@ const MyListData = ({ searchResult }) => {
 
 const Data = React.memo(MyListData);
 
-const Output = () => {
+const Output = ({ match }) => {
   console.log(`search result page`);
 
   //   const isLoading = status === "loading";
@@ -201,6 +197,14 @@ const Output = () => {
   const searchResult = useSelector((state) => state.searchResult);
   const isError = statusState === "error";
   const isSuccess = statusState === "success";
+
+  //   const dispatch = useDispatch();
+
+  console.log(match.params.q);
+
+  //   useEffect(() => {
+  //     dispatch(urlQuery(match.params.q));
+  //   }, [dispatch, match.params.q]);
 
   return (
     <div>

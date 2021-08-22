@@ -15,7 +15,7 @@ import { Link, useHistory } from "react-router-dom";
 import { motion } from "framer-motion";
 import Prompt from "../components/Prompt";
 
-const Result = ({ status, inputValue, setValue, match, value }) => {
+const Result = ({ status, inputValue, setValue }) => {
   const onSubmit = (event) => {
     console.log(`render`);
     event.preventDefault();
@@ -41,7 +41,6 @@ const Result = ({ status, inputValue, setValue, match, value }) => {
             css={{
               width: "500px",
             }}
-            value={value}
           />
           <InputRightElement
             children={status === "loading" ? <Spinner /> : null}
@@ -64,7 +63,9 @@ const SearchBar = () => {
   const fetchGames = useCallback(() => {
     console.log(`render1`);
     if (value === null) return;
+
     dispatch(status("loading"));
+
     const fetchApi = async function () {
       try {
         const req = await api.get("/games", {

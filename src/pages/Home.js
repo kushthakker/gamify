@@ -9,7 +9,7 @@ import SearchBar from "../components/SearchBar";
 
 const Home = ({ match }) => {
   console.log(match);
-  Prompt("Press control/alt + S to open Side Menu from any page", "prompt");
+  Prompt("Press control + S to open Side Menu from any page", "prompt");
   return (
     <div>
       <SearchBar match={match} />
