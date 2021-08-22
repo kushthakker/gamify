@@ -12,7 +12,7 @@ const Home = ({ match }) => {
   Prompt("Press control/alt + S to open Side Menu from any page", "prompt");
   return (
     <div>
-      <SearchBar />
+      <SearchBar match={match} />
     </div>
   );
 };

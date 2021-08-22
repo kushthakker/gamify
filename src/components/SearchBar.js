@@ -52,9 +52,8 @@ const Result = ({ status, inputValue, setValue, match, value }) => {
   );
 };
 
-const SearchBar = ({ match }) => {
+const SearchBar = () => {
   const [value, setValue] = useState(null);
-  const [query, setQuery] = useState(null);
   const inputValue = useRef();
 
   const statusState = useSelector((state) => state.status);
@@ -70,9 +69,9 @@ const SearchBar = ({ match }) => {
       try {
         const req = await api.get("/games", {
           params: {
-            search: value
-              ? encodeURIComponent(value)
-              : encodeURIComponent(query),
+            search: value,
+            //   ? encodeURIComponent(value)
+            //   : encodeURIComponent(query),
             // search_precise: true,
             page_size: 50,
           },
@@ -93,13 +92,11 @@ const SearchBar = ({ match }) => {
       }
     };
     fetchApi();
-  }, [dispatch, history, query, value]);
+  }, [dispatch, history, value]);
 
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
-
-  console.log(query, value);
 
   const keyDownFnc = (e) => {
     if (e.key === "Enter" && e.ctrlKey) {
@@ -124,7 +121,6 @@ const SearchBar = ({ match }) => {
         setValue={setValue}
         status={statusState}
         inputValue={inputValue}
-        match={query}
       />
     </div>
   );
