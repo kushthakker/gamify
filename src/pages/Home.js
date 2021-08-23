@@ -5,12 +5,21 @@ import { css, jsx } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import Prompt from "../components/Prompt";
-import { Spinner, Box, Text } from "@chakra-ui/react";
+import { Spinner, Box, Text, Image } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import { Carousel } from "react-responsive-carousel";
 import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import api from "../api/api";
 import { Link } from "react-router-dom";
+import { RoughNotation, RoughNotationGroup } from "react-rough-notation";
+
+const Heading = styled.h1({
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  marginTop: "1rem",
+  fontFamily: "Staatliches",
+  letterSpacing: "0.5rem",
+});
 
 const Recommendedcarousel = ({ carousel }) => {
   return (
@@ -23,7 +32,13 @@ const Recommendedcarousel = ({ carousel }) => {
       showThumbs={false}
       showStatus={false}
       width="1200px"
-      css={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}
+      css={{
+        width: "1200px",
+
+        margin: "0 auto 2rem auto",
+        boxShadow:
+          "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
+      }}
     >
       {carousel.map((game, index) => {
         return (
@@ -66,19 +81,99 @@ const Recommendedcarousel = ({ carousel }) => {
   );
 };
 
+const ComingSoon = ({ comingSoon }) => {
+  return (
+    <div>
+      <Box p="5rem" ml="2.8rem">
+        <Heading>Coming soon</Heading>
+      </Box>
+      <Box mt="2rem">
+        {comingSoon.map((game, index) => {
+          return (
+            <Link to={`/games/${game.id}`} key={index}>
+              <Box
+                // w="100%"
+                h="12rem"
+                bgImage={game.background_image}
+                opacity="0.7"
+                backgroundPosition=" 35% 35%"
+              >
+                <Text
+                  fontSize="2rem"
+                  fontFamily="Staatliches"
+                  color="black"
+                  bg="white"
+                  w="fit-content"
+                  // opacity="0.7"
+                  pos="relative"
+                  top="7rem"
+                >
+                  {game.name}
+                </Text>
+              </Box>
+            </Link>
+          );
+        })}
+      </Box>
+    </div>
+  );
+};
+
+const Featured = ({ featured }) => {
+  return (
+    <div>
+      <Box p="5rem" ml="2.8rem">
+        <RoughNotation
+          type="highlight"
+          show="true"
+          strokeWidth="1"
+          color="gold"
+          animate="true"
+          animationDelay="500"
+          iterations="5"
+          width="fit-content"
+        >
+          <Heading w="fit-content">Featured</Heading>
+        </RoughNotation>
+      </Box>
+      <Box mt="2rem">
+        <Link to={`/games/${featured.id}`}>
+          <h2
+            css={{
+              fontSize: "2rem",
+              fontWeight: "bold",
+              marginTop: "2rem",
+              fontFamily: "Rampart One",
+              letterSpacing: "0.5rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {featured.name}
+          </h2>
+          <div css={{ width: "100vw" }}>
+            <Image
+              src={featured.background_image}
+              w="70%"
+              h="700px"
+              m="4rem auto 2rem auto"
+              d="flex"
+              justifySelf="center"
+              boxShadow="rgba(255,215,0, 0.4) 5px 5px, rgba(255,215,0, 0.3) 10px 10px, rgba(255,215,0, 0.2) 15px 15px, rgba(255,215,0, 0.1) 20px 20px, rgba(255,215,0, 0.05) 25px 25px"
+            />
+          </div>
+        </Link>
+      </Box>
+    </div>
+  );
+};
+
 const Home = ({ match }) => {
   const [status, setStatus] = useState("idle");
   const [carousel, setCarousel] = useState(null);
-  const [newGames, setNewGames] = useState(null);
+  const [comingSoon, setComingSoon] = useState(null);
+  const [featured, setFeatured] = useState(null);
   console.log(match);
-
-  const Heading = styled.h1({
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    marginTop: "1rem",
-    fontFamily: "Staatliches",
-    letterSpacing: "0.5rem",
-  });
 
   const Main = () => {
     return (
@@ -87,6 +182,8 @@ const Home = ({ match }) => {
           <Heading>Recommended</Heading>
         </Box>
         <Recommendedcarousel carousel={carousel} />
+        <ComingSoon comingSoon={comingSoon} />
+        <Featured featured={featured} />
       </div>
     );
   };
@@ -101,10 +198,17 @@ const Home = ({ match }) => {
             page_size: 5,
           },
         });
-        const newGames = await api.get("/games", {
+        const comingSoon = await api.get("/games", {
           params: {
-            ordering: "-released",
+            ordering: "released",
             page_size: 5,
+          },
+        });
+        const gameId = "257192";
+        const featured = await api.get(`/games/${gameId}`, {
+          params: {
+            id: gameId,
+            // search_precise: true,
           },
         });
 
@@ -112,9 +216,10 @@ const Home = ({ match }) => {
           setStatus("error");
           throw new Error(req.statusText);
         } else {
-          console.log(req);
+          console.log(featured);
           setCarousel(req.data.results);
-          setNewGames(newGames.data.results);
+          setComingSoon(comingSoon.data.results);
+          setFeatured(featured.data);
           setStatus("success");
         }
       } catch (err) {
@@ -126,7 +231,7 @@ const Home = ({ match }) => {
 
   Prompt("Press control + S to open Side Menu from any page", "prompt");
 
-  return carousel && newGames ? (
+  return carousel && comingSoon && featured ? (
     <div css={{ overflow: "auto" }}>
       <SearchBar match={match} />
       <Main />

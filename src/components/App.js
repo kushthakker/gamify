@@ -52,7 +52,7 @@ const App = () => {
   //serach page normal
 
   return (
-    <ErrorBoundary fallBackComponent={ErrorFallback}>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div>
         <BrowserRouter>
           <SideBarMemoized />

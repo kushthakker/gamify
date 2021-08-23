@@ -100,7 +100,7 @@ const SearchBar = () => {
   }, [fetchGames]);
 
   const keyDownFnc = (e) => {
-    if (e.key === "Enter" && e.ctrlKey) {
+    if (e.key === "k" && e.ctrlKey) {
       e.preventDefault();
       inputValue.current.scrollIntoView({ behavior: "smooth" });
       inputValue.current.focus();
@@ -114,7 +114,7 @@ const SearchBar = () => {
     };
   }, []);
 
-  Prompt("Press control enter to Search", "searchPrompt");
+  Prompt("Press control+K to Search from anywhere", "searchPrompt");
 
   return (
     <div>
