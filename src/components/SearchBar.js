@@ -24,7 +24,7 @@ const Result = ({ status, inputValue, setValue }) => {
   };
 
   return (
-    <div
+    <motion.div
       css={{
         display: "flex",
         alignItems: "center",
@@ -47,7 +47,7 @@ const Result = ({ status, inputValue, setValue }) => {
           />
         </InputGroup>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

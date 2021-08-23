@@ -29,6 +29,29 @@ const MyListData = ({ searchResult }) => {
     overscan: 10,
   });
 
+  const itemVariant = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
+  const container = {
+    hidden: { opacity: 0, scale: 1 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        // delayChildren: 0.3,
+        // staggerChildren: 0.2,
+        duration: 3,
+        delay: 0.5,
+        ...transition,
+      },
+    },
+  };
+
   const List = (props) => {
     return (
       <motion.div
@@ -51,7 +74,13 @@ const MyListData = ({ searchResult }) => {
   return (
     <div ref={listRef}>
       {console.log(`return render`)}
-      <List exit={{ opacity: 0 }} transition={transition}>
+      <List
+        exit={{ opacity: 0 }}
+        // transition={transition}
+        variants={container}
+        initial="hidden"
+        animate="visible"
+      >
         {rowVirtualizer.virtualItems.map(({ index, size, start }) => {
           const item = searchResult[index];
           const Xbox = <i className="fab fa-xbox" />;
@@ -96,89 +125,91 @@ const MyListData = ({ searchResult }) => {
 
           return (
             <Link to={`/games/${item.id}`} key={Math.random()}>
-              <Box
-                w="20rem"
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-              >
-                <img
-                  src={item.background_image}
-                  alt={item.name}
-                  css={{
-                    width: "100%",
-                    maxHeight: "15rem",
-                    objectFit: "fill",
-                    minHeight: "200px",
-                  }}
-                />
+              <div variants={itemVariant}>
+                <Box
+                  w="20rem"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
+                  <img
+                    src={item.background_image}
+                    alt={item.name}
+                    css={{
+                      width: "100%",
+                      maxHeight: "15rem",
+                      objectFit: "fill",
+                      minHeight: "200px",
+                    }}
+                  />
 
-                <Box p="6">
-                  <Box d="flex" alignItems="baseline">
-                    {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                  <Box p="6">
+                    <Box d="flex" alignItems="baseline">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         Release
                       </Badge> */}
-                    <Box
-                      color="gray.500"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      ml="2"
-                    >
-                      {item.released}
+                      <Box
+                        color="gray.500"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
+                      >
+                        {item.released}
+                      </Box>
                     </Box>
-                  </Box>
 
-                  <Box
-                    mt="1"
-                    fontWeight="bold"
-                    as="h"
-                    lineHeight="tight"
-                    // isTruncated
-                    d="grid"
-                    gridTemplateColumns="1fr auto"
-                    justifyItems="flex-end"
-                    width="100%"
-                  >
-                    <div
-                      css={{
-                        position: "relative",
-                        left: "0.3rem",
-                        fontSize: "1.5rem",
-                        width: "auto",
-                        display: "flex",
-                        justifySelf: "flex-start",
-                      }}
+                    <Box
+                      mt="1"
+                      fontWeight="bold"
+                      as="h"
+                      lineHeight="tight"
+                      // isTruncated
+                      d="grid"
+                      gridTemplateColumns="1fr auto"
+                      justifyItems="flex-end"
+                      width="100%"
                     >
-                      {item.name}
-                    </div>
-                    {item.metacritic === null ? null : Metacritic}
-                  </Box>
-                  <Box mt="1rem">
-                    <Badge
-                      borderRadius="full"
-                      px="2"
-                      colorScheme="teal"
-                      mb="0.5rem"
-                    >
-                      Platforms
-                    </Badge>
-                    <Box d="flex">
-                      {uniquePlatform.length === 0
-                        ? null
-                        : uniquePlatform.map((ele) => (
-                            <div
-                              css={{ margin: "0 10px 0 10px" }}
-                              key={Math.random()}
-                            >
-                              {ele}
-                            </div>
-                          ))}
+                      <div
+                        css={{
+                          position: "relative",
+                          left: "0.3rem",
+                          fontSize: "1.5rem",
+                          width: "auto",
+                          display: "flex",
+                          justifySelf: "flex-start",
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                      {item.metacritic === null ? null : Metacritic}
+                    </Box>
+                    <Box mt="1rem">
+                      <Badge
+                        borderRadius="full"
+                        px="2"
+                        colorScheme="teal"
+                        mb="0.5rem"
+                      >
+                        Platforms
+                      </Badge>
+                      <Box d="flex">
+                        {uniquePlatform.length === 0
+                          ? null
+                          : uniquePlatform.map((ele) => (
+                              <div
+                                css={{ margin: "0 10px 0 10px" }}
+                                key={Math.random()}
+                              >
+                                {ele}
+                              </div>
+                            ))}
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
+              </div>
             </Link>
           );
         })}
