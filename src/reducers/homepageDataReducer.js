@@ -11,7 +11,7 @@ const homepageDataReducer = (homepageData = value, action) => {
     case "HOMEPAGE_DATA_COMINGSOON":
       return { ...homepageData, comingSoon: action.payload };
     case "HOMEPAGE_DATA_FEATURED":
-      return { ...homepageData, recommended: action.payload };
+      return { ...homepageData, featured: action.payload };
     default:
       return homepageData;
   }
