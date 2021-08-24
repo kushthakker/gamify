@@ -20,6 +20,7 @@ import { homepageData_publisher_nintendo } from "../actions/index";
 import { timer } from "../actions/index";
 import { motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
+import FadeInWhenVisible from "../components/FadeInWhenVisible";
 
 import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -43,139 +44,148 @@ const MiniHeading = styled.h1({
 
 const Recommendedcarousel = ({ carousel }) => {
   return (
-    <Carousel
-      showArrows={true}
-      infiniteLoop="true"
-      useKeyboardArrows="true"
-      autoPlay={true}
-      stopOnHover={false}
-      showThumbs={false}
-      showStatus={false}
-      width="1200px"
-      css={{
-        width: "1200px",
+    <FadeInWhenVisible>
+      <Box p="5rem" ml="2.8rem">
+        <Heading css={{ marginLeft: "2.8rem" }}>Recommended</Heading>
+      </Box>
+      <Carousel
+        showArrows={true}
+        infiniteLoop="true"
+        useKeyboardArrows="true"
+        autoPlay={true}
+        stopOnHover={false}
+        showThumbs={false}
+        showStatus={false}
+        width="1200px"
+        css={{
+          width: "1200px",
 
-        margin: "0 auto 2rem auto",
-        boxShadow:
-          "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
-      }}
-    >
-      {carousel.map((game, index) => {
-        return (
-          <Link to={`/games/${game.id}`} key={index}>
-            <div>
-              <img
-                src={game.background_image}
-                alt="img"
-                css={{
-                  width: "1200px",
-                  height: "600px",
-                  borderRadius: "0.5rem",
-                  position: "relative",
-                }}
-              />
-              <p
-                // className="legend"
-                css={{
-                  position: "absolute",
-                  bottom: "2rem",
-                  backgroundColor: "white",
-                  opacity: "0.7",
-                  color: "black",
-                  width: "40%",
-                  height: "70px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "2rem",
-                  fontFamily: "Staatliches",
-                }}
-              >
-                {game.name}
-              </p>
-            </div>
-          </Link>
-        );
-      })}
-    </Carousel>
+          margin: "0 auto 2rem auto",
+          boxShadow:
+            "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
+        }}
+      >
+        {carousel.map((game, index) => {
+          return (
+            <Link to={`/games/${game.id}`} key={index}>
+              <div>
+                <img
+                  src={game.background_image}
+                  alt="img"
+                  css={{
+                    width: "1200px",
+                    height: "600px",
+                    borderRadius: "0.5rem",
+                    position: "relative",
+                  }}
+                />
+                <p
+                  // className="legend"
+                  css={{
+                    position: "absolute",
+                    bottom: "2rem",
+                    backgroundColor: "white",
+                    opacity: "0.7",
+                    color: "black",
+                    width: "40%",
+                    height: "70px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "2rem",
+                    fontFamily: "Staatliches",
+                  }}
+                >
+                  {game.name}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
+      </Carousel>
+    </FadeInWhenVisible>
   );
 };
 
 const ComingSoon = ({ comingSoon }) => {
   return (
-    <div>
-      <Box p="5rem" ml="2.8rem">
-        <Heading>Coming soon</Heading>
-      </Box>
-      <Box mt="2rem">
-        {comingSoon.map((game, index) => {
-          return (
-            <Link to={`/games/${game.id}`} key={index}>
-              <Box
-                // w="100%"
-                h="12rem"
-                bgImage={game.background_image}
-                opacity="0.7"
-                backgroundPosition=" 35% 35%"
-                backgroundSize="cover"
-              >
-                <Text
-                  fontSize="2rem"
-                  fontFamily="Staatliches"
-                  color="black"
-                  bg="white"
-                  w="fit-content"
-                  // opacity="0.7"
-                  pos="relative"
-                  top="7rem"
-                  p="0.2rem"
+    <FadeInWhenVisible>
+      <div>
+        <Box p="5rem" ml="2.8rem">
+          <Heading>Coming soon</Heading>
+        </Box>
+        <Box mt="2rem">
+          {comingSoon.map((game, index) => {
+            return (
+              <Link to={`/games/${game.id}`} key={index}>
+                <Box
+                  // w="100%"
+                  h="12rem"
+                  bgImage={game.background_image}
+                  opacity="0.7"
+                  backgroundPosition=" 35% 35%"
+                  backgroundSize="cover"
                 >
-                  {game.name}
-                </Text>
-              </Box>
-            </Link>
-          );
-        })}
-      </Box>
-    </div>
+                  <Text
+                    fontSize="2rem"
+                    fontFamily="Staatliches"
+                    color="black"
+                    bg="white"
+                    w="fit-content"
+                    // opacity="0.7"
+                    pos="relative"
+                    top="7rem"
+                    p="0.2rem"
+                  >
+                    {game.name}
+                  </Text>
+                </Box>
+              </Link>
+            );
+          })}
+        </Box>
+      </div>
+    </FadeInWhenVisible>
   );
 };
 
 const Featured = ({ featured }) => {
   return (
-    <div>
-      <Box p="5rem" ml="2.8rem">
-        <Heading>Featured</Heading>
-      </Box>
-      <Box mt="2rem">
-        <Link to={`/games/${featured.id}`}>
-          <h2
-            css={{
-              fontSize: "2rem",
-              fontWeight: "bold",
-              marginTop: "2rem",
-              fontFamily: "Rampart One",
-              letterSpacing: "0.5rem",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {featured.name}
-          </h2>
-          <div css={{ width: "100vw" }}>
-            <Image
-              src={featured.background_image}
-              w="60%"
-              h="600px"
-              m="4rem auto 2rem auto"
-              d="flex"
-              justifySelf="center"
-              boxShadow="rgba(255,215,0, 0.4) 5px 5px, rgba(255,215,0, 0.3) 10px 10px, rgba(255,215,0, 0.2) 15px 15px, rgba(255,215,0, 0.1) 20px 20px, rgba(255,215,0, 0.05) 25px 25px"
-            />
-          </div>
-        </Link>
-      </Box>
-    </div>
+    <FadeInWhenVisible>
+      <div>
+        <Box p="5rem" ml="2.8rem">
+          <Heading>Featured</Heading>
+        </Box>
+        <Box mt="2rem">
+          <Link to={`/games/${featured.id}`}>
+            <h2
+              css={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+                marginTop: "2rem",
+                fontFamily: "Rampart One",
+                letterSpacing: "0.5rem",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              {featured.name}
+            </h2>
+            <div css={{ width: "100vw" }}>
+              <Image
+                src={featured.background_image}
+                w="60%"
+                h="600px"
+                m="4rem auto 2rem auto"
+                d="flex"
+                justifySelf="center"
+                boxShadow="rgba(255,215,0, 0.4) 5px 5px, rgba(255,215,0, 0.3) 10px 10px, rgba(255,215,0, 0.2) 15px 15px, rgba(255,215,0, 0.1) 20px 20px, rgba(255,215,0, 0.05) 25px 25px"
+              />
+            </div>
+          </Link>
+        </Box>
+      </div>
+    </FadeInWhenVisible>
   );
 };
 
@@ -422,9 +432,6 @@ const Home = ({ match }) => {
   const Main = () => {
     return (
       <div>
-        <Box p="5rem" ml="2.8rem">
-          <Heading css={{ marginLeft: "2.8rem" }}>Recommended</Heading>
-        </Box>
         <Recommendedcarousel carousel={carousel} />
         <ComingSoon comingSoon={comingSoon} />
         <Featured featured={featured} />

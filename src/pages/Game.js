@@ -12,6 +12,7 @@ import Vidmain from "../components/Vidmain";
 import { ErrorBoundary } from "react-error-boundary";
 import Vidlist from "../components/Vidlist";
 import Marquee from "react-fast-marquee";
+import FadeInWhenVisible from "../components/FadeInWhenVisible";
 
 import {
   Spinner,
@@ -114,36 +115,6 @@ const ScoreGrid = styled.div((props) => ({
   alignItems: "center",
   justifyContent: "center",
 }));
-
-function FadeInWhenVisible({ children }) {
-  const controls = useAnimation();
-  const [ref, inView] = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
-  }, [controls, inView]);
-
-  return (
-    <motion.div
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      transition={{ duration: 0.4 }}
-      variants={{
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { delay: 0.3, ...transition },
-        },
-        hidden: { opacity: 0, y: 20 },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 const findName = (id, url) => {
   switch (id) {
