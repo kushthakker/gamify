@@ -9,7 +9,11 @@ import api from "../api/api";
 import youtube from "../api/youtube";
 import { motion, useAnimation } from "framer-motion";
 import Vidmain from "../components/Vidmain";
+import { ErrorBoundary } from "react-error-boundary";
 import Vidlist from "../components/Vidlist";
+import Marquee from "react-fast-marquee";
+import FadeInWhenVisible from "../components/FadeInWhenVisible";
+
 import {
   Spinner,
   Button,
@@ -40,7 +44,35 @@ import "../index.css";
 
 import ModalImage from "react-modal-image";
 // import Prompt from "../components/Prompt";
-import { InView } from "react-intersection-observer";
+
+function ErrorFallback({ error }) {
+  const history = useHistory();
+  return (
+    <div
+      role="alert"
+      css={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+        margin: "0",
+      }}
+    >
+      <div css={{ marginBottom: "1rem" }}>
+        <p css={{ textAlign: "center", fontSize: "2rem" }}>
+          Something went wrong:
+        </p>
+        <pre>{error.message}</pre>
+      </div>
+      <div>
+        <Button onClick={() => history.replace("/")}>Try again</Button>
+      </div>
+    </div>
+  );
+}
 
 const transition = {
   duration: 1,
@@ -83,36 +115,6 @@ const ScoreGrid = styled.div((props) => ({
   alignItems: "center",
   justifyContent: "center",
 }));
-
-function FadeInWhenVisible({ children }) {
-  const controls = useAnimation();
-  const [ref, inView] = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
-  }, [controls, inView]);
-
-  return (
-    <motion.div
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      transition={{ duration: 0.4 }}
-      variants={{
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { delay: 0.3, ...transition },
-        },
-        hidden: { opacity: 0, y: 20 },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 const findName = (id, url) => {
   switch (id) {
@@ -313,555 +315,563 @@ const ShowData = ({
   }
 
   return (
-    <div
-      css={{
-        overflowY: "scroll",
-        maxHeight: "100vh",
-        boxSizing: "border-box",
-      }}
-      transition={transition}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{
-          opacity: 1,
-          y: 0,
-          transition: { delay: 1.2, ...transition },
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <div
+        css={{
+          overflowY: "auto",
+          maxHeight: "100vh",
+          boxSizing: "border-box",
         }}
-        style={{
-          width: "100%",
-          display: "grid",
-          justifyItems: "center",
-          alignItems: "center",
-          position: "relative",
-          top: "5rem",
-        }}
+        transition={transition}
       >
-        <Title>{data.name}</Title>
-        <By>By {data.developers[0].name}</By>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 200 }}
-        animate={{
-          opacity: 1,
-          y: 180,
-          transition: { delay: 1.2, ...transition },
-        }}
-      >
-        <ButtonGroup
-          css={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "center",
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            transition: { delay: 1.2, ...transition },
           }}
-          variant="outline"
-          colorScheme="blue"
+          style={{
+            width: "100%",
+            display: "grid",
+            justifyItems: "center",
+            alignItems: "center",
+            position: "relative",
+            top: "5rem",
+          }}
         >
-          <Menu placement="auto">
-            <MenuButton
-              as={Button}
-              variant="outline"
-              colorScheme="blue"
-              rightIcon={<i className="fas fa-plus"></i>}
-            >
-              Add to my games
-            </MenuButton>
-            <MenuList>
-              <MenuItem command="⌘T">Uncategorized</MenuItem>
-              <MenuItem command="⌘N">Currently Playing</MenuItem>
-              <MenuItem command="⌘⇧N">Finished</MenuItem>
-              <MenuItem command="⌘O">Not played yet</MenuItem>
-            </MenuList>
-            {/* <IconButton
+          <Title>{data.name}</Title>
+          <By>By {data.developers[0].name}</By>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 200 }}
+          animate={{
+            opacity: 1,
+            y: 180,
+            transition: { delay: 1.2, ...transition },
+          }}
+        >
+          <ButtonGroup
+            css={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+            variant="outline"
+            colorScheme="blue"
+          >
+            <Menu placement="auto">
+              <MenuButton
+                as={Button}
+                variant="outline"
+                colorScheme="blue"
+                rightIcon={<i className="fas fa-plus"></i>}
+              >
+                Add to my games
+              </MenuButton>
+              <MenuList>
+                <MenuItem command="⌘T">Uncategorized</MenuItem>
+                <MenuItem command="⌘N">Currently Playing</MenuItem>
+                <MenuItem command="⌘⇧N">Finished</MenuItem>
+                <MenuItem command="⌘O">Not played yet</MenuItem>
+              </MenuList>
+              {/* <IconButton
               aria-label="Add to friends"
               colorScheme="blue"
               icon={<i class="fas fa-plus"></i>}
             /> */}
-          </Menu>
+            </Menu>
 
-          <Button
-            variant="outline"
-            colorScheme="blue"
-            mr="-px"
-            rightIcon={<i className="fas fa-gift"></i>}
-          >
-            Add to Wishlist
-          </Button>
+            <Button
+              variant="outline"
+              colorScheme="blue"
+              mr="-px"
+              rightIcon={<i className="fas fa-gift"></i>}
+            >
+              Add to Wishlist
+            </Button>
 
-          <Button
-            variant="outline"
-            colorScheme="blue"
-            mr="-px"
-            rightIcon={<i className="fas fa-folder-open"></i>}
-          >
-            Save to Collection
-          </Button>
-        </ButtonGroup>
-      </motion.div>
-      <motion.div
-        initial={{
-          x: "25%",
-          y: "50%",
-          width: "300px",
-          height: "300px",
-        }}
-        animate={{
-          x: "0",
-          y: "70%",
-          width: `100%`,
-          height: "450px",
-          transition: { delay: 0.2, ...transition },
-        }}
-      >
-        <img
-          src={data.background_image}
-          alt={data.name}
-          css={{
-            height: "600px",
-            width: "100%",
-            objectFit: "cover",
-            filter: `drop-shadow(0 0 0.75rem rgba(255,255,255,0.75))`,
+            <Button
+              variant="outline"
+              colorScheme="blue"
+              mr="-px"
+              rightIcon={<i className="fas fa-folder-open"></i>}
+            >
+              Save to Collection
+            </Button>
+          </ButtonGroup>
+        </motion.div>
+        <motion.div
+          initial={{
+            x: "25%",
+            y: "50%",
+            width: "300px",
+            height: "300px",
           }}
-        />
-      </motion.div>
+          animate={{
+            x: "0",
+            y: "70%",
+            width: `100%`,
+            height: "450px",
+            transition: { delay: 0.2, ...transition },
+          }}
+        >
+          <img
+            src={data.background_image}
+            alt={data.name}
+            css={{
+              height: "600px",
+              width: "100%",
+              objectFit: "cover",
+              filter: `drop-shadow(0 0 0.75rem rgba(255,255,255,0.75))`,
+            }}
+          />
+        </motion.div>
 
-      <motion.div
-        initial={{ opacity: 1, y: 560 }}
-        css={{
-          padding: "3rem",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          columnGap: "1rem",
-        }}
-      >
-        <div className="side-1">
-          <div className="side-1-a">
+        <motion.div
+          initial={{ opacity: 1, y: 560 }}
+          css={{
+            padding: "3rem",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            columnGap: "1rem",
+          }}
+        >
+          <div className="side-1">
+            <div className="side-1-a">
+              <FadeInWhenVisible>
+                <SubHeadings>About</SubHeadings>
+                <div css={{ fontSize: "1.2rem", padding: "0 2rem 0 0" }}>
+                  {data.description_raw}
+                </div>
+              </FadeInWhenVisible>
+            </div>
             <FadeInWhenVisible>
-              <SubHeadings>About</SubHeadings>
-              <div css={{ fontSize: "1.2rem", padding: "0 2rem 0 0" }}>
-                {data.description_raw}
+              <div
+                className="side-1-b"
+                css={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "1rem",
+                  gridAutoFlow: "dense",
+                  marginTop: "2rem",
+                }}
+              >
+                {data.metacritic ? (
+                  <div>
+                    <By>MetaScore</By>
+                    <ScoreGrid data={data.metacritic}>
+                      <p
+                        css={{
+                          color: `${
+                            data.metacritic >= 80
+                              ? "green"
+                              : data.metacritic < 80 && data.metacritic >= 50
+                              ? "yellow"
+                              : "red"
+                          }`,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {data.metacritic}
+                      </p>
+                    </ScoreGrid>{" "}
+                  </div>
+                ) : null}
+
+                <div>
+                  <By>Release Date</By>
+                  <div>{data.released}</div>
+                </div>
+                <div>
+                  <By>Genre</By>
+                  <div>
+                    {data.genres.map((ele) => {
+                      return (
+                        <div
+                          css={{ fontSize: "1.1rem", opacity: "0.8" }}
+                          key={Math.random()}
+                        >
+                          {ele.name}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <By>Platforms</By>
+                  <div>
+                    {data.parent_platforms.map((ele) => {
+                      return (
+                        <div
+                          css={{ fontSize: "1.1rem", opacity: "0.8" }}
+                          key={Math.random()}
+                        >
+                          {ele.platform.name}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {data?.esrb_rating?.name ? (
+                  <div>
+                    <By>Age Rating</By>
+                    <div>{data.esrb_rating.name}</div>
+                  </div>
+                ) : null}
+
+                <div>
+                  <By>Publisher</By>
+                  <div>
+                    {data.publishers.map((ele) => {
+                      return <div key={Math.random()}>{ele.name}</div>;
+                    })}
+                  </div>
+                </div>
+                {data.reddit_url ? (
+                  <div>
+                    <By>SubReddit</By>
+                    <a target="_blank" href={data.reddit_url} rel="noreferrer">
+                      {data.reddit_name}
+                    </a>
+                  </div>
+                ) : null}
               </div>
             </FadeInWhenVisible>
-          </div>
-          <FadeInWhenVisible>
-            <div
-              className="side-1-b"
-              css={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "1rem",
-                gridAutoFlow: "dense",
-                marginTop: "2rem",
-              }}
-            >
-              {data.metacritic ? (
-                <div>
-                  <By>MetaScore</By>
-                  <ScoreGrid data={data.metacritic}>
-                    <p
-                      css={{
-                        color: `${
-                          data.metacritic >= 80
-                            ? "green"
-                            : data.metacritic < 80 && data.metacritic >= 50
-                            ? "yellow"
-                            : "red"
-                        }`,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {data.metacritic}
-                    </p>
-                  </ScoreGrid>{" "}
-                </div>
-              ) : null}
-
-              <div>
-                <By>Release Date</By>
-                <div>{data.released}</div>
-              </div>
-              <div>
-                <By>Genre</By>
-                <div>
-                  {data.genres.map((ele) => {
-                    return (
-                      <div
-                        css={{ fontSize: "1.1rem", opacity: "0.8" }}
-                        key={Math.random()}
-                      >
-                        {ele.name}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div>
-                <By>Platforms</By>
-                <div>
-                  {data.parent_platforms.map((ele) => {
-                    return (
-                      <div
-                        css={{ fontSize: "1.1rem", opacity: "0.8" }}
-                        key={Math.random()}
-                      >
-                        {ele.platform.name}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              {data?.esrb_rating?.name ? (
-                <div>
-                  <By>Age Rating</By>
-                  <div>{data.esrb_rating.name}</div>
-                </div>
-              ) : null}
-
-              <div>
-                <By>Publisher</By>
-                <div>
-                  {data.publishers.map((ele) => {
-                    return <div key={Math.random()}>{ele.name}</div>;
-                  })}
-                </div>
-              </div>
-              {data.reddit_url ? (
-                <div>
-                  <By>SubReddit</By>
-                  <a target="_blank" href={data.reddit_url} rel="noreferrer">
-                    {data.reddit_name}
-                  </a>
-                </div>
-              ) : null}
-            </div>
-          </FadeInWhenVisible>
-          {/* <FadeInWhenVisible>
+            {/* <FadeInWhenVisible>
             <div className="side-1-c">
               <SubHeadings>Minimum Requirements</SubHeadings>
             </div>
           </FadeInWhenVisible> */}
-        </div>
-        <div className="side-2">
-          <div className="side-2-a">
-            <FadeInWhenVisible>
-              <SubHeadings>Screenshots</SubHeadings>
-              <div
-                css={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "1rem",
-                  gridAutoFlow: "dense",
-                }}
-              >
-                {img.map((ele, index) => {
-                  return (
-                    <div key={Math.random()}>
-                      <Tooltip
-                        label="Click to view in enlarge mode"
-                        aria-label="A tooltip"
-                      >
-                        <div onClick={() => showImgNote()}>
-                          <ModalImage
-                            small={ele.image}
-                            large={ele.image}
-                            // alt={ele.id}
-                            ref={image}
-                            hideDownload="true"
-                            css={{ height: "180px", width: "100% " }}
-                          />
-                        </div>
-                      </Tooltip>
-                    </div>
-                  );
-                })}
-              </div>
-            </FadeInWhenVisible>
           </div>
-          <div className="side-2-b">
-            <FadeInWhenVisible>
-              <SubHeadings css={{ marginTop: "2rem", padding: "1rem" }}>
-                Where to buy
-              </SubHeadings>
-              <div
-                className="Buttons"
-                css={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gridAutoFlow: "dense",
-                  gap: "1rem",
-                  padding: "0 1rem",
-                }}
-              >
-                {storeData.map((ele) => {
-                  return (
-                    <React.Fragment key={Math.random()}>
-                      {findName(ele.store_id, ele.url)}
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-            </FadeInWhenVisible>
-          </div>
-        </div>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 1, y: 620 }}
-        css={{
-          padding: "3rem",
-          display: "flex",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <FadeInWhenVisible>
-          <div className="accordion" css={{ width: "700px" }}>
-            {data.platforms.map((ele) => {
-              return ele.platform.name === "PC" && ele.requirements.minimum ? (
-                <div key={Math.random()}>
-                  <SubHeadings>System Requirements</SubHeadings>
-                  <Accordion defaultIndex={[0]} allowMultiple>
-                    <AccordionItem key={Math.random()}>
-                      <h2>
-                        <AccordionButton>
-                          <Box flex="1" textAlign="left">
-                            <h2
-                              css={{
-                                fontSize: "2rem",
-                                fontFamily: "Staatliches",
-                                letterSpacing: "0.3rem",
-                              }}
-                            >
-                              {ele.platform.name}
-                            </h2>
-                          </Box>
-                          <AccordionIcon />
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel pb={4}>
-                        <h3
-                          css={{
-                            fontSize: "1.2rem",
-                            fontFamily: "Staatliches",
-                            letterSpacing: "0.3rem",
-                          }}
+          <div className="side-2">
+            <div className="side-2-a">
+              <FadeInWhenVisible>
+                <SubHeadings>Screenshots</SubHeadings>
+                <div
+                  css={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "1rem",
+                    gridAutoFlow: "dense",
+                  }}
+                >
+                  {img.map((ele, index) => {
+                    return (
+                      <div key={Math.random()}>
+                        <Tooltip
+                          label="Click to view in enlarge mode"
+                          aria-label="A tooltip"
                         >
-                          Minimum
-                        </h3>
-                        <span>
-                          {ele.requirements?.minimum?.replace("Minimum:", "")}
-                        </span>
-                        <h3
-                          css={{
-                            fontSize: "1.2rem",
-                            fontFamily: "Staatliches",
-                            letterSpacing: "0.3rem",
-                            marginTop: "2rem",
-                          }}
-                        >
-                          Recommended
-                        </h3>
-                        <span>
-                          {ele.requirements?.recommended?.replace(
-                            "Recommended:",
-                            ""
-                          )}
-                        </span>
-                      </AccordionPanel>
-                    </AccordionItem>
-                  </Accordion>
+                          <div onClick={() => showImgNote()}>
+                            <ModalImage
+                              small={ele.image}
+                              large={ele.image}
+                              // alt={ele.id}
+                              ref={image}
+                              hideDownload="true"
+                              css={{ height: "180px", width: "100% " }}
+                            />
+                          </div>
+                        </Tooltip>
+                      </div>
+                    );
+                  })}
                 </div>
-              ) : null;
-            })}
+              </FadeInWhenVisible>
+            </div>
+            <div className="side-2-b">
+              <FadeInWhenVisible>
+                <SubHeadings css={{ marginTop: "2rem", padding: "1rem" }}>
+                  Where to buy
+                </SubHeadings>
+                <div
+                  className="Buttons"
+                  css={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gridAutoFlow: "dense",
+                    gap: "1rem",
+                    padding: "0 1rem",
+                  }}
+                >
+                  {storeData.map((ele) => {
+                    return (
+                      <React.Fragment key={Math.random()}>
+                        {findName(ele.store_id, ele.url)}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              </FadeInWhenVisible>
+            </div>
           </div>
-        </FadeInWhenVisible>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 1, y: 660 }}
-        css={{ display: "flex", justifyContent: "center" }}
-      >
-        <FadeInWhenVisible>
-          <SubHeadings
-            css={{ display: "grid", justifyItems: "center", width: "100%" }}
-          >
-            Videos
-          </SubHeadings>
-          <Box
-            borderWidth="1px"
-            borderRadius="lg"
-            d="flex"
-            justfy="center"
-            align="center"
-            maxH="1100px"
-            maxW="1300px"
-            p="2rem"
-          >
-            <Vidmain videos={videos} current={current} />
-            <Divider orientation="vertical" />
-            <Vidlist
-              videos={videos}
-              current={current}
-              onVideoSelect={showDetail}
-            />
-          </Box>
-        </FadeInWhenVisible>
-      </motion.div>
-      <motion.div initial={{ opacity: 1, y: 760 }}>
-        <FadeInWhenVisible>
-          {dlcs.length !== 0 ? (
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 1, y: 620 }}
+          css={{
+            padding: "3rem",
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <FadeInWhenVisible>
+            <div className="accordion" css={{ width: "700px" }}>
+              {data.platforms.map((ele) => {
+                return ele.platform.name === "PC" &&
+                  ele.requirements.minimum ? (
+                  <div key={Math.random()}>
+                    <SubHeadings>System Requirements</SubHeadings>
+                    <Accordion defaultIndex={[0]} allowMultiple>
+                      <AccordionItem key={Math.random()}>
+                        <h2>
+                          <AccordionButton>
+                            <Box flex="1" textAlign="left">
+                              <h2
+                                css={{
+                                  fontSize: "2rem",
+                                  fontFamily: "Staatliches",
+                                  letterSpacing: "0.3rem",
+                                }}
+                              >
+                                {ele.platform.name}
+                              </h2>
+                            </Box>
+                            <AccordionIcon />
+                          </AccordionButton>
+                        </h2>
+                        <AccordionPanel pb={4}>
+                          <h3
+                            css={{
+                              fontSize: "1.2rem",
+                              fontFamily: "Staatliches",
+                              letterSpacing: "0.3rem",
+                            }}
+                          >
+                            Minimum
+                          </h3>
+                          <span>
+                            {ele.requirements?.minimum?.replace("Minimum:", "")}
+                          </span>
+                          <h3
+                            css={{
+                              fontSize: "1.2rem",
+                              fontFamily: "Staatliches",
+                              letterSpacing: "0.3rem",
+                              marginTop: "2rem",
+                            }}
+                          >
+                            Recommended
+                          </h3>
+                          <span>
+                            {ele.requirements?.recommended?.replace(
+                              "Recommended:",
+                              ""
+                            )}
+                          </span>
+                        </AccordionPanel>
+                      </AccordionItem>
+                    </Accordion>
+                  </div>
+                ) : null;
+              })}
+            </div>
+          </FadeInWhenVisible>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 1, y: 650 }}
+          css={{ display: "flex", justifyContent: "center" }}
+        >
+          <FadeInWhenVisible>
             <SubHeadings
               css={{ display: "grid", justifyItems: "center", width: "100%" }}
             >
-              DLC's And GOTY edition
+              Videos
             </SubHeadings>
-          ) : null}
-
-          <div
-            css={{
-              display: "grid",
-              gridAutoFlow: "column",
-              gap: "1rem",
-              overflowX: "scroll",
-              minWidth: "100%",
-              justifyItems: "center",
-            }}
-            ref={useHorizontalScroll()}
-          >
-            {dlcs.map((ele, i) => {
-              const rowLen = ele.length;
-              return (
-                <Link to={`/games/${ele.id}`}>
-                  <div
-                    key={Math.random()}
-                    css={{ marginRight: `${rowLen === i ? "3rem" : "0"}` }}
-                  >
-                    <Box
-                      w="27rem"
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      overflow="hidden"
-                    >
-                      <Image
-                        src={ele.background_image}
-                        alt={ele.name}
-                        maxH="241px"
-                        w="100%"
-                      />
-
-                      <Box p="6">
-                        <Box d="flex" alignItems="baseline">
-                          <Badge borderRadius="full" px="2" colorScheme="teal">
-                            DLC
-                          </Badge>
-                          <Box
-                            color="gray.500"
-                            fontWeight="semibold"
-                            letterSpacing="wide"
-                            fontSize="xs"
-                            textTransform="uppercase"
-                            ml="2"
-                          >
-                            {ele.released}
-                          </Box>
-                        </Box>
-
-                        <Box
-                          mt="1"
-                          fontWeight="semibold"
-                          as="h4"
-                          lineHeight="tight"
-                          isTruncated
-                        >
-                          {ele.name}
-                        </Box>
-                      </Box>
-                    </Box>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </FadeInWhenVisible>
-      </motion.div>
-
-      <motion.div initial={{ opacity: 1, y: 820 }}>
-        <FadeInWhenVisible>
-          {gameInSeries.length !== 0 ? (
-            <SubHeadings
-              css={{ display: "grid", justifyItems: "center", width: "100%" }}
+            <Box
+              borderWidth="1px"
+              borderRadius="lg"
+              d="flex"
+              justfy="center"
+              align="center"
+              maxH="1100px"
+              maxW="1300px"
+              p="2rem"
             >
-              Other games in Series
-            </SubHeadings>
-          ) : null}
+              <Vidmain videos={videos} current={current} />
+              <Divider orientation="vertical" />
+              <Vidlist
+                videos={videos}
+                current={current}
+                onVideoSelect={showDetail}
+              />
+            </Box>
+          </FadeInWhenVisible>
+        </motion.div>
+        <motion.div initial={{ opacity: 1, y: 700 }}>
+          <FadeInWhenVisible>
+            {gameInSeries.length !== 0 ? (
+              <SubHeadings
+                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+              >
+                Other games in Series
+              </SubHeadings>
+            ) : null}
 
-          <div
-            css={{
-              display: "grid",
-              gridAutoFlow: "column",
-              gap: "1rem",
-              overflowX: "scroll",
-              minWidth: "100%",
-              justifyItems: "center",
-            }}
-            ref={useHorizontalScroll()}
-          >
-            {gameInSeries.map((ele, i) => {
-              const rowLen = ele.length;
-              return (
-                <Link to={`/games/${ele.id}`}>
-                  <div
-                    key={Math.random()}
-                    css={{ marginRight: `${rowLen === i ? "3rem" : "0"}` }}
-                  >
-                    <Box
-                      w="27rem"
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      overflow="hidden"
+            <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column",
+                gap: "1rem",
+                overflowX: "auto",
+                minWidth: "100%",
+                justifyItems: "center",
+              }}
+              // ref={useHorizontalScroll()}
+            >
+              {gameInSeries.map((ele, i) => {
+                const rowLen = ele.length;
+                return (
+                  <Link to={`/games/${ele.id}`}>
+                    <div
+                      key={Math.random()}
+                      css={{ marginRight: `${rowLen === i ? "3rem" : "0"}` }}
                     >
-                      <Image
-                        src={ele.background_image}
-                        alt={ele.name}
-                        h="241px"
-                        w="100%"
-                      />
+                      <Box
+                        w="27rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={ele.background_image}
+                          alt={ele.name}
+                          h="241px"
+                          w="100%"
+                        />
 
-                      <Box p="6">
-                        <Box d="flex" alignItems="baseline">
-                          <Badge borderRadius="full" px="2" colorScheme="teal">
-                            series
-                          </Badge>
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            <Badge
+                              borderRadius="full"
+                              px="2"
+                              colorScheme="teal"
+                            >
+                              series
+                            </Badge>
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {ele.released}
+                            </Box>
+                          </Box>
+
                           <Box
-                            color="gray.500"
+                            mt="1"
                             fontWeight="semibold"
-                            letterSpacing="wide"
-                            fontSize="xs"
-                            textTransform="uppercase"
-                            ml="2"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
                           >
-                            {ele.released}
+                            {ele.name}
                           </Box>
                         </Box>
+                      </Box>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </FadeInWhenVisible>
+        </motion.div>
+        <motion.div initial={{ opacity: 1, y: 750 }}>
+          <FadeInWhenVisible>
+            {dlcs.length !== 0 ? (
+              <SubHeadings
+                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+              >
+                DLC's And Special edition
+              </SubHeadings>
+            ) : null}
 
-                        <Box
-                          mt="1"
-                          fontWeight="semibold"
-                          as="h4"
-                          lineHeight="tight"
-                          isTruncated
-                        >
-                          {ele.name}
+            {/* <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column",
+                gap: "1rem",
+                overflowX: "auto",
+                minWidth: "100%",
+                justifyItems: "center",
+              }}
+              ref={useHorizontalScroll()}
+            > */}
+            <Marquee speed="80" gradient="false" gradientWidth="0">
+              {dlcs.map((ele, i) => {
+                return (
+                  <Link to={`/games/${ele.id}`}>
+                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                      <Box
+                        w="27rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={ele.background_image}
+                          alt={ele.name}
+                          maxH="241px"
+                          w="100%"
+                        />
+
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            <Badge
+                              borderRadius="full"
+                              px="2"
+                              colorScheme="teal"
+                            >
+                              DLC
+                            </Badge>
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {ele.released}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            mt="1"
+                            fontWeight="semibold"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
+                          >
+                            {ele.name}
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </FadeInWhenVisible>
-      </motion.div>
-    </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Marquee>
+            {/* </div> */}
+          </FadeInWhenVisible>
+        </motion.div>
+      </div>
+    </ErrorBoundary>
   );
 };
 
@@ -964,19 +974,21 @@ const Game = ({ match }) => {
 
   return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
     // videos
-    <div key={location.key} css={{ maxHeight: "100vh" }}>
-      <DataMemoized
-        data={data}
-        img={img}
-        storeData={storeData}
-        Fetch={Fetch}
-        dlcs={dlcs}
-        gameInSeries={gameInSeries}
-        videos={videos}
-        current={current}
-        setCurrent={setCurrent}
-      />
-    </div>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <div key={location.key} css={{ maxHeight: "100vh" }}>
+        <DataMemoized
+          data={data}
+          img={img}
+          storeData={storeData}
+          Fetch={Fetch}
+          dlcs={dlcs}
+          gameInSeries={gameInSeries}
+          videos={videos}
+          current={current}
+          setCurrent={setCurrent}
+        />
+      </div>
+    </ErrorBoundary>
   ) : (
     <div
       css={{

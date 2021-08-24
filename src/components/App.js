@@ -10,28 +10,11 @@ import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
 import Game from "../pages/Game";
 import Home from "../pages/Home";
-import Serach from "../pages/Search";
+import Results from "../pages/Results";
 import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
-
-const Div = styled.div`
-  ${
-    "" /* width: 100vw;
-  height: 100vh;
-  overscroll-behavior-y: none;
-  box-sizing: border-box; */
-  }
-`;
-
-function ErrorFallback({ error, resetErrorBoundary }) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
+import { Button } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 
 const App = () => {
   // const dispatch = useDispatch();
@@ -58,28 +41,62 @@ const App = () => {
   //   </div>
   // );
 
-  return (
-    <div>
-      <BrowserRouter>
-        <SideBarMemoized />
-        <div css={{ height: "100vh" }}>
-          <AnimatePresence exitBeforeEnter>
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route
-                path={["/discover", "/discover/:q"]}
-                exact
-                component={Serach}
-                key={"1"}
-              />
-
-              <Route path="/games/:id" exact component={Game} key={"3"} />
-              <Route path="*" component={ErrorPage} />
-            </Switch>
-          </AnimatePresence>
+  function ErrorFallback({ error }) {
+    const history = useHistory();
+    return (
+      <div
+        role="alert"
+        css={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          alignContent: "center",
+          margin: "0",
+          overflowX: "hidden",
+        }}
+      >
+        <div css={{ marginBottom: "1rem" }}>
+          <p css={{ textAlign: "center", fontSize: "2rem" }}>
+            Something went wrong:
+          </p>
+          <pre>{error.message}</pre>
         </div>
-      </BrowserRouter>
-    </div>
+        <div>
+          <Button onClick={() => history.replace("/")}>Try again</Button>
+        </div>
+      </div>
+    );
+  }
+
+  //serach page normal
+
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <div>
+        <BrowserRouter>
+          <SideBarMemoized />
+          <div css={{ height: "100vh", width: "100vw" }}>
+            <AnimatePresence exitBeforeEnter>
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <Route
+                  path="/discover/:q"
+                  exact
+                  component={Results}
+                  key={"1"}
+                />
+
+                <Route path="/games/:id" exact component={Game} key={"3"} />
+                <Route path="*" component={ErrorPage} />
+              </Switch>
+            </AnimatePresence>
+          </div>
+        </BrowserRouter>
+      </div>
+    </ErrorBoundary>
   );
 };
 
