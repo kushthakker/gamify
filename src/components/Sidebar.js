@@ -180,7 +180,7 @@ const Sidebar = () => {
                   <h3>Coming next week</h3>
                 </div>
               </div> */}
-              <div>
+              {/* <div>
                 <H1>Top</H1>
                 <div>
                   <h3>Best of year</h3>
@@ -198,7 +198,7 @@ const Sidebar = () => {
               </div>
               <div>
                 <H1>All Games</H1>
-              </div>
+              </div> */}
             </Div>
           </DrawerBody>
         </DrawerContent>
