@@ -163,9 +163,9 @@ const Sidebar = () => {
               <Link to={"/"}>
                 <H1 onClick={onClose}>Home</H1>
               </Link>
-              <Link to={"/discover"}>
+              {/* <Link to={"/discover"}>
                 <H1 onClick={onClose}>Search</H1>
-              </Link>
+              </Link> */}
               {/* <div>
                 <H1 onClick={() => onClick()}>Login</H1>
                 <h3 onClick={() => m.user.logout()}>Logout</h3>
