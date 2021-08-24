@@ -55,6 +55,7 @@ const App = () => {
           alignItems: "center",
           alignContent: "center",
           margin: "0",
+          overflowX: "hidden",
         }}
       >
         <div css={{ marginBottom: "1rem" }}>
