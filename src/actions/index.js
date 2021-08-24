@@ -24,3 +24,21 @@ export const urlQuery = (value) => {
     payload: value,
   };
 };
+export const homepageData_carousel = (value) => {
+  return {
+    type: "HOMEPAGE_DATA_CAROUSEL",
+    payload: [value],
+  };
+};
+export const homepageData_comingsoon = (value) => {
+  return {
+    type: "HOMEPAGE_DATA_COMINGSOON",
+    payload: value,
+  };
+};
+export const homepageData_featured = (value) => {
+  return {
+    type: "HOMEPAGE_DATA_FEATURED",
+    payload: value,
+  };
+};

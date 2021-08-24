@@ -11,6 +11,9 @@ import { Carousel } from "react-responsive-carousel";
 import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import api from "../api/api";
 import { Link } from "react-router-dom";
+import { homepageData_carousel } from "../actions/index";
+import { homepageData_comingsoon } from "../actions/index";
+import { homepageData_featured } from "../actions/index";
 
 const Heading = styled.h1({
   fontSize: "2.5rem",
@@ -160,10 +163,22 @@ const Featured = ({ featured }) => {
 
 const Home = ({ match }) => {
   const [status, setStatus] = useState("idle");
-  const [carousel, setCarousel] = useState(null);
-  const [comingSoon, setComingSoon] = useState(null);
-  const [featured, setFeatured] = useState(null);
+  // const [carousel, setCarousel] = useState(null);
+  // const [comingSoon, setComingSoon] = useState(null);
+  // const [featured, setFeatured] = useState(null);
   console.log(match);
+
+  const dispatch = useDispatch();
+
+  const homepageData = useSelector((state) => state.homepageData);
+  console.log(
+    "🚀 ~ file: Home.js ~ line 174 ~ Home ~ homepageData",
+    homepageData
+  );
+
+  const carousel = useSelector((state) => state.homepageData.carousel);
+  const comingSoon = useSelector((state) => state.homepageData.comingSoon);
+  const featured = useSelector((state) => state.homepageData.featured);
 
   const Main = () => {
     return (
@@ -206,10 +221,13 @@ const Home = ({ match }) => {
           setStatus("error");
           throw new Error(req.statusText);
         } else {
-          console.log(featured);
-          setCarousel(req.data.results);
-          setComingSoon(comingSoon.data.results);
-          setFeatured(featured.data);
+          console.log(`render main api`);
+          // setCarousel(req.data.results);
+          // setComingSoon(comingSoon.data.results);
+          // setFeatured(featured.data);
+          dispatch(homepageData_carousel(req.data.results));
+          dispatch(homepageData_comingsoon(comingSoon.data.results));
+          dispatch(homepageData_featured(featured.data));
           setStatus("success");
         }
       } catch (err) {
@@ -217,11 +235,11 @@ const Home = ({ match }) => {
       }
     };
     fetchApi();
-  }, []);
+  }, [dispatch]);
 
   Prompt("Press control + S to open Side Menu from any page", "prompt");
 
-  return carousel && comingSoon && featured ? (
+  return status === "success" ? (
     <div css={{ overflow: "auto" }}>
       <SearchBar match={match} />
       <Main />
