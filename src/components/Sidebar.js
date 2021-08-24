@@ -66,43 +66,43 @@ function ToogleMode() {
 
 const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  React.useState(() => {
-    const login = async function () {
-      try {
-        if (await m.user.isLoggedIn()) {
-          const didToken = await m.user.getIdToken();
+  // React.useState(() => {
+  //   const login = async function () {
+  //     try {
+  //       if (await m.user.isLoggedIn()) {
+  //         const didToken = await m.user.getIdToken();
 
-          // Do something with the DID token.
-          // For instance, this could be a `fetch` call
-          // to a protected backend endpoint.
-          console.log(didToken);
-          console.log(`is logged in`);
-        } else {
-          const user = await m.auth.loginWithMagicLink(
-            "codingpurposebykush@gmail.com"
-          );
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    login();
-  });
+  //         // Do something with the DID token.
+  //         // For instance, this could be a `fetch` call
+  //         // to a protected backend endpoint.
+  //         console.log(didToken);
+  //         console.log(`is logged in`);
+  //       } else {
+  //         const user = await m.auth.loginWithMagicLink(
+  //           "codingpurposebykush@gmail.com"
+  //         );
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   login();
+  // });
 
-  const onClick = async () => {
-    try {
-      await m.auth.loginWithMagicLink({
-        email: "codingpurposebykush@gmail.com",
-        showUI: true,
-        redirectURI: "http://localhost:3000/",
-      });
-      const idToken = await m.user.getIdToken();
-      const { issuer, email, publicAddress } = await m.user.getMetadata();
-      console.log(idToken, issuer, email, publicAddress);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const onClick = async () => {
+  //   try {
+  //     await m.auth.loginWithMagicLink({
+  //       email: "codingpurposebykush@gmail.com",
+  //       showUI: true,
+  //       redirectURI: "http://localhost:3000/",
+  //     });
+  //     const idToken = await m.user.getIdToken();
+  //     const { issuer, email, publicAddress } = await m.user.getMetadata();
+  //     console.log(idToken, issuer, email, publicAddress);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   let isOpenForKey = false;
 
@@ -166,7 +166,7 @@ const Sidebar = () => {
               <Link to={"/discover"}>
                 <H1 onClick={onClose}>Search</H1>
               </Link>
-              <div>
+              {/* <div>
                 <H1 onClick={() => onClick()}>Login</H1>
                 <h3 onClick={() => m.user.logout()}>Logout</h3>
                 <h3>Wishlist</h3>
@@ -179,7 +179,7 @@ const Sidebar = () => {
                   <h3>This week</h3>
                   <h3>Coming next week</h3>
                 </div>
-              </div>
+              </div> */}
               <div>
                 <H1>Top</H1>
                 <div>
