@@ -42,3 +42,10 @@ export const homepageData_featured = (value) => {
     payload: value,
   };
 };
+
+export const timer = (value) => {
+  return {
+    type: "TIMER",
+    payload: value,
+  };
+};

@@ -14,6 +14,9 @@ import { Link } from "react-router-dom";
 import { homepageData_carousel } from "../actions/index";
 import { homepageData_comingsoon } from "../actions/index";
 import { homepageData_featured } from "../actions/index";
+import { timer } from "../actions/index";
+import dayjs from "dayjs";
+const relativeTime = require("dayjs/plugin/relativeTime");
 
 const Heading = styled.h1({
   fontSize: "2.5rem",
@@ -179,6 +182,11 @@ const Home = ({ match }) => {
   const carousel = useSelector((state) => state.homepageData.carousel);
   const comingSoon = useSelector((state) => state.homepageData.comingSoon);
   const featured = useSelector((state) => state.homepageData.featured);
+  const timerState = useSelector((state) => state.timer);
+
+  dayjs.extend(relativeTime);
+
+  console.log(dayjs(timerState).fromNow() === "3 minutes ago");
 
   const Main = () => {
     return (
@@ -194,48 +202,53 @@ const Home = ({ match }) => {
   };
 
   React.useEffect(() => {
-    const fetchApi = async function () {
-      try {
-        const req = await api.get("/games", {
-          params: {
-            metacritic: "90,100",
-            ordering: "-released",
-            page_size: 5,
-          },
-        });
-        const comingSoon = await api.get("/games", {
-          params: {
-            ordering: "released",
-            page_size: 5,
-          },
-        });
-        const gameId = "257192";
-        const featured = await api.get(`/games/${gameId}`, {
-          params: {
-            id: gameId,
-            // search_precise: true,
-          },
-        });
+    if (timerState === null || dayjs(timerState).fromNow() === "an hour ago") {
+      const fetchApi = async function () {
+        try {
+          const req = await api.get("/games", {
+            params: {
+              metacritic: "90,100",
+              ordering: "-released",
+              page_size: 5,
+            },
+          });
+          const comingSoon = await api.get("/games", {
+            params: {
+              ordering: "released",
+              page_size: 5,
+            },
+          });
+          const gameId = "257192";
+          const featured = await api.get(`/games/${gameId}`, {
+            params: {
+              id: gameId,
+              // search_precise: true,
+            },
+          });
 
-        if (!req.status) {
-          setStatus("error");
-          throw new Error(req.statusText);
-        } else {
-          console.log(`render main api`);
-          // setCarousel(req.data.results);
-          // setComingSoon(comingSoon.data.results);
-          // setFeatured(featured.data);
-          dispatch(homepageData_carousel(req.data.results));
-          dispatch(homepageData_comingsoon(comingSoon.data.results));
-          dispatch(homepageData_featured(featured.data));
-          setStatus("success");
+          if (!req.status) {
+            setStatus("error");
+            throw new Error(req.statusText);
+          } else {
+            console.log(`render main api`);
+            // setCarousel(req.data.results);
+            // setComingSoon(comingSoon.data.results);
+            // setFeatured(featured.data);
+            dispatch(homepageData_carousel(req.data.results));
+            dispatch(homepageData_comingsoon(comingSoon.data.results));
+            dispatch(homepageData_featured(featured.data));
+            dispatch(timer(dayjs().format()));
+            setStatus("success");
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
-  }, [dispatch]);
+      };
+      fetchApi();
+    } else {
+      setStatus("success");
+    }
+  }, [dispatch, timerState]);
 
   Prompt("Press control + S to open Side Menu from any page", "prompt");
 
