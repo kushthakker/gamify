@@ -318,7 +318,7 @@ const ShowData = ({
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div
         css={{
-          overflowY: "scroll",
+          overflowY: "auto",
           maxHeight: "100vh",
           boxSizing: "border-box",
         }}
