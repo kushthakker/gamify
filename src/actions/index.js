@@ -43,6 +43,25 @@ export const homepageData_featured = (value) => {
   };
 };
 
+export const homepageData_publisher_microsoft = (value) => {
+  return {
+    type: "HOMEPAGE_DATA_PUBLISHER_MICROSOFT",
+    payload: value,
+  };
+};
+export const homepageData_publisher_sony = (value) => {
+  return {
+    type: "HOMEPAGE_DATA_PUBLISHER_SONY",
+    payload: value,
+  };
+};
+export const homepageData_publisher_nintendo = (value) => {
+  return {
+    type: "HOMEPAGE_DATA_PUBLISHER_NINTENDO",
+    payload: value,
+  };
+};
+
 export const timer = (value) => {
   return {
     type: "TIMER",

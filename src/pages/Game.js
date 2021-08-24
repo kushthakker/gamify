@@ -11,6 +11,8 @@ import { motion, useAnimation } from "framer-motion";
 import Vidmain from "../components/Vidmain";
 import { ErrorBoundary } from "react-error-boundary";
 import Vidlist from "../components/Vidlist";
+import Marquee from "react-fast-marquee";
+
 import {
   Spinner,
   Button,
@@ -708,7 +710,7 @@ const ShowData = ({
           </FadeInWhenVisible>
         </motion.div>
         <motion.div
-          initial={{ opacity: 1, y: 660 }}
+          initial={{ opacity: 1, y: 650 }}
           css={{ display: "flex", justifyContent: "center" }}
         >
           <FadeInWhenVisible>
@@ -737,89 +739,7 @@ const ShowData = ({
             </Box>
           </FadeInWhenVisible>
         </motion.div>
-        <motion.div initial={{ opacity: 1, y: 760 }}>
-          <FadeInWhenVisible>
-            {dlcs.length !== 0 ? (
-              <SubHeadings
-                css={{ display: "grid", justifyItems: "center", width: "100%" }}
-              >
-                DLC's And Special edition
-              </SubHeadings>
-            ) : null}
-
-            <div
-              css={{
-                display: "grid",
-                gridAutoFlow: "column",
-                gap: "1rem",
-                overflowX: "auto",
-                minWidth: "100%",
-                justifyItems: "center",
-              }}
-              ref={useHorizontalScroll()}
-            >
-              {dlcs.map((ele, i) => {
-                const rowLen = ele.length;
-                return (
-                  <Link to={`/games/${ele.id}`}>
-                    <div
-                      key={Math.random()}
-                      css={{ marginRight: `${rowLen === i ? "3rem" : "0"}` }}
-                    >
-                      <Box
-                        w="27rem"
-                        borderWidth="1px"
-                        borderRadius="lg"
-                        overflow="hidden"
-                      >
-                        <Image
-                          src={ele.background_image}
-                          alt={ele.name}
-                          maxH="241px"
-                          w="100%"
-                        />
-
-                        <Box p="6">
-                          <Box d="flex" alignItems="baseline">
-                            <Badge
-                              borderRadius="full"
-                              px="2"
-                              colorScheme="teal"
-                            >
-                              DLC
-                            </Badge>
-                            <Box
-                              color="gray.500"
-                              fontWeight="semibold"
-                              letterSpacing="wide"
-                              fontSize="xs"
-                              textTransform="uppercase"
-                              ml="2"
-                            >
-                              {ele.released}
-                            </Box>
-                          </Box>
-
-                          <Box
-                            mt="1"
-                            fontWeight="semibold"
-                            as="h4"
-                            lineHeight="tight"
-                            isTruncated
-                          >
-                            {ele.name}
-                          </Box>
-                        </Box>
-                      </Box>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </FadeInWhenVisible>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 1, y: 820 }}>
+        <motion.div initial={{ opacity: 1, y: 700 }}>
           <FadeInWhenVisible>
             {gameInSeries.length !== 0 ? (
               <SubHeadings
@@ -838,7 +758,7 @@ const ShowData = ({
                 minWidth: "100%",
                 justifyItems: "center",
               }}
-              ref={useHorizontalScroll()}
+              // ref={useHorizontalScroll()}
             >
               {gameInSeries.map((ele, i) => {
                 const rowLen = ele.length;
@@ -898,6 +818,85 @@ const ShowData = ({
                 );
               })}
             </div>
+          </FadeInWhenVisible>
+        </motion.div>
+        <motion.div initial={{ opacity: 1, y: 750 }}>
+          <FadeInWhenVisible>
+            {dlcs.length !== 0 ? (
+              <SubHeadings
+                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+              >
+                DLC's And Special edition
+              </SubHeadings>
+            ) : null}
+
+            {/* <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column",
+                gap: "1rem",
+                overflowX: "auto",
+                minWidth: "100%",
+                justifyItems: "center",
+              }}
+              ref={useHorizontalScroll()}
+            > */}
+            <Marquee speed="80" gradient="false" gradientWidth="0">
+              {dlcs.map((ele, i) => {
+                return (
+                  <Link to={`/games/${ele.id}`}>
+                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                      <Box
+                        w="27rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={ele.background_image}
+                          alt={ele.name}
+                          maxH="241px"
+                          w="100%"
+                        />
+
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            <Badge
+                              borderRadius="full"
+                              px="2"
+                              colorScheme="teal"
+                            >
+                              DLC
+                            </Badge>
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {ele.released}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            mt="1"
+                            fontWeight="semibold"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
+                          >
+                            {ele.name}
+                          </Box>
+                        </Box>
+                      </Box>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Marquee>
+            {/* </div> */}
           </FadeInWhenVisible>
         </motion.div>
       </div>

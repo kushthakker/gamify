@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import Prompt from "../components/Prompt";
-import { Spinner, Box, Text, Image } from "@chakra-ui/react";
+import { Spinner, Box, Text, Image, Badge } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import { Carousel } from "react-responsive-carousel";
 import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -14,7 +14,13 @@ import { Link } from "react-router-dom";
 import { homepageData_carousel } from "../actions/index";
 import { homepageData_comingsoon } from "../actions/index";
 import { homepageData_featured } from "../actions/index";
+import { homepageData_publisher_microsoft } from "../actions/index";
+import { homepageData_publisher_sony } from "../actions/index";
+import { homepageData_publisher_nintendo } from "../actions/index";
 import { timer } from "../actions/index";
+import { motion } from "framer-motion";
+import Marquee from "react-fast-marquee";
+
 import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
 
@@ -24,6 +30,15 @@ const Heading = styled.h1({
   marginTop: "1rem",
   fontFamily: "Staatliches",
   letterSpacing: "0.5rem",
+});
+const MiniHeading = styled.h1({
+  fontSize: "1.7rem",
+  fontWeight: "bold",
+  marginTop: "1rem",
+  fontFamily: "Staatliches",
+  letterSpacing: "0.5rem",
+  margin: "5rem auto 2rem auto",
+  textAlign: "center",
 });
 
 const Recommendedcarousel = ({ carousel }) => {
@@ -150,8 +165,8 @@ const Featured = ({ featured }) => {
           <div css={{ width: "100vw" }}>
             <Image
               src={featured.background_image}
-              w="70%"
-              h="700px"
+              w="60%"
+              h="600px"
               m="4rem auto 2rem auto"
               d="flex"
               justifySelf="center"
@@ -160,6 +175,215 @@ const Featured = ({ featured }) => {
           </div>
         </Link>
       </Box>
+    </div>
+  );
+};
+
+const Publishers = ({ microsoft, sony, nintendo }) => {
+  return (
+    <div css={{ marginTop: "8rem" }}>
+      <Heading css={{ marginLeft: "2.8em" }}>Publishers</Heading>
+      <div>
+        <Box mt="3rem">
+          <MiniHeading>Microsoft</MiniHeading>
+          <div>
+            <Marquee
+              // pauseOnHover="true"
+              speed="80"
+              gradient="false"
+              gradientWidth="0"
+            >
+              {microsoft.map((ele) => {
+                return (
+                  <Link to={`/games/${ele.id}`}>
+                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                      <Box
+                        w="27rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={ele.background_image}
+                          alt={ele.name}
+                          h="241px"
+                          w="100%"
+                        />
+
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            <Badge
+                              borderRadius="full"
+                              px="2"
+                              colorScheme="teal"
+                            >
+                              series
+                            </Badge>
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {ele.released}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            mt="1"
+                            fontWeight="semibold"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
+                          >
+                            {ele.name}
+                          </Box>
+                        </Box>
+                      </Box>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Marquee>
+          </div>
+        </Box>
+      </div>
+      <div>
+        <Box mt="3rem">
+          <MiniHeading>Sony</MiniHeading>
+          <div>
+            <Marquee
+              // pauseOnHover="true"
+              speed="80"
+              gradient="false"
+              gradientWidth="0"
+            >
+              {sony.map((ele) => {
+                return (
+                  <Link to={`/games/${ele.id}`}>
+                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                      <Box
+                        w="27rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={ele.background_image}
+                          alt={ele.name}
+                          h="241px"
+                          w="100%"
+                        />
+
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            <Badge
+                              borderRadius="full"
+                              px="2"
+                              colorScheme="teal"
+                            >
+                              series
+                            </Badge>
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {ele.released}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            mt="1"
+                            fontWeight="semibold"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
+                          >
+                            {ele.name}
+                          </Box>
+                        </Box>
+                      </Box>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Marquee>
+          </div>
+        </Box>
+      </div>
+      <div>
+        <Box mt="3rem">
+          <MiniHeading>Nintendo</MiniHeading>
+          <div>
+            <Marquee
+              // pauseOnHover="true"
+              speed="80"
+              gradient="false"
+              gradientWidth="0"
+            >
+              {nintendo.map((ele) => {
+                return (
+                  <Link to={`/games/${ele.id}`}>
+                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                      <Box
+                        w="27rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={ele.background_image}
+                          alt={ele.name}
+                          h="241px"
+                          w="100%"
+                        />
+
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            <Badge
+                              borderRadius="full"
+                              px="2"
+                              colorScheme="teal"
+                            >
+                              series
+                            </Badge>
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {ele.released}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            mt="1"
+                            fontWeight="semibold"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
+                          >
+                            {ele.name}
+                          </Box>
+                        </Box>
+                      </Box>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Marquee>
+          </div>
+        </Box>
+      </div>
     </div>
   );
 };
@@ -183,6 +407,13 @@ const Home = ({ match }) => {
   const comingSoon = useSelector((state) => state.homepageData.comingSoon);
   const featured = useSelector((state) => state.homepageData.featured);
   const timerState = useSelector((state) => state.timer);
+  const microsoft = useSelector(
+    (state) => state.homepageData.publishers.microsoft
+  );
+  const sony = useSelector((state) => state.homepageData.publishers.sony);
+  const nintendo = useSelector(
+    (state) => state.homepageData.publishers.nintendo
+  );
 
   dayjs.extend(relativeTime);
 
@@ -192,11 +423,12 @@ const Home = ({ match }) => {
     return (
       <div>
         <Box p="5rem" ml="2.8rem">
-          <Heading>Recommended</Heading>
+          <Heading css={{ marginLeft: "2.8rem" }}>Recommended</Heading>
         </Box>
         <Recommendedcarousel carousel={carousel} />
         <ComingSoon comingSoon={comingSoon} />
         <Featured featured={featured} />
+        <Publishers microsoft={microsoft} sony={sony} nintendo={nintendo} />
       </div>
     );
   };
@@ -225,18 +457,48 @@ const Home = ({ match }) => {
               // search_precise: true,
             },
           });
+          const Microsoft = await api.get("/games", {
+            params: {
+              publishers: "microsoft-studios",
+              page_size: 10,
+              ordering: "-released",
+              metacritic: "80,100",
+            },
+          });
+          const Sony = await api.get("/games", {
+            params: {
+              publishers: "sony-interactive-entertainment",
+              page_size: 10,
+              ordering: "-released",
+              metacritic: "80,100",
+            },
+          });
+          const Nintendo = await api.get("/games", {
+            params: {
+              publishers: "nintendo",
+              page_size: 10,
+              ordering: "-released",
+              metacritic: "80,100",
+            },
+          });
 
           if (!req.status) {
             setStatus("error");
             throw new Error(req.statusText);
           } else {
             console.log(`render main api`);
+            console.log(Microsoft);
+            console.log(Sony);
+            console.log(Nintendo);
             // setCarousel(req.data.results);
             // setComingSoon(comingSoon.data.results);
             // setFeatured(featured.data);
             dispatch(homepageData_carousel(req.data.results));
             dispatch(homepageData_comingsoon(comingSoon.data.results));
             dispatch(homepageData_featured(featured.data));
+            dispatch(homepageData_publisher_microsoft(Microsoft.data.results));
+            dispatch(homepageData_publisher_sony(Sony.data.results));
+            dispatch(homepageData_publisher_nintendo(Nintendo.data.results));
             dispatch(timer(dayjs().format()));
             setStatus("success");
           }
@@ -273,4 +535,4 @@ const Home = ({ match }) => {
   );
 };
 
-export default Home;
+export default React.memo(Home);
