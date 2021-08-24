@@ -11,7 +11,6 @@ import { Carousel } from "react-responsive-carousel";
 import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import api from "../api/api";
 import { Link } from "react-router-dom";
-import { RoughNotation, RoughNotationGroup } from "react-rough-notation";
 
 const Heading = styled.h1({
   fontSize: "2.5rem",
@@ -97,6 +96,7 @@ const ComingSoon = ({ comingSoon }) => {
                 bgImage={game.background_image}
                 opacity="0.7"
                 backgroundPosition=" 35% 35%"
+                backgroundSize="cover"
               >
                 <Text
                   fontSize="2rem"
@@ -107,6 +107,7 @@ const ComingSoon = ({ comingSoon }) => {
                   // opacity="0.7"
                   pos="relative"
                   top="7rem"
+                  p="0.2rem"
                 >
                   {game.name}
                 </Text>
@@ -123,18 +124,7 @@ const Featured = ({ featured }) => {
   return (
     <div>
       <Box p="5rem" ml="2.8rem">
-        <RoughNotation
-          type="highlight"
-          show="true"
-          strokeWidth="1"
-          color="gold"
-          animate="true"
-          animationDelay="500"
-          iterations="5"
-          width="fit-content"
-        >
-          <Heading w="fit-content">Featured</Heading>
-        </RoughNotation>
+        <Heading>Featured</Heading>
       </Box>
       <Box mt="2rem">
         <Link to={`/games/${featured.id}`}>

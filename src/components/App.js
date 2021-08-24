@@ -13,6 +13,8 @@ import Home from "../pages/Home";
 import Results from "../pages/Results";
 import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
+import { Button } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 
 const App = () => {
   // const dispatch = useDispatch();
@@ -39,12 +41,31 @@ const App = () => {
   //   </div>
   // );
 
-  function ErrorFallback({ error, resetErrorBoundary }) {
+  function ErrorFallback({ error }) {
+    const history = useHistory();
     return (
-      <div role="alert" css={{ color: "red" }}>
-        <p>Something went wrong:</p>
-        <pre>{error.message}</pre>
-        <button onClick={resetErrorBoundary}>Try again</button>
+      <div
+        role="alert"
+        css={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          alignContent: "center",
+          margin: "0",
+        }}
+      >
+        <div css={{ marginBottom: "1rem" }}>
+          <p css={{ textAlign: "center", fontSize: "2rem" }}>
+            Something went wrong:
+          </p>
+          <pre>{error.message}</pre>
+        </div>
+        <div>
+          <Button onClick={() => history.replace("/")}>Try again</Button>
+        </div>
       </div>
     );
   }
