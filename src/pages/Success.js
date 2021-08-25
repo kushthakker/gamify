@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 
 const Heading = styled.h1({
-  fontSize: "6rem",
+  fontSize: "5rem",
   fontFamily: "Staatliches",
 });
 
