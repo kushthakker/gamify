@@ -205,8 +205,8 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
             >
               {microsoft.map((ele) => {
                 return (
-                  <Link to={`/games/${ele.id}`}>
-                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Link to={`/games/${ele.id}`} key={Math.random()}>
+                    <div css={{ marginRight: "3rem" }}>
                       <Box
                         w="27rem"
                         borderWidth="1px"
@@ -272,8 +272,8 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
             >
               {sony.map((ele) => {
                 return (
-                  <Link to={`/games/${ele.id}`}>
-                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Link to={`/games/${ele.id}`} key={Math.random()}>
+                    <div css={{ marginRight: "3rem" }}>
                       <Box
                         w="27rem"
                         borderWidth="1px"
@@ -339,8 +339,8 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
             >
               {nintendo.map((ele) => {
                 return (
-                  <Link to={`/games/${ele.id}`}>
-                    <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Link to={`/games/${ele.id}`} key={Math.random()}>
+                    <div css={{ marginRight: "3rem" }}>
                       <Box
                         w="27rem"
                         borderWidth="1px"

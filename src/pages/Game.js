@@ -951,9 +951,7 @@ const Game = ({ match }) => {
 
         const dataYt = yt.data.items;
 
-        const hltb = hltbService
-          .search("Nioh")
-          .then((result) => console.log(result));
+        hltbService.search("hades").then((result) => console.log(result));
 
         if (!req.status) {
           throw new Error(req.statusText);
@@ -962,7 +960,6 @@ const Game = ({ match }) => {
           // console.log(stores);
           // console.log(dlcs);
           // console.log(yt);
-          console.log(hltb);
           setVideos(dataYt);
           setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
