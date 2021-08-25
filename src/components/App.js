@@ -8,6 +8,8 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
+import Success from "../pages/Success";
+
 import Game from "../pages/Game";
 import Home from "../pages/Home";
 import Results from "../pages/Results";
@@ -15,31 +17,72 @@ import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
+import { Magic } from "magic-sdk";
+import { OAuthExtension } from "@magic-ext/oauth";
+import LoginPage from "../pages/LoginPage";
+import { isLoggedIn } from "../actions/index";
+import { userId } from "../actions/index";
+import { email } from "../actions/index";
+// import ProtectedRoute from "../components/ProtectedRoute";
+import Dashboard from "../pages/Dashboard";
 
 const App = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const Increment = useCallback(() => dispatch(error()), [dispatch]);
+  useEffect(() => {
+    const m = new Magic("pk_live_8BB9335EFCCF939E", {
+      extensions: [new OAuthExtension()],
+    }); // ✨
+    const login = async function () {
+      try {
+        if (await m.user.isLoggedIn()) {
+          const didToken = await m.user.getIdToken();
+          const user = await m.user.getMetadata();
+          // Do something with the DID token.
+          // For instance, this could be a `fetch` call
+          // to a protected backend endpoint.
+          console.log(didToken);
+          console.log(user);
+          dispatch(isLoggedIn(await m.user.isLoggedIn()));
+          dispatch(userId(didToken));
+          dispatch(email(user.email));
+        } else {
+          await m.auth.loginWithMagicLink();
+          console.log("not logged in");
+          dispatch(isLoggedIn(await m.user.isLoggedIn()));
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    login();
+    const render = async () => {
+      if (window.location.pathname === "/success") {
+        try {
+          const result = await m.oauth.getRedirectResult();
+          const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
+          const idToken = await m.user.getIdToken();
+          const metadata = await m.user.getMetadata();
+          const isLogin = await m.user.isLoggedIn();
+          console.log(profile);
+          console.log(idToken);
+          console.log(metadata);
+          console.log(isLogin);
+          dispatch(isLoggedIn(isLogin));
+          dispatch(userId(idToken));
+          dispatch(email(metadata.email));
 
-  // const reduxValue = useSelector((state) => state.error);
-
-  // return (
-  //   <div>
-  //     <ErrorBoundary fallBackComponent={ErrorFallback}>
-  //       <div
-  //         css={{
-  //           color: "red",
-  //           fontSize: "20px",
-  //           margin: "30px",
-  //         }}
-  //       >
-  //         BoilerPlate
-  //       </div>
-  //       <MyIncrementButton onIncrement={Increment} />
-  //       {reduxValue}
-  //     </ErrorBoundary>
-  //   </div>
-  // );
+          //   console.log(m.user.m.user.generateIdToken());
+          //   console.log(m.user.isLoggedIn());
+        } catch {
+          window.location.href = window.location.origin;
+        }
+      } else {
+        console.log("pls try again");
+      }
+    };
+    render();
+  }, [dispatch]);
 
   function ErrorFallback({ error }) {
     const history = useHistory();
@@ -77,19 +120,16 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div>
         <BrowserRouter>
-          <SideBarMemoized />
           <div css={{ height: "100vh", width: "100vw" }}>
             <AnimatePresence exitBeforeEnter>
               <Switch>
                 <Route path="/" exact component={Home} />
-                <Route
-                  path="/discover/:q"
-                  exact
-                  component={Results}
-                  key={"1"}
-                />
+                <Route path="/discover/:q" exact component={Results} />
 
-                <Route path="/games/:id" exact component={Game} key={"3"} />
+                <Route path="/games/:id" exact component={Game} />
+                <Route path="/login" exact component={LoginPage} />
+                <Route exact path="/success" component={Success} />
+                <Route exact path="/dashboard" component={Dashboard} />
                 <Route path="*" component={ErrorPage} />
               </Switch>
             </AnimatePresence>

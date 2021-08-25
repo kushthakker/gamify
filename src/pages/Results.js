@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Spinner, CloseIcon, Box, Badge, Image } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import { urlQuery } from "../actions/index";
+import SideBarMemoized from "../components/Sidebar";
+import LoginButton from "../components/LoginButton";
 
 const transition = {
   duration: 0.4,
@@ -76,7 +78,7 @@ const MyListData = ({ searchResult }) => {
       {console.log(`return render`)}
       <List
         exit={{ opacity: 0 }}
-        // transition={transition}
+        transition={transition}
         variants={container}
         initial="hidden"
         animate="visible"
@@ -248,6 +250,8 @@ const Output = ({ match }) => {
       {isSuccess ? (
         searchResult?.length !== 0 ? (
           <div>
+            <SideBarMemoized />
+            <LoginButton />
             <SearchBar />
             <div css={{ marginTop: "3rem" }}>
               <Data searchResult={searchResult} />

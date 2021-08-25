@@ -5,6 +5,7 @@ import statusReducer from "./statusReducer";
 import urlQueryReducer from "./urlQueryReducer";
 import homepageDataReducer from "./homepageDataReducer";
 import timerReducer from "./timerReducer";
+import userReducer from "./userReducer";
 
 export default combineReducers({
   error: incrementReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   urlQuery: urlQueryReducer,
   homepageData: homepageDataReducer,
   timer: timerReducer,
+  user: userReducer,
 });
