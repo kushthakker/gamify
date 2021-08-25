@@ -8,7 +8,7 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
-import LoginButton from "./LoginButton";
+
 import Game from "../pages/Game";
 import Home from "../pages/Home";
 import Results from "../pages/Results";
@@ -16,31 +16,44 @@ import ErrorPage from "../pages/Error";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
+import { Magic } from "magic-sdk";
+import { OAuthExtension } from "@magic-ext/oauth";
+import LoginPage from "../pages/LoginPage";
+import { isLoggedIn } from "../actions/index";
+import { userId } from "../actions/index";
+import { email } from "../actions/index";
 
 const App = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const m = new Magic("pk_live_8BB9335EFCCF939E", {
+      extensions: [new OAuthExtension()],
+    }); // ✨
 
-  // const Increment = useCallback(() => dispatch(error()), [dispatch]);
-
-  // const reduxValue = useSelector((state) => state.error);
-
-  // return (
-  //   <div>
-  //     <ErrorBoundary fallBackComponent={ErrorFallback}>
-  //       <div
-  //         css={{
-  //           color: "red",
-  //           fontSize: "20px",
-  //           margin: "30px",
-  //         }}
-  //       >
-  //         BoilerPlate
-  //       </div>
-  //       <MyIncrementButton onIncrement={Increment} />
-  //       {reduxValue}
-  //     </ErrorBoundary>
-  //   </div>
-  // );
+    const login = async function () {
+      try {
+        if (await m.user.isLoggedIn()) {
+          const didToken = await m.user.getIdToken();
+          const user = await m.user.getMetadata();
+          // Do something with the DID token.
+          // For instance, this could be a `fetch` call
+          // to a protected backend endpoint.
+          console.log(didToken);
+          console.log(user);
+          dispatch(isLoggedIn(await m.user.isLoggedIn()));
+          dispatch(userId(didToken));
+          dispatch(email(user.email));
+        } else {
+          await m.auth.loginWithMagicLink();
+          console.log("not logged in");
+          dispatch(isLoggedIn(await m.user.isLoggedIn()));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    login();
+  }, [dispatch]);
 
   function ErrorFallback({ error }) {
     const history = useHistory();
@@ -78,8 +91,6 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div>
         <BrowserRouter>
-          <SideBarMemoized />
-          <LoginButton />
           <div css={{ height: "100vh", width: "100vw" }}>
             <AnimatePresence exitBeforeEnter>
               <Switch>
@@ -91,7 +102,8 @@ const App = () => {
                   key={"1"}
                 />
 
-                <Route path="/games/:id" exact component={Game} key={"3"} />
+                <Route path="/games/:id" exact component={Game} key={"2"} />
+                <Route path="/login" exact component={LoginPage} key={"3"} />
                 <Route path="*" component={ErrorPage} />
               </Switch>
             </AnimatePresence>

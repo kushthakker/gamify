@@ -21,6 +21,8 @@ import { timer } from "../actions/index";
 import { motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
+import LoginButton from "../components/LoginButton";
+import SideBarMemoized from "../components/Sidebar";
 
 import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -521,7 +523,9 @@ const Home = ({ match }) => {
 
   return status === "success" ? (
     <div css={{ overflow: "auto" }}>
+      <SideBarMemoized />
       <SearchBar match={match} />
+      <LoginButton />
       <Main />
     </div>
   ) : (

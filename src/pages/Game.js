@@ -13,6 +13,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Vidlist from "../components/Vidlist";
 import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
+import SideBarMemoized from "../components/Sidebar";
 
 import {
   Spinner,
@@ -976,6 +977,7 @@ const Game = ({ match }) => {
     // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
+        <SideBarMemoized />
         <DataMemoized
           data={data}
           img={img}

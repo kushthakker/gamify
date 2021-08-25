@@ -68,3 +68,21 @@ export const timer = (value) => {
     payload: value,
   };
 };
+export const isLoggedIn = (value) => {
+  return {
+    type: "IS_LOGGED_IN",
+    payload: value,
+  };
+};
+export const userId = (value) => {
+  return {
+    type: "USER_ID",
+    payload: value,
+  };
+};
+export const email = (value) => {
+  return {
+    type: "Email",
+    payload: value,
+  };
+};
