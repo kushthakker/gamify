@@ -224,13 +224,13 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
 
                         <Box p="6">
                           <Box d="flex" alignItems="baseline">
-                            <Badge
+                            {/* <Badge
                               borderRadius="full"
                               px="2"
                               colorScheme="teal"
                             >
                               series
-                            </Badge>
+                            </Badge> */}
                             <Box
                               color="gray.500"
                               fontWeight="semibold"
@@ -291,13 +291,13 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
 
                         <Box p="6">
                           <Box d="flex" alignItems="baseline">
-                            <Badge
+                            {/* <Badge
                               borderRadius="full"
                               px="2"
                               colorScheme="teal"
                             >
                               series
-                            </Badge>
+                            </Badge> */}
                             <Box
                               color="gray.500"
                               fontWeight="semibold"

@@ -23,7 +23,7 @@ import LoginPage from "../pages/LoginPage";
 import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
-// import ProtectedRoute from "../components/ProtectedRoute";
+import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 
 const App = () => {

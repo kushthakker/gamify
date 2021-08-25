@@ -19,6 +19,7 @@ import { OAuthExtension } from "@magic-ext/oauth";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import SideBarMemoized from "../components/Sidebar";
+import { isLoggedIn } from "../actions/index";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
@@ -33,6 +34,7 @@ const Heading = styled.h1({
 
 const LoginPage = () => {
   const history = useHistory();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const [emailData, setEmailData] = useState(null);
 
@@ -79,7 +81,7 @@ const LoginPage = () => {
   };
 
   const validationSchema = yup.object({
-    email: yup.string().required(),
+    email: yup.string().email("Invalid email").required("Required"),
   });
 
   return (
@@ -141,16 +143,15 @@ const LoginPage = () => {
               onSubmit={(data, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 //async calls here
-                console.log(`submit: `, data.email);
-                setEmailData(data.email);
+                console.log(String(data.email));
+                setEmailData(String(data.email));
                 setSubmitting(false);
                 resetForm();
               }}
             >
               {({ isSubmitting }) => (
                 <Form>
-                  {/* this 👆 (<Form>)is equal to => <from onSubmit={handleSubmit}> */}
-                  <Field name="email">
+                  <Field name="email" type="email">
                     {({ field, form }) => (
                       <FormControl
                         isInvalid={form.errors.email && form.touched.email}
