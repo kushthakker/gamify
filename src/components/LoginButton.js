@@ -16,6 +16,7 @@ const m = new Magic("pk_live_8BB9335EFCCF939E", {
 const logout = async function () {
   try {
     await m.user.logout();
+    // dispatch(
   } catch (err) {
     console.log(err);
   }
@@ -23,6 +24,7 @@ const logout = async function () {
 
 const LoginButton = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const dispatch = useDispatch();
   return (
     <div
       css={{

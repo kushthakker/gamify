@@ -8,6 +8,7 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
+import Success from "../pages/Success";
 
 import Game from "../pages/Game";
 import Home from "../pages/Home";
@@ -25,11 +26,11 @@ import { email } from "../actions/index";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const m = new Magic("pk_live_8BB9335EFCCF939E", {
       extensions: [new OAuthExtension()],
     }); // ✨
-
     const login = async function () {
       try {
         if (await m.user.isLoggedIn()) {
@@ -49,10 +50,36 @@ const App = () => {
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
         }
       } catch (err) {
-        console.log(err);
+        console.log(err.message);
       }
     };
     login();
+    const render = async () => {
+      if (window.location.pathname === "/success") {
+        try {
+          const result = await m.oauth.getRedirectResult();
+          const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
+          const idToken = await m.user.getIdToken();
+          const metadata = await m.user.getMetadata();
+          const isLogin = await m.user.isLoggedIn();
+          console.log(profile);
+          console.log(idToken);
+          console.log(metadata);
+          console.log(isLogin);
+          dispatch(isLoggedIn(isLogin));
+          dispatch(userId(idToken));
+          dispatch(email(metadata.email));
+
+          //   console.log(m.user.m.user.generateIdToken());
+          //   console.log(m.user.isLoggedIn());
+        } catch {
+          window.location.href = window.location.origin;
+        }
+      } else {
+        console.log("pls try again");
+      }
+    };
+    render();
   }, [dispatch]);
 
   function ErrorFallback({ error }) {
@@ -95,15 +122,11 @@ const App = () => {
             <AnimatePresence exitBeforeEnter>
               <Switch>
                 <Route path="/" exact component={Home} />
-                <Route
-                  path="/discover/:q"
-                  exact
-                  component={Results}
-                  key={"1"}
-                />
+                <Route path="/discover/:q" exact component={Results} />
 
-                <Route path="/games/:id" exact component={Game} key={"2"} />
-                <Route path="/login" exact component={LoginPage} key={"3"} />
+                <Route path="/games/:id" exact component={Game} />
+                <Route path="/login" exact component={LoginPage} />
+                <Route path="/success" exact component={Success} />
                 <Route path="*" component={ErrorPage} />
               </Switch>
             </AnimatePresence>

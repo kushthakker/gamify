@@ -22,8 +22,6 @@ import {
 } from "@chakra-ui/react";
 import { findAllByTestId } from "@testing-library/react";
 
-const m = new Magic("pk_live_8BB9335EFCCF939E"); // ✨
-
 const Div = styled.div({
   display: "grid",
   rowGap: "2rem",

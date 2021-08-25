@@ -19,6 +19,7 @@ import { OAuthExtension } from "@magic-ext/oauth";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import SideBarMemoized from "../components/Sidebar";
+import Success from "./Success";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
@@ -35,36 +36,11 @@ const LoginPage = () => {
   //   const history = useHistory();
 
   const [emailData, setEmailData] = useState(null);
-  React.useState(() => {
-    const render = async () => {
-      if (window.location.pathname === "/callback") {
-        try {
-          const result = await m.oauth.getRedirectResult();
-          const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
-          const idToken = await m.user.getIdToken();
-          const metadata = await m.user.getMetadata();
-          const isLogin = await m.user.isLoggedIn();
-          console.log(profile);
-          console.log(idToken);
-          console.log(metadata);
-          console.log(isLogin);
-
-          //   console.log(m.user.m.user.generateIdToken());
-          //   console.log(m.user.isLoggedIn());
-        } catch {
-          window.location.href = window.location.origin;
-        }
-      } else {
-        console.log("pls try again");
-      }
-    };
-    render();
-  });
 
   const onClick = async () => {
     try {
       await m.auth.loginWithMagicLink({
-        email: `${emailData}`,
+        email: emailData,
         showUI: true,
         redirectURI: `${window.location.origin}/`,
       });
@@ -83,7 +59,7 @@ const LoginPage = () => {
     try {
       await m.oauth.loginWithRedirect({
         provider: "google",
-        redirectURI: `${window.location.origin}/callback`,
+        redirectURI: `${window.location.origin}/success`,
       });
     } catch (error) {
       console.log(error);
@@ -94,7 +70,7 @@ const LoginPage = () => {
     try {
       await m.oauth.loginWithRedirect({
         provider: "github",
-        redirectURI: `${window.location.origin}/callback`,
+        redirectURI: `${window.location.origin}/success`,
         // scope: ["user:email"] /* optional */,
       });
     } catch (error) {
