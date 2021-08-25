@@ -111,9 +111,7 @@ const LoginButton = () => {
           console.log(user);
           console.log(`is logged in`);
         } else {
-          // const user = await m.auth.loginWithMagicLink(
-          //   "codingpurposebykush@gmail.com"
-          // );
+          const user = await m.auth.loginWithMagicLink();
           console.log("not logged in");
         }
       } catch (err) {
