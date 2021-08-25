@@ -13,6 +13,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Vidlist from "../components/Vidlist";
 import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
+import { HowLongToBeatService, HowLongToBeatEntry } from "howlongtobeat";
 
 import {
   Spinner,
@@ -248,7 +249,7 @@ const ShowData = ({
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
-  const [ytData, setYtData] = useState(null);
+  // const [ytData, setYtData] = useState(null);
   // const modal = (ele, img) => {
   //   console.log(img);
   //   return (
@@ -279,30 +280,30 @@ const ShowData = ({
     setCurrent(video);
   };
 
-  function useHorizontalScroll() {
-    const elRef = React.useRef();
-    useEffect(() => {
-      const el = elRef.current;
-      if (el) {
-        const onWheel = (e) => {
-          if (e.deltaY === 0) return;
-          e.preventDefault();
-          el.scrollTo({
-            left: el.scrollLeft + e.deltaY,
-          });
-        };
-        el.addEventListener("wheel", onWheel);
-        return () => el.removeEventListener("wheel", onWheel);
-      }
-    }, []);
-    return elRef;
-  }
+  // function useHorizontalScroll() {
+  //   const elRef = React.useRef();
+  //   useEffect(() => {
+  //     const el = elRef.current;
+  //     if (el) {
+  //       const onWheel = (e) => {
+  //         if (e.deltaY === 0) return;
+  //         e.preventDefault();
+  //         el.scrollTo({
+  //           left: el.scrollLeft + e.deltaY,
+  //         });
+  //       };
+  //       el.addEventListener("wheel", onWheel);
+  //       return () => el.removeEventListener("wheel", onWheel);
+  //     }
+  //   }, []);
+  //   return elRef;
+  // }
 
   function showImgNote() {
     const prompt = localStorage.getItem("imgInfo");
     if (prompt === "1") return;
     else {
-      console.log(prompt);
+      // console.log(prompt);
       toast({
         title: "Note",
         description: "You can close image by clicking outside of the image",
@@ -906,6 +907,8 @@ const Game = ({ match }) => {
     }
   };
 
+  let hltbService = new HowLongToBeatService();
+
   useEffect(() => {
     const fetch = async function () {
       try {
@@ -948,13 +951,18 @@ const Game = ({ match }) => {
 
         const dataYt = yt.data.items;
 
+        const hltb = hltbService
+          .search("Nioh")
+          .then((result) => console.log(result));
+
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
-          console.log(req);
-          console.log(stores);
-          console.log(dlcs);
-          console.log(yt);
+          // console.log(req);
+          // console.log(stores);
+          // console.log(dlcs);
+          // console.log(yt);
+          console.log(hltb);
           setVideos(dataYt);
           setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);

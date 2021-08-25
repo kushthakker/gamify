@@ -76,7 +76,7 @@ const MyListData = ({ searchResult }) => {
       {console.log(`return render`)}
       <List
         exit={{ opacity: 0 }}
-        // transition={transition}
+        transition={transition}
         variants={container}
         initial="hidden"
         animate="visible"
