@@ -13,7 +13,7 @@ import {
   Input,
   Grid,
 } from "@chakra-ui/react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
 import { Formik, Field, Form } from "formik";
@@ -41,9 +41,9 @@ const LoginPage = () => {
       await m.auth.loginWithMagicLink({
         email: `${emailData}`,
         showUI: true,
-        redirectURI: `${window.location.origin}/`,
+        // redirectURI: `${window.location.origin}/`,
       });
-      //   history.push("/success");
+      history.push("/");
       //   const idToken = await m.user.getIdToken();
       //   const { issuer, email, publicAddress } = await m.user.getMetadata();
       //   console.log(idToken);

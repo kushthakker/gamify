@@ -6,8 +6,8 @@ import { css, jsx } from "@emotion/react";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
-// import { error } from "../actions";
-// import SideBarMemoized from "./Sidebar";
+import { error } from "../actions";
+import SideBarMemoized from "./Sidebar";
 import Success from "../pages/Success";
 
 import Game from "../pages/Game";
@@ -23,7 +23,7 @@ import LoginPage from "../pages/LoginPage";
 import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
-import ProtectedRoute from "../components/ProtectedRoute";
+// import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 
 const App = () => {
