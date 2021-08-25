@@ -43,7 +43,7 @@ const LoginPage = () => {
         showUI: true,
         // redirectURI: `${window.location.origin}/`,
       });
-      history.push("/");
+      history.push("/success");
       //   const idToken = await m.user.getIdToken();
       //   const { issuer, email, publicAddress } = await m.user.getMetadata();
       //   console.log(idToken);
