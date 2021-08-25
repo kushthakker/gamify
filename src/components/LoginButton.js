@@ -65,8 +65,10 @@ const LoginButton = () => {
       await m.oauth.loginWithRedirect({
         provider: "google" /* 'google', 'facebook', 'apple', or 'github' */,
         redirectURI: `${window.location.origin}/callback`,
+
         // scope: ["user:email"] /* optional */,
       });
+      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -129,6 +131,7 @@ const LoginButton = () => {
         redirectURI: `${window.location.origin}/callback`,
         // scope: ["user:email"] /* optional */,
       });
+      history.push("/");
     } catch (error) {
       console.log(error);
     }
