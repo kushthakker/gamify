@@ -8,15 +8,20 @@ import { Button, useColorMode } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
+import { isLoggedIn } from "../actions/index";
+import { userId } from "../actions/index";
+import { email } from "../actions/index";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
 }); // ✨
 
-const logout = async function () {
+const logout = async function (dispatch) {
   try {
     await m.user.logout();
-    // dispatch(
+    dispatch(isLoggedIn(false));
+    dispatch(userId(null));
+    dispatch(email(null));
   } catch (err) {
     console.log(err);
   }
@@ -36,7 +41,11 @@ const LoginButton = () => {
       }}
     >
       {isLoggedIn === true ? (
-        <Button colorScheme="teal" variant="outline" onClick={logout}>
+        <Button
+          colorScheme="teal"
+          variant="outline"
+          onClick={() => logout(dispatch)}
+        >
           Logout
         </Button>
       ) : (

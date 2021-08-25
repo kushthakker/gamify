@@ -40,16 +40,16 @@ const LoginPage = () => {
   const onClick = async () => {
     try {
       await m.auth.loginWithMagicLink({
-        email: emailData,
+        email: `${emailData}`,
         showUI: true,
         redirectURI: `${window.location.origin}/`,
       });
-      const idToken = await m.user.getIdToken();
-      const { issuer, email, publicAddress } = await m.user.getMetadata();
-      console.log(idToken);
-      console.log(issuer);
-      console.log(email);
-      console.log(publicAddress);
+      //   const idToken = await m.user.getIdToken();
+      //   const { issuer, email, publicAddress } = await m.user.getMetadata();
+      //   console.log(idToken);
+      //   console.log(issuer);
+      //   console.log(email);
+      //   console.log(publicAddress);
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +141,7 @@ const LoginPage = () => {
               onSubmit={(data, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 //async calls here
-                console.log(`submit: `, data);
+                console.log(`submit: `, data.email);
                 setEmailData(data.email);
                 setSubmitting(false);
                 resetForm();

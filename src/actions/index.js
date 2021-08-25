@@ -82,7 +82,7 @@ export const userId = (value) => {
 };
 export const email = (value) => {
   return {
-    type: "Email",
+    type: "EMAIL",
     payload: value,
   };
 };

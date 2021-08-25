@@ -19,144 +19,6 @@ const transition = {
   ease: [0.43, 0.13, 0.23, 0.96],
 };
 
-// const Item = ({ index, item, uniquePlatform, Metacritic }) => {
-//   return (
-//     <Items
-//       key={Math.random()}
-//       whileHover={{ scale: 1.1 }}
-//       transition={transition}
-//     >
-//       <div css={{ width: "20rem", height: "100%" }}>
-//         <img
-//           key={`item-${index}`}
-//           src={item.background_image}
-//           alt={item.name}
-//           css={{
-//             borderRadius: "1rem 1rem 0 0",
-//             width: "100%",
-//             maxHeight: "15rem",
-//             objectFit: "fill",
-//           }}
-//         />
-//       </div>
-//       <div
-//         css={{
-//           maxHeight: "20rem",
-//           overflow: "hidden",
-//           padding: "1rem",
-//         }}
-//       >
-//         <div
-//           css={{
-//             display: "flex",
-//             alignItems: "center",
-//             width: "100%",
-//             color: "white",
-//             justifyContent: "space-between",
-//           }}
-//         >
-//           <div css={{ display: "flex" }}>
-//             {uniquePlatform.length === 0
-//               ? null
-//               : uniquePlatform.map((ele) => (
-//                   <div css={{ margin: "0 10px 0 10px" }} key={Math.random()}>
-//                     {ele}
-//                   </div>
-//                 ))}
-//           </div>
-//           <div>
-//             <div css={{ marginLeft: "0.5rem" }}>
-//               {item.metacritic === null ? null : Metacritic}
-//             </div>
-//           </div>
-//         </div>
-//         <div
-//           css={{
-//             display: "flex",
-//             // justifyContent: "space-between",
-//             color: "white",
-//             width: "100%",
-//           }}
-//         >
-//           <div>
-//             <h1
-//               css={{
-//                 fontWeight: "bold",
-//                 fontSize: "1.8rem",
-//                 width: "auto",
-//                 marginBottom: "0.5rem",
-//               }}
-//             >
-//               {item?.name}
-//             </h1>
-//           </div>
-//           {/* <div css={{ marginLeft: "0.5rem" }}>
-//           {item.metacritic === null ? null : Metacritic}
-//         </div> */}
-//         </div>
-//         <div
-//           css={{
-//             display: "flex",
-//             color: "white",
-//             width: "100%",
-//             alignItems: "center",
-//           }}
-//         >
-//           {item?.released ? <H3>Release Date : </H3> : null}
-//           {item.released}
-//         </div>
-//         {/* <H3>
-//         {item?.esrb_rating ? (
-//           <div css={{ color: "white" }}>
-//             {item?.esrb_rating.name}
-//           </div>
-//         ) : null}
-//       </H3> */}
-//         <div
-//           css={{
-//             display: "flex",
-//             flexFlow: "row wrap",
-//             alignItems: "center",
-//             width: "100%",
-//             color: "white",
-//           }}
-//         >
-//           {item?.genres.length === 0 ? null : <H3>Genres :</H3>}
-
-//           {item.genres.map((ele) => (
-//             <div key={Math.random()}>{ele.name}</div>
-//           ))}
-//         </div>
-//       </div>
-//     </Items>
-//   );
-// };
-
-// const ItemsMemo = React.memo(Item);
-
-const Items = (props) => (
-  <motion.div
-    css={{
-      display: "grid",
-      gridTemplateRows: "auto 1fr",
-      maxWidth: "20rem",
-      backgroundColor: "rgb(20,25,35)",
-      borderRadius: "1rem",
-      // minHeight: "auto",
-      // maxHeight: "34rem",
-      overflow: "hidden",
-      filter: "drop-shadow(0 0 0.75rem crimson)",
-    }}
-    {...props}
-  ></motion.div>
-);
-
-const H3 = styled.h3({
-  marginRight: "1rem",
-  fontSize: "1.2rem",
-  fontWeight: "bold",
-});
-
 const MyListData = ({ searchResult }) => {
   const listRef = useRef();
   // const [imageData, setImageData] = useState(null);
@@ -441,10 +303,6 @@ const Search = ({ match }) => {
     fetchGames();
   }, [fetchGames]);
 
-  // useEffect(() => {
-  //   setQuery(match.params.q);
-  // }, [match.params.q]);
-
   console.log(query, value);
 
   const keyDownFnc = (e) => {
@@ -461,12 +319,6 @@ const Search = ({ match }) => {
       document.documentElement.removeEventListener("keydown", keyDownFnc);
     };
   }, []);
-
-  // useState(() => {
-  //   value === null && query === undefined
-  //     ? setStatus("idle")
-  //     : setStatus("loading");
-  // });
 
   Prompt("Press control/alt + enter to Search", "searchPrompt");
 
