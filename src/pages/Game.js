@@ -13,7 +13,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import Vidlist from "../components/Vidlist";
 import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
-import { HowLongToBeatService, HowLongToBeatEntry } from "howlongtobeat";
 
 import {
   Spinner,
@@ -907,8 +906,6 @@ const Game = ({ match }) => {
     }
   };
 
-  let hltbService = new HowLongToBeatService();
-
   useEffect(() => {
     const fetch = async function () {
       try {
@@ -950,8 +947,6 @@ const Game = ({ match }) => {
         });
 
         const dataYt = yt.data.items;
-
-        hltbService.search("hades").then((result) => console.log(result));
 
         if (!req.status) {
           throw new Error(req.statusText);
