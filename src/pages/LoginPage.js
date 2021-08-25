@@ -19,7 +19,6 @@ import { OAuthExtension } from "@magic-ext/oauth";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import SideBarMemoized from "../components/Sidebar";
-import Success from "./Success";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
@@ -33,7 +32,7 @@ const Heading = styled.h1({
 });
 
 const LoginPage = () => {
-  //   const history = useHistory();
+  const history = useHistory();
 
   const [emailData, setEmailData] = useState(null);
 
@@ -44,6 +43,7 @@ const LoginPage = () => {
         showUI: true,
         redirectURI: `${window.location.origin}/`,
       });
+      //   history.push("/success");
       //   const idToken = await m.user.getIdToken();
       //   const { issuer, email, publicAddress } = await m.user.getMetadata();
       //   console.log(idToken);

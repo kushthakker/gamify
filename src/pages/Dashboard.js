@@ -6,13 +6,13 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import SideBarMemoized from "../components/Sidebar";
 
-const Success = () => {
+const Dashboard = () => {
   return (
     <div>
       <SideBarMemoized />
-      Success...
+      Dashboard...
     </div>
   );
 };
 
-export default Success;
+export default React.memo(Dashboard);
