@@ -66,43 +66,6 @@ function ToogleMode() {
 
 const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // React.useState(() => {
-  //   const login = async function () {
-  //     try {
-  //       if (await m.user.isLoggedIn()) {
-  //         const didToken = await m.user.getIdToken();
-
-  //         // Do something with the DID token.
-  //         // For instance, this could be a `fetch` call
-  //         // to a protected backend endpoint.
-  //         console.log(didToken);
-  //         console.log(`is logged in`);
-  //       } else {
-  //         const user = await m.auth.loginWithMagicLink(
-  //           "codingpurposebykush@gmail.com"
-  //         );
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   login();
-  // });
-
-  // const onClick = async () => {
-  //   try {
-  //     await m.auth.loginWithMagicLink({
-  //       email: "codingpurposebykush@gmail.com",
-  //       showUI: true,
-  //       redirectURI: "http://localhost:3000/",
-  //     });
-  //     const idToken = await m.user.getIdToken();
-  //     const { issuer, email, publicAddress } = await m.user.getMetadata();
-  //     console.log(idToken, issuer, email, publicAddress);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   let isOpenForKey = false;
 

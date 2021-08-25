@@ -8,6 +8,7 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
+import LoginButton from "./LoginButton";
 import Game from "../pages/Game";
 import Home from "../pages/Home";
 import Results from "../pages/Results";
@@ -78,6 +79,7 @@ const App = () => {
       <div>
         <BrowserRouter>
           <SideBarMemoized />
+          <LoginButton />
           <div css={{ height: "100vh", width: "100vw" }}>
             <AnimatePresence exitBeforeEnter>
               <Switch>

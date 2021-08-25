@@ -356,13 +356,13 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
 
                         <Box p="6">
                           <Box d="flex" alignItems="baseline">
-                            <Badge
+                            {/* <Badge
                               borderRadius="full"
                               px="2"
                               colorScheme="teal"
                             >
                               series
-                            </Badge>
+                            </Badge> */}
                             <Box
                               color="gray.500"
                               fontWeight="semibold"
@@ -403,7 +403,7 @@ const Home = ({ match }) => {
   // const [carousel, setCarousel] = useState(null);
   // const [comingSoon, setComingSoon] = useState(null);
   // const [featured, setFeatured] = useState(null);
-  console.log(match);
+  // console.log(match);
 
   const dispatch = useDispatch();
 
@@ -426,8 +426,6 @@ const Home = ({ match }) => {
   );
 
   dayjs.extend(relativeTime);
-
-  console.log(dayjs(timerState).fromNow() === "3 minutes ago");
 
   const Main = () => {
     return (
@@ -494,9 +492,9 @@ const Home = ({ match }) => {
             throw new Error(req.statusText);
           } else {
             console.log(`render main api`);
-            console.log(Microsoft);
-            console.log(Sony);
-            console.log(Nintendo);
+            // console.log(Microsoft);
+            // console.log(Sony);
+            // console.log(Nintendo);
             // setCarousel(req.data.results);
             // setComingSoon(comingSoon.data.results);
             // setFeatured(featured.data);

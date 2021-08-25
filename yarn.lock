@@ -2029,6 +2029,14 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@magic-ext/oauth@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@magic-ext/oauth/-/oauth-0.9.0.tgz#6cf64f6a3bbbf830f201d226a9fd368b21c60c7d"
+  integrity sha512-dEaN/5S7HqIdpaygTUwl0JEH+gzfH4QcjFbqYnNen3KNPqYf8lRyRBUk+yoLXhtKCibUxEu9n27bVWEjk/EYag==
+  dependencies:
+    "@magic-sdk/types" "^1.1.0"
+    crypto-js "^3.3.0"
+
 "@magic-sdk/commons@^1.2.1":
   version "1.2.1"
   resolved "https://registry.npmjs.org/@magic-sdk/commons/-/commons-1.2.1.tgz"
@@ -2043,6 +2051,11 @@
     eventemitter3 "^4.0.4"
     semver "^7.3.2"
     tslib "^2.0.3"
+
+"@magic-sdk/types@^1.1.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@magic-sdk/types/-/types-1.6.0.tgz#b2a45be001194358b3d8fa0c63b649b73735660e"
+  integrity sha512-CvVUPTF9tSLNFA4JhcAFjheiqWyVp9r9ooy/AheK+0rWRZCxE5QCwc81d2FduDTqzEJZeUV9+9F9R0AplhnX7w==
 
 "@magic-sdk/types@^3.2.2":
   version "3.2.2"
@@ -4381,6 +4394,11 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+crypto-js@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
+  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
 
 crypto-random-string@^1.0.0:
   version "1.0.0"
@@ -7892,7 +7910,7 @@ lz-string@^1.4.4:
 
 magic-sdk@^4.4.2:
   version "4.4.2"
-  resolved "https://registry.npmjs.org/magic-sdk/-/magic-sdk-4.4.2.tgz"
+  resolved "https://registry.yarnpkg.com/magic-sdk/-/magic-sdk-4.4.2.tgz#37a32c5cf3b9e22202b1fce917359dce64dfdc10"
   integrity sha512-vZBUQu5vyTUREFkzEKjrdcL8mKk4olU0vOqKVx6RCXFGlU46I2e7C024EmXTs4egAWO+dHSTDemKSh5nWgqSQA==
   dependencies:
     "@babel/core" "^7.9.6"
