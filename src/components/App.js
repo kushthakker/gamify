@@ -99,11 +99,7 @@ const App = () => {
       if (window.location.pathname === "/success") {
         try {
           const result = await m.oauth.getRedirectResult();
-          const profile = await JSON.stringify(
-            result.oauth.userInfo,
-            undefined,
-            2
-          );
+          const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
           const idToken = await m.user.getIdToken();
           const metadata = await m.user.getMetadata();
           const isLogin = await m.user.isLoggedIn();
