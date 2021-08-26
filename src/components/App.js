@@ -76,14 +76,22 @@ const App = () => {
         if (await m.user.isLoggedIn()) {
           const didToken = await m.user.getIdToken();
           const user = await m.user.getMetadata();
+          const result = await m.oauth.getRedirectResult();
+          const profile = await JSON.stringify(
+            result.oauth.userInfo,
+            undefined,
+            2
+          );
           // Do something with the DID token.
           // For instance, this could be a `fetch` call
           // to a protected backend endpoint.
           console.log(didToken);
           console.log(user);
+
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
           dispatch(userId(didToken));
           dispatch(email(user.email));
+          dispatch(profileData(profile));
         } else {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");

@@ -13,7 +13,7 @@ const Heading = styled.h1({
 
 const Success = () => {
   const history = useHistory();
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const [redirect, setRedirect] = React.useState(false);
   const [timeLeft, setTimeLeft] = React.useState(6);
   React.useEffect(() => {
@@ -33,7 +33,7 @@ const Success = () => {
   return (
     <div>
       {redirect && timeLeft === 1 ? (
-        (window.location.href = "/")
+        history.push("/")
       ) : (
         <div
           css={{
