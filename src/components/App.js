@@ -23,13 +23,51 @@ import LoginPage from "../pages/LoginPage";
 import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
+import { profileData } from "../actions/index";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 
+function ErrorFallback({ error }) {
+  const history = useHistory();
+  return (
+    <div
+      role="alert"
+      css={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+        margin: "0",
+        overflowX: "hidden",
+      }}
+    >
+      <div css={{ marginBottom: "1rem" }}>
+        <p css={{ textAlign: "center", fontSize: "2rem" }}>
+          Something went wrong:
+        </p>
+        <pre>{error.message}</pre>
+      </div>
+      <div>
+        <Button
+          colorScheme="red"
+          variant="outline"
+          onClick={() => history.replace("/")}
+        >
+          Try again
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 const App = () => {
   const dispatch = useDispatch();
+  // const [profileDataState, setProfileDataState] = useState({});
 
-  useEffect(() => {
+  useState(() => {
     const m = new Magic("pk_live_8BB9335EFCCF939E", {
       extensions: [new OAuthExtension()],
     }); // ✨
@@ -60,7 +98,11 @@ const App = () => {
       if (window.location.pathname === "/success") {
         try {
           const result = await m.oauth.getRedirectResult();
-          const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
+          const profile = await JSON.stringify(
+            result.oauth.userInfo,
+            undefined,
+            2
+          );
           const idToken = await m.user.getIdToken();
           const metadata = await m.user.getMetadata();
           const isLogin = await m.user.isLoggedIn();
@@ -71,6 +113,7 @@ const App = () => {
           dispatch(isLoggedIn(isLogin));
           dispatch(userId(idToken));
           dispatch(email(metadata.email));
+          dispatch(profileData(profile));
 
           //   console.log(m.user.m.user.generateIdToken());
           //   console.log(m.user.isLoggedIn());
@@ -82,37 +125,7 @@ const App = () => {
       }
     };
     render();
-  }, [dispatch]);
-
-  function ErrorFallback({ error }) {
-    const history = useHistory();
-    return (
-      <div
-        role="alert"
-        css={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          alignContent: "center",
-          margin: "0",
-          overflowX: "hidden",
-        }}
-      >
-        <div css={{ marginBottom: "1rem" }}>
-          <p css={{ textAlign: "center", fontSize: "2rem" }}>
-            Something went wrong:
-          </p>
-          <pre>{error.message}</pre>
-        </div>
-        <div>
-          <Button onClick={() => history.replace("/")}>Try again</Button>
-        </div>
-      </div>
-    );
-  }
+  });
 
   //serach page normal
 
@@ -123,13 +136,26 @@ const App = () => {
           <div css={{ height: "100vh", width: "100vw" }}>
             <AnimatePresence exitBeforeEnter>
               <Switch>
-                <Route path="/" exact component={Home} />
-                <Route path="/discover/:q" exact component={Results} />
+                <Route path="/" exact component={Home} key={1} />
+                <Route path="/discover/:q" exact component={Results} key={2} />
 
-                <Route path="/games/:id" exact component={Game} />
-                <Route path="/login" exact component={LoginPage} />
-                <Route exact path="/success" component={Success} />
-                <Route exact path="/dashboard" component={Dashboard} />
+                <Route path="/games/:id" exact component={Game} key={3} />
+                <Route path="/login" exact component={LoginPage} key={4} />
+                <Route
+                  exact
+                  path="/success"
+                  component={Success}
+                  key={5}
+                  // condition={false}
+                />
+                <Route
+                  exact
+                  path="/dashboard"
+                  component={Dashboard}
+                  key={6}
+
+                  // condition={true}
+                />
                 <Route path="*" component={ErrorPage} />
               </Switch>
             </AnimatePresence>

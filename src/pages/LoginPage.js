@@ -13,7 +13,7 @@ import {
   Input,
   Grid,
 } from "@chakra-ui/react";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link, useHistory, Redirect, useLocation } from "react-router-dom";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
 import { Formik, Field, Form } from "formik";
@@ -34,7 +34,8 @@ const Heading = styled.h1({
 
 const LoginPage = () => {
   const history = useHistory();
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const location = useLocation();
 
   const [emailData, setEmailData] = useState(null);
 
@@ -46,12 +47,6 @@ const LoginPage = () => {
         // redirectURI: `${window.location.origin}/`,
       });
       history.push("/success");
-      //   const idToken = await m.user.getIdToken();
-      //   const { issuer, email, publicAddress } = await m.user.getMetadata();
-      //   console.log(idToken);
-      //   console.log(issuer);
-      //   console.log(email);
-      //   console.log(publicAddress);
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +80,7 @@ const LoginPage = () => {
   });
 
   return (
-    <div>
+    <div css={{ maxHeight: "100vh", maxWidth: "100vw", overflow: "hidden" }}>
       <SideBarMemoized />
 
       <Box maxW="100vw" maxH="100vh">

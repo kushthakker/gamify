@@ -86,3 +86,9 @@ export const email = (value) => {
     payload: value,
   };
 };
+export const profileData = (value) => {
+  return {
+    type: "PROFILEDATA",
+    payload: value,
+  };
+};
