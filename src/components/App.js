@@ -23,7 +23,7 @@ import LoginPage from "../pages/LoginPage";
 import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
-import { profileData } from "../actions/index";
+// import { profileData } from "../actions/index";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 
@@ -99,11 +99,7 @@ const App = () => {
       if (window.location.pathname === "/success") {
         try {
           const result = await m.oauth.getRedirectResult();
-          const profile = await JSON.stringify(
-            result.oauth.userInfo,
-            undefined,
-            2
-          );
+          const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
           const idToken = await m.user.getIdToken();
           const metadata = await m.user.getMetadata();
           const isLogin = await m.user.isLoggedIn();
@@ -114,7 +110,7 @@ const App = () => {
           dispatch(isLoggedIn(isLogin));
           dispatch(userId(idToken));
           dispatch(email(metadata.email));
-          dispatch(profileData(profile));
+          // dispatch(profileData(profile));
 
           //   console.log(m.user.m.user.generateIdToken());
           //   console.log(m.user.isLoggedIn());
