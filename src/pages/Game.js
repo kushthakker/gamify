@@ -29,7 +29,6 @@ import {
   useToast,
   Tooltip,
   ButtonGroup,
-  IconButton,
   MenuButton,
   MenuList,
   MenuItem,
@@ -888,6 +887,7 @@ const Game = ({ match }) => {
   const [current, setCurrent] = React.useState(null);
 
   const location = useLocation();
+  const history = useHistory();
 
   const Fetch = function (id) {
     try {
@@ -965,11 +965,35 @@ const Game = ({ match }) => {
           setStoreData(stores.data.results);
         }
       } catch (err) {
-        console.log(err);
+        return (
+          <div
+            role="alert"
+            css={{
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center",
+              margin: "0",
+            }}
+          >
+            <div css={{ marginBottom: "1rem" }}>
+              <p css={{ textAlign: "center", fontSize: "2rem" }}>
+                Something went wrong:
+              </p>
+              <pre>{err.message}</pre>
+            </div>
+            <div>
+              <Button onClick={() => history.replace("/")}>Try again</Button>
+            </div>
+          </div>
+        );
       }
     };
     fetch();
-  }, [match.params.id]);
+  }, [history, match.params.id]);
 
   // console.log(img);
 

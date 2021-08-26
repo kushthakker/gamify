@@ -72,3 +72,6 @@ const Dashboard = () => {
 };
 
 export default React.memo(Dashboard);
+
+//TODO: add a rest api server and host it on heroku. Store all users in it with id as the identifier and in that id store the user didToken, name, avatar and user's data like their wishlist, collection, etc.
+//TODO: A option to show merge both accounts in the user dashboard if we have different mails in same userid/didId.
