@@ -15,11 +15,11 @@ const Success = () => {
   const history = useHistory();
   // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const [redirect, setRedirect] = React.useState(false);
-  const [timeLeft, setTimeLeft] = React.useState(6);
+  const [timeLeft, setTimeLeft] = React.useState(5);
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setRedirect(true);
-    }, 6000);
+    }, 5000);
     const countdown = setInterval(() => {
       setTimeLeft(timeLeft - 1);
     }, 1000);
