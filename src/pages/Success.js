@@ -33,7 +33,7 @@ const Success = () => {
   return (
     <div>
       {redirect && timeLeft === 1 ? (
-        history.push("/")
+        (window.location.href = "/")
       ) : (
         <div
           css={{
