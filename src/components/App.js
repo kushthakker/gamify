@@ -122,7 +122,7 @@ const App = () => {
           window.location.href = window.location.origin;
         }
       } else {
-        console.log("pls try again");
+        console.log("please try again");
       }
     };
     render();
