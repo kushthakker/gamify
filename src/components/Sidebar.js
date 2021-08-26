@@ -10,17 +10,14 @@ import { Magic } from "magic-sdk";
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  MenuButton,
-  HamburgerIcon,
-  IconButton,
 } from "@chakra-ui/react";
 import { findAllByTestId } from "@testing-library/react";
+import Dashboard from "../pages/Dashboard";
 
 const Div = styled.div({
   display: "grid",
@@ -123,6 +120,9 @@ const Sidebar = () => {
             <Div>
               <Link to={"/"}>
                 <H1 onClick={onClose}>Home</H1>
+              </Link>
+              <Link to={"/dashboard"}>
+                <H1 onClick={onClose}>Dashboard</H1>
               </Link>
               {/* <Link to={"/discover"}>
                 <H1 onClick={onClose}>Search</H1>

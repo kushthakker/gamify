@@ -224,13 +224,13 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
 
                         <Box p="6">
                           <Box d="flex" alignItems="baseline">
-                            <Badge
+                            {/* <Badge
                               borderRadius="full"
                               px="2"
                               colorScheme="teal"
                             >
                               series
-                            </Badge>
+                            </Badge> */}
                             <Box
                               color="gray.500"
                               fontWeight="semibold"
@@ -291,13 +291,13 @@ const Publishers = ({ microsoft, sony, nintendo }) => {
 
                         <Box p="6">
                           <Box d="flex" alignItems="baseline">
-                            <Badge
+                            {/* <Badge
                               borderRadius="full"
                               px="2"
                               colorScheme="teal"
                             >
                               series
-                            </Badge>
+                            </Badge> */}
                             <Box
                               color="gray.500"
                               fontWeight="semibold"
@@ -409,11 +409,11 @@ const Home = ({ match }) => {
 
   const dispatch = useDispatch();
 
-  const homepageData = useSelector((state) => state.homepageData);
-  console.log(
-    "🚀 ~ file: Home.js ~ line 174 ~ Home ~ homepageData",
-    homepageData
-  );
+  // const homepageData = useSelector((state) => state.homepageData);
+  // console.log(
+  //   "🚀 ~ file: Home.js ~ line 174 ~ Home ~ homepageData",
+  //   homepageData
+  // );
 
   const carousel = useSelector((state) => state.homepageData.carousel);
   const comingSoon = useSelector((state) => state.homepageData.comingSoon);

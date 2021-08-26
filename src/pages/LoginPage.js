@@ -13,12 +13,13 @@ import {
   Input,
   Grid,
 } from "@chakra-ui/react";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link, useHistory, Redirect, useLocation } from "react-router-dom";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import SideBarMemoized from "../components/Sidebar";
+import { isLoggedIn } from "../actions/index";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
@@ -33,6 +34,8 @@ const Heading = styled.h1({
 
 const LoginPage = () => {
   const history = useHistory();
+  // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const location = useLocation();
 
   const [emailData, setEmailData] = useState(null);
 
@@ -44,12 +47,6 @@ const LoginPage = () => {
         // redirectURI: `${window.location.origin}/`,
       });
       history.push("/success");
-      //   const idToken = await m.user.getIdToken();
-      //   const { issuer, email, publicAddress } = await m.user.getMetadata();
-      //   console.log(idToken);
-      //   console.log(issuer);
-      //   console.log(email);
-      //   console.log(publicAddress);
     } catch (error) {
       console.log(error);
     }
@@ -79,11 +76,11 @@ const LoginPage = () => {
   };
 
   const validationSchema = yup.object({
-    email: yup.string().required(),
+    email: yup.string().email("Invalid email").required("Required"),
   });
 
   return (
-    <div>
+    <div css={{ maxHeight: "100vh", maxWidth: "100vw", overflow: "hidden" }}>
       <SideBarMemoized />
 
       <Box maxW="100vw" maxH="100vh">
@@ -141,16 +138,15 @@ const LoginPage = () => {
               onSubmit={(data, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 //async calls here
-                console.log(`submit: `, data.email);
-                setEmailData(data.email);
+                console.log(String(data.email));
+                setEmailData(String(data.email));
                 setSubmitting(false);
                 resetForm();
               }}
             >
               {({ isSubmitting }) => (
                 <Form>
-                  {/* this 👆 (<Form>)is equal to => <from onSubmit={handleSubmit}> */}
-                  <Field name="email">
+                  <Field name="email" type="email">
                     {({ field, form }) => (
                       <FormControl
                         isInvalid={form.errors.email && form.touched.email}
