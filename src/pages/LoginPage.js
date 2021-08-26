@@ -161,6 +161,7 @@ const LoginPage = () => {
                           w="20rem"
                           mb="5rem"
                           pos="relative"
+                          autocomplete="off"
                           // top="-1rem"
                         />
                         <FormErrorMessage>{form.errors.email}</FormErrorMessage>
