@@ -15,7 +15,7 @@ const streamsReducer = (state = {}, action) => {
     case "CREATE_USER":
       return {
         ...state,
-        [action.payload.id]: action.payload,
+        [action.payload.id]: { ...action.payload },
       };
     case "DELETE_USER":
       return _.omit(state, action.payload);

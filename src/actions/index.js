@@ -105,11 +105,12 @@ export const fetchUser = (id) => async (dispatch) => {
 };
 
 export const addUser = (values) => async (dispatch, getState) => {
-  const { userId } = getState().user.userId;
+  const { userId } = getState().user.userID;
   const response = await users.post("/users", { ...values, userId });
+  console.log(`response`, response);
   dispatch({
     type: "CREATE_USER",
-    payload: response.data,
+    payload: { ...response.data, id: userId },
   });
 };
 

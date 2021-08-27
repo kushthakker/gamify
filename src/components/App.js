@@ -87,7 +87,7 @@ const App = () => {
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
           dispatch(userId(didToken));
           dispatch(email(user.email));
-          dispatch(fetchUser(didToken));
+          // dispatch(fetchUser(didToken));
         } else {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");
@@ -114,9 +114,13 @@ const App = () => {
           dispatch(userId(idToken));
           dispatch(email(metadata.email));
           // dispatch(profileData(profile));
-          const fetchUser = dispatch(fetchUser(idToken));
-          if (fetchUser) return;
-          else dispatch(addUser(idToken, profile));
+          const data = {
+            id: idToken,
+            data: { ...JSON.parse(profile) },
+          };
+          // const getUser = await dispatch(fetchUser(idToken));
+          // if (getUser === undefined) dispatch(addUser(profile));
+          dispatch(addUser(data));
           //   console.log(m.user.m.user.generateIdToken());
           //   console.log(m.user.isLoggedIn());
         } catch {
