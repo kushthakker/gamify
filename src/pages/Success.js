@@ -30,11 +30,13 @@ const Success = () => {
       };
   }, [timeLeft]);
 
-  /* (window.location.href = "/") */
+  // /* (window.location.href = "/") */
 
   return (
     <div>
-      {redirect && timeLeft === 1 ? null : (
+      {redirect && timeLeft === 1 ? (
+        (window.location.href = "/")
+      ) : (
         <div
           css={{
             width: "100vw",
