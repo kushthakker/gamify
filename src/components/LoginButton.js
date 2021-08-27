@@ -11,6 +11,11 @@ import {
   MenuList,
   MenuItem,
   Image,
+  MenuDivider,
+  Spinner,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { Magic } from "magic-sdk";
@@ -18,6 +23,7 @@ import { OAuthExtension } from "@magic-ext/oauth";
 import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
+import _ from "lodash";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
@@ -37,9 +43,11 @@ const logout = async function (dispatch) {
 const LoginButton = () => {
   const history = useHistory();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const profileData = useSelector((state) => state.user.profileData);
+
+  const data = useSelector((state) => Object.values(state.profileDataApi)[0]);
+
+  // const profilePicture = data.data.picture;
   const dispatch = useDispatch();
-  console.log(profileData);
   return (
     <div
       css={{
@@ -47,18 +55,27 @@ const LoginButton = () => {
         maxWidth: "3rem",
         position: "fixed",
         top: "2rem",
-        right: "8rem",
+        right: isLoggedIn === true ? "12rem" : "6rem",
       }}
     >
-      {isLoggedIn === true ? (
+      {isLoggedIn === true && data !== undefined ? (
         <Menu>
           <MenuButton
             as={Button}
             rightIcon={<i className="fas fa-chevron-down"></i>}
-            variant="outline"
+            leftIcon={
+              <Image
+                src={data.data.picture}
+                w="35px"
+                h="35px"
+                borderRadius="35px"
+              />
+            }
+            variant="ghost"
             colorScheme="teal"
+            width="200px"
           >
-            Actions
+            {data.data.name}
           </MenuButton>
           <MenuList>
             <MenuItem
@@ -68,6 +85,7 @@ const LoginButton = () => {
             >
               Dashboard
             </MenuItem>
+            <MenuDivider />
             <MenuItem
               onClick={() => logout(dispatch)}
               icon={<i className="fas fa-sign-out-alt"></i>}
@@ -77,12 +95,14 @@ const LoginButton = () => {
             </MenuItem>
           </MenuList>
         </Menu>
-      ) : (
+      ) : isLoggedIn === false ? (
         <Link to={"/login"}>
           <Button colorScheme="teal" variant="outline" w="6rem">
             Login
           </Button>
         </Link>
+      ) : (
+        <Spinner />
       )}
     </div>
   );
