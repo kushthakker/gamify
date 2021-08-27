@@ -2,7 +2,7 @@ const user = {
   isLoggedIn: false,
   userID: {},
   email: {},
-  // profileData: {},
+  profileData: {},
 };
 
 const userReducer = (userProfile = user, action) => {
@@ -13,8 +13,8 @@ const userReducer = (userProfile = user, action) => {
       return { ...userProfile, userID: action.payload };
     case "EMAIL":
       return { ...userProfile, email: action.payload };
-    // case "PROFILEDATA":
-    //   return { ...userProfile, profileData: action.payload };
+    case "PROFILEDATA":
+      return { ...userProfile, profileData: action.payload };
     default:
       return userProfile;
   }

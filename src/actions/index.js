@@ -1,3 +1,5 @@
+import users from "../api/users";
+
 export const error = () => {
   return {
     type: "INCREMENT",
@@ -91,4 +93,39 @@ export const profileData = (value) => {
     type: "PROFILEDATA",
     payload: value,
   };
+};
+
+export const fetchUser = (id) => async (dispatch) => {
+  const response = await users.get(`/users/${id}`);
+
+  dispatch({
+    type: "FETCH_USER",
+    payload: response.data,
+  });
+};
+
+export const addUser = (values) => async (dispatch, getState) => {
+  const { userId } = getState().user.userId;
+  const response = await users.post("/users", { ...values, userId });
+  dispatch({
+    type: "CREATE_USER",
+    payload: response.data,
+  });
+};
+
+export const editUser = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${Number(id)}`, values);
+  console.log(response);
+  dispatch({
+    type: "EDIT_USER",
+    payload: response.data,
+  });
+};
+
+export const deleteUser = (id) => async (dispatch) => {
+  await users.delete(`/users/${id}`);
+  dispatch({
+    type: "DELETE_USER",
+    payload: id,
+  });
 };

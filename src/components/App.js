@@ -23,7 +23,8 @@ import LoginPage from "../pages/LoginPage";
 import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
-// import { profileData } from "../actions/index";
+import { addUser } from "../actions/index";
+import { fetchUser } from "../actions/index";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 
@@ -65,6 +66,7 @@ function ErrorFallback({ error }) {
 
 const App = () => {
   const dispatch = useDispatch();
+
   // const [profileDataState, setProfileDataState] = useState({});
 
   useState(() => {
@@ -85,6 +87,7 @@ const App = () => {
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
           dispatch(userId(didToken));
           dispatch(email(user.email));
+          dispatch(fetchUser(didToken));
         } else {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");
@@ -111,7 +114,9 @@ const App = () => {
           dispatch(userId(idToken));
           dispatch(email(metadata.email));
           // dispatch(profileData(profile));
-
+          const fetchUser = dispatch(fetchUser(idToken));
+          if (fetchUser) return;
+          else dispatch(addUser(idToken, profile));
           //   console.log(m.user.m.user.generateIdToken());
           //   console.log(m.user.isLoggedIn());
         } catch {
