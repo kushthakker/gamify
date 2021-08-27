@@ -14,6 +14,7 @@ import Vidlist from "../components/Vidlist";
 import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
 import SideBarMemoized from "../components/Sidebar";
+import LoginButton from "../components/LoginButton";
 
 import {
   Spinner,
@@ -571,7 +572,10 @@ const ShowData = ({
                               // alt={ele.id}
                               ref={image}
                               hideDownload="true"
-                              css={{ height: "180px", width: "100% " }}
+                              css={{
+                                height: "180px",
+                                width: "100% ",
+                              }}
                             />
                           </div>
                         </Tooltip>
@@ -1002,6 +1006,7 @@ const Game = ({ match }) => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
         <SideBarMemoized />
+        <LoginButton />
         <DataMemoized
           data={data}
           img={img}

@@ -13,9 +13,6 @@ import {
   Image,
   MenuDivider,
   Spinner,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { Magic } from "magic-sdk";

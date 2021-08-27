@@ -93,6 +93,9 @@ const App = () => {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
+          const metadata = await m.user.getMetadata();
+          const publicAddress = metadata.publicAddress;
+          dispatch(fetchUser(publicAddress));
         }
       } catch (err) {
         console.log(err.message);
