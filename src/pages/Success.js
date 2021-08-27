@@ -30,7 +30,7 @@ const Success = () => {
       };
   }, [timeLeft]);
 
-  /* (window.location.href = "/") */
+  // /* (window.location.href = "/") */
 
   return (
     <div>
