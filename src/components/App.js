@@ -77,17 +77,18 @@ const App = () => {
       try {
         if (await m.user.isLoggedIn()) {
           const didToken = await m.user.getIdToken();
-          const user = await m.user.getMetadata();
+          const metadata = await m.user.getMetadata();
+          const publicAddress = metadata.publicAddress;
           // Do something with the DID token.
           // For instance, this could be a `fetch` call
           // to a protected backend endpoint.
           console.log(didToken);
-          console.log(user);
+          console.log("metadata", metadata);
 
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
-          dispatch(userId(didToken));
-          dispatch(email(user.email));
-          // dispatch(fetchUser(didToken));
+          dispatch(userId(publicAddress));
+          dispatch(email(metadata.email));
+          dispatch(fetchUser(publicAddress));
         } else {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");
@@ -103,26 +104,23 @@ const App = () => {
         try {
           const result = await m.oauth.getRedirectResult();
           const profile = JSON.stringify(result.oauth.userInfo, undefined, 2);
-          const idToken = await m.user.getIdToken();
+
           const metadata = await m.user.getMetadata();
+          const publicAddress = metadata.publicAddress;
           const isLogin = await m.user.isLoggedIn();
           console.log(profile);
-          console.log(idToken);
-          console.log(metadata);
+          console.log("metadata", metadata);
           console.log(isLogin);
           dispatch(isLoggedIn(isLogin));
-          dispatch(userId(idToken));
+          dispatch(userId(publicAddress));
           dispatch(email(metadata.email));
-          // dispatch(profileData(profile));
           const data = {
-            id: idToken,
+            id: publicAddress,
             data: { ...JSON.parse(profile) },
           };
-          // const getUser = await dispatch(fetchUser(idToken));
-          // if (getUser === undefined) dispatch(addUser(profile));
+          // const getUser = await dispatch(fetchUser(publicAddress));
+          // if (getUser === undefined) dispatch(addUser(data));
           dispatch(addUser(data));
-          //   console.log(m.user.m.user.generateIdToken());
-          //   console.log(m.user.isLoggedIn());
         } catch {
           window.location.href = window.location.origin;
         }

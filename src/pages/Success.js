@@ -34,7 +34,9 @@ const Success = () => {
 
   return (
     <div>
-      {redirect && timeLeft === 1 ? null : (
+      {redirect && timeLeft === 1 ? (
+        (window.location.href = "/")
+      ) : (
         <div
           css={{
             width: "100vw",
