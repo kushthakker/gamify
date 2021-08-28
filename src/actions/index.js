@@ -108,6 +108,13 @@ export const addUser = (values) => async (dispatch, getState) => {
   });
 };
 
+export const addToWishlist = (value) => {
+  return {
+    type: "ADD_TO_WISHLIST",
+    payload: value,
+  };
+};
+
 export const editUser = (id, values) => async (dispatch) => {
   const response = await users.patch(`/users/${Number(id)}`, values);
   console.log(response);

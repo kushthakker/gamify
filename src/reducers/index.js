@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import incrementReducer from "./errorReducer";
 import searchResultReducer from "./searchResultReducer.js";
 import statusReducer from "./statusReducer";
 import urlQueryReducer from "./urlQueryReducer";
@@ -9,7 +8,6 @@ import userReducer from "./userReducer";
 import profileDataApiReducer from "./profileDataApiReducer";
 
 export default combineReducers({
-  error: incrementReducer,
   searchResult: searchResultReducer,
   status: statusReducer,
   urlQuery: urlQueryReducer,

@@ -15,6 +15,7 @@ import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
+import { addToWishlist } from "../actions/index";
 
 import {
   Spinner,
@@ -249,55 +250,10 @@ const ShowData = ({
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
-  // const [ytData, setYtData] = useState(null);
-  // const modal = (ele, img) => {
-  //   console.log(img);
-  //   return (
-  //     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
-  //       <ModalOverlay />
-  //       <ModalContent maxW="1024px" maxH="1080px">
-  //         {/* <ModalHeader>ScreenShot</ModalHeader> */}
-  //         {/* <ModalCloseButton /> */}
-  //         <ModalBody>
-  //           <img
-  //             src={ele.image}
-  //             alt={ele.id}
-  //             css={{ borderRadius: "0.3rem" }}
-  //           />
-  //         </ModalBody>
-
-  //         <ModalFooter>
-  //           <Button colorScheme="red" mr={3} onClick={onClose}>
-  //             Close
-  //           </Button>
-  //         </ModalFooter>
-  //       </ModalContent>
-  //     </Modal>
-  //   );
-  // };
 
   const showDetail = (video) => {
     setCurrent(video);
   };
-
-  // function useHorizontalScroll() {
-  //   const elRef = React.useRef();
-  //   useEffect(() => {
-  //     const el = elRef.current;
-  //     if (el) {
-  //       const onWheel = (e) => {
-  //         if (e.deltaY === 0) return;
-  //         e.preventDefault();
-  //         el.scrollTo({
-  //           left: el.scrollLeft + e.deltaY,
-  //         });
-  //       };
-  //       el.addEventListener("wheel", onWheel);
-  //       return () => el.removeEventListener("wheel", onWheel);
-  //     }
-  //   }, []);
-  //   return elRef;
-  // }
 
   function showImgNote() {
     const prompt = localStorage.getItem("imgInfo");

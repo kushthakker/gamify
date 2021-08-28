@@ -7,6 +7,11 @@ const streamsReducer = (state = {}, action) => {
         ...state,
         [action.payload.id]: action.payload,
       };
+    case "ADD_TO_WISHLIST":
+      return {
+        ...state,
+        [action.payload.wishlist]: [...action.payload.wishlist, action.payload],
+      };
     case "FETCH_USER":
       return action.payload;
     case "CREATE_USER":
