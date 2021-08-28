@@ -259,22 +259,47 @@ const ShowData = ({
 
   const userId = useSelector((state) => state.user.userID);
   const profile = useSelector((state) => state.profileDataApi);
+  const collection = useSelector((state) => state.profileDataApi.collection);
+  const wishlist = useSelector((state) => state.profileDataApi.wishlist);
+
+  const [wishlistadded, setWishlistadded] = useState(
+    wishlist.includes(data.id)
+  );
+  const [collectionadded, setCollectionadded] = useState(
+    collection.includes(data.id)
+  );
 
   const addToWishlistClick = (id) => {
+    setWishlistadded(!wishlistadded);
     dispatch(
       addToWishlist(userId, {
         ...profile,
         wishlist: [...profile.wishlist, id],
       })
     );
+    toast({
+      title: wishlistadded ? "Removed from Wishlist" : "Added to Wishlist",
+      status: wishlistadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
   const addToCollectionClick = (id) => {
+    setCollectionadded(!collectionadded);
     dispatch(
       addToCollection(userId, {
         ...profile,
         collection: [...profile.collection, id],
       })
     );
+    toast({
+      title: collectionadded
+        ? "Removed from Collection"
+        : "Added to Collection",
+      status: collectionadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
   function showImgNote() {
     const prompt = localStorage.getItem("imgInfo");
@@ -342,8 +367,8 @@ const ShowData = ({
             <Menu placement="auto">
               <MenuButton
                 as={Button}
-                variant="outline"
-                colorScheme="blue"
+                variant="solid"
+                colorScheme="green"
                 rightIcon={<i className="fas fa-plus"></i>}
               >
                 Add to my games
@@ -362,23 +387,25 @@ const ShowData = ({
             </Menu>
 
             <Button
-              variant="outline"
-              colorScheme="blue"
+              variant="solid"
+              colorScheme={wishlistadded ? "red" : "green"}
               mr="-px"
               rightIcon={<i className="fas fa-gift"></i>}
               onClick={() => addToWishlistClick(data.id)}
             >
-              Add to Wishlist
+              {wishlistadded ? `Remove from Wishlist` : `Add to Wishlist`}
             </Button>
 
             <Button
-              variant="outline"
-              colorScheme="blue"
+              variant="solid"
+              colorScheme={collectionadded ? "red" : "green"}
               mr="-px"
               rightIcon={<i className="fas fa-folder-open"></i>}
               onClick={() => addToCollectionClick(data.id)}
             >
-              Save to Collection
+              {collectionadded
+                ? `Remove from Collection`
+                : `Save to Collection`}
             </Button>
           </ButtonGroup>
         </motion.div>
@@ -697,7 +724,11 @@ const ShowData = ({
           <FadeInWhenVisible>
             {gameInSeries.length !== 0 ? (
               <SubHeadings
-                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+                css={{
+                  display: "grid",
+                  justifyItems: "center",
+                  width: "100%",
+                }}
               >
                 Other games in Series
               </SubHeadings>
@@ -778,7 +809,11 @@ const ShowData = ({
           <FadeInWhenVisible>
             {dlcs.length !== 0 ? (
               <SubHeadings
-                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+                css={{
+                  display: "grid",
+                  justifyItems: "center",
+                  width: "100%",
+                }}
               >
                 DLC's And Special edition
               </SubHeadings>
@@ -889,6 +924,7 @@ const Game = ({ match }) => {
       console.log(err);
     }
   };
+  const collection = useSelector((state) => state.profileDataApi.collection);
 
   useEffect(() => {
     const fetch = async function () {
@@ -980,7 +1016,14 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
+  return data &&
+    img &&
+    storeData &&
+    Fetch &&
+    dlcs &&
+    gameInSeries &&
+    videos &&
+    collection ? (
     // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
