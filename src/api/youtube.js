@@ -1,5 +1,5 @@
 import axios from "axios";
-const KEY = "AIzaSyB_n3PGWgJZyNGbkISnceJoAl_9q3VYTQA";
+const KEY = "AIzaSyDLDA8jUkBKC27KYK9_PWcgpVgRWK8sf0o";
 // const KEY = process.env.YT_API;
 export default axios.create({
   baseURL:

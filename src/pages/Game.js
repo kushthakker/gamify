@@ -16,6 +16,7 @@ import FadeInWhenVisible from "../components/FadeInWhenVisible";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
 import { addToWishlist } from "../actions/index";
+import { addToCollection } from "../actions/index";
 
 import {
   Spinner,
@@ -250,11 +251,26 @@ const ShowData = ({
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
+  const dispatch = useDispatch();
 
   const showDetail = (video) => {
     setCurrent(video);
   };
 
+  const userId = useSelector((state) => state.user.userID);
+  const profile = useSelector((state) => state.profileDataApi);
+
+  const addToWishlistClick = (id) => {
+    dispatch(addToWishlist(userId, id));
+  };
+  const addToCollectionClick = (id) => {
+    dispatch(
+      addToCollection(userId, {
+        ...profile,
+        collection: [...profile.collection, id],
+      })
+    );
+  };
   function showImgNote() {
     const prompt = localStorage.getItem("imgInfo");
     if (prompt === "1") return;
@@ -345,6 +361,7 @@ const ShowData = ({
               colorScheme="blue"
               mr="-px"
               rightIcon={<i className="fas fa-gift"></i>}
+              onClick={() => addToWishlistClick(data.id)}
             >
               Add to Wishlist
             </Button>
@@ -354,6 +371,7 @@ const ShowData = ({
               colorScheme="blue"
               mr="-px"
               rightIcon={<i className="fas fa-folder-open"></i>}
+              onClick={() => addToCollectionClick(data.id)}
             >
               Save to Collection
             </Button>
@@ -901,13 +919,13 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
-        const yt = await youtube.get(`/search`, {
-          params: {
-            q: req.data.name,
-          },
-        });
+        // const yt = await youtube.get(`/search`, {
+        //   params: {
+        //     q: req.data.name,
+        //   },
+        // });
 
-        const dataYt = yt.data.items;
+        // const dataYt = yt.data.items;
 
         if (!req.status) {
           throw new Error(req.statusText);
@@ -916,8 +934,8 @@ const Game = ({ match }) => {
           // console.log(stores);
           // console.log(dlcs);
           // console.log(yt);
-          setVideos(dataYt);
-          setCurrent(dataYt[0]);
+          // setVideos(dataYt);
+          // setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);

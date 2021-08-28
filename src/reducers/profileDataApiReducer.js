@@ -1,6 +1,8 @@
 import _ from "lodash";
+import produce from "immer";
 
-const streamsReducer = (state = {}, action) => {
+const streamsReducer = (state = [], action) => {
+  console.log("state", state);
   switch (action.type) {
     case "EDIT_USER":
       return {
@@ -9,9 +11,11 @@ const streamsReducer = (state = {}, action) => {
       };
     case "ADD_TO_WISHLIST":
       return {
-        ...state,
-        [action.payload.wishlist]: [...action.payload.wishlist, action.payload],
+        ...action.payload.data,
+        wishlist: state.wishlist.concat(action.payload.values),
       };
+    case "ADD_TO_COLLECTION":
+      return action.payload;
     case "FETCH_USER":
       return action.payload;
     case "CREATE_USER":

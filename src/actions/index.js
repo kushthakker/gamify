@@ -91,6 +91,7 @@ export const email = (value) => {
 
 export const fetchUser = (id) => async (dispatch) => {
   const response = await users.get(`/users/${id}`);
+  console.log(response);
 
   dispatch({
     type: "FETCH_USER",
@@ -113,6 +114,15 @@ export const addToWishlist = (value) => {
     type: "ADD_TO_WISHLIST",
     payload: value,
   };
+};
+
+export const addToCollection = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+  console.log(response);
+  dispatch({
+    type: "ADD_TO_COLLECTION",
+    payload: response.data,
+  });
 };
 
 export const editUser = (id, values) => async (dispatch) => {
