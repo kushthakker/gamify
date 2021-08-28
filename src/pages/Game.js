@@ -261,7 +261,12 @@ const ShowData = ({
   const profile = useSelector((state) => state.profileDataApi);
 
   const addToWishlistClick = (id) => {
-    dispatch(addToWishlist(userId, id));
+    dispatch(
+      addToWishlist(userId, {
+        ...profile,
+        wishlist: [...profile.wishlist, id],
+      })
+    );
   };
   const addToCollectionClick = (id) => {
     dispatch(

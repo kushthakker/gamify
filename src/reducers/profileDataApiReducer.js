@@ -10,10 +10,7 @@ const streamsReducer = (state = [], action) => {
         [action.payload.id]: action.payload,
       };
     case "ADD_TO_WISHLIST":
-      return {
-        ...action.payload.data,
-        wishlist: state.wishlist.concat(action.payload.values),
-      };
+      return action.payload;
     case "ADD_TO_COLLECTION":
       return action.payload;
     case "FETCH_USER":

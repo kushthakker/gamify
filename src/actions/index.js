@@ -109,16 +109,17 @@ export const addUser = (values) => async (dispatch, getState) => {
   });
 };
 
-export const addToWishlist = (value) => {
-  return {
-    type: "ADD_TO_WISHLIST",
-    payload: value,
-  };
-};
+export const addToWishlist = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
 
+  dispatch({
+    type: "ADD_TO_WISHLIST",
+    payload: response.data,
+  });
+};
 export const addToCollection = (id, values) => async (dispatch) => {
   const response = await users.patch(`/users/${id}/`, values);
-  console.log(response);
+
   dispatch({
     type: "ADD_TO_COLLECTION",
     payload: response.data,
@@ -127,7 +128,6 @@ export const addToCollection = (id, values) => async (dispatch) => {
 
 export const editUser = (id, values) => async (dispatch) => {
   const response = await users.patch(`/users/${Number(id)}`, values);
-  console.log(response);
   dispatch({
     type: "EDIT_USER",
     payload: response.data,
