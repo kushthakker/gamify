@@ -88,12 +88,6 @@ export const email = (value) => {
     payload: value,
   };
 };
-export const profileData = (value) => {
-  return {
-    type: "PROFILEDATA",
-    payload: value,
-  };
-};
 
 export const fetchUser = (id) => async (dispatch) => {
   const response = await users.get(`/users/${id}`);

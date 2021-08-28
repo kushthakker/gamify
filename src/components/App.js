@@ -89,6 +89,7 @@ const App = () => {
           dispatch(userId(publicAddress));
           dispatch(email(metadata.email));
           dispatch(fetchUser(publicAddress));
+          dispatch(userId(publicAddress)) || dispatch(isLoggedIn(false));
         } else {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");

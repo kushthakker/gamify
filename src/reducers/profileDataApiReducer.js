@@ -8,10 +8,7 @@ const streamsReducer = (state = {}, action) => {
         [action.payload.id]: action.payload,
       };
     case "FETCH_USER":
-      return {
-        ...state,
-        [action.payload.id]: action.payload,
-      };
+      return action.payload;
     case "CREATE_USER":
       return {
         ...state,

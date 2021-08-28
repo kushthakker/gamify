@@ -41,7 +41,8 @@ const LoginButton = () => {
   const history = useHistory();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  const data = useSelector((state) => Object.values(state.profileDataApi)[0]);
+  // const data = useSelector((state) => Object.values(state.profileDataApi)[0]);
+  const data = useSelector((state) => state.profileDataApi.data);
 
   // const profilePicture = data.data.picture;
   const dispatch = useDispatch();
@@ -61,18 +62,13 @@ const LoginButton = () => {
             as={Button}
             rightIcon={<i className="fas fa-chevron-down"></i>}
             leftIcon={
-              <Image
-                src={data.data.picture}
-                w="35px"
-                h="35px"
-                borderRadius="35px"
-              />
+              <Image src={data.picture} w="35px" h="35px" borderRadius="35px" />
             }
             variant="ghost"
             colorScheme="teal"
             width="200px"
           >
-            {data.data.name}
+            {data.name}
           </MenuButton>
           <MenuList>
             <MenuItem
