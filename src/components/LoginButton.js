@@ -13,6 +13,8 @@ import {
   Image,
   MenuDivider,
   Spinner,
+  Skeleton,
+  SkeletonCircle,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { Magic } from "magic-sdk";
@@ -95,7 +97,9 @@ const LoginButton = () => {
           </Button>
         </Link>
       ) : (
-        <Spinner />
+        <div>
+          <SkeletonCircle size="10" />
+        </div>
       )}
     </div>
   );
