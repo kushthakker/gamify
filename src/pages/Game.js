@@ -266,6 +266,7 @@ const ShowData = ({
   const collection = useSelector((state) => state.profileDataApi.collection);
   const wishlist = useSelector((state) => state.profileDataApi.wishlist);
   const mygames = useSelector((state) => state.profileDataApi.mygames);
+
   const mygamesUncategorized = useSelector(
     (state) => state.profileDataApi.mygames.uncategorized
   );
@@ -291,7 +292,17 @@ const ShowData = ({
   const finished = mygamesFinished.includes(data.id);
   const notPlayedYet = mygamesnotPlayedYet.includes(data.id);
 
-  const [mygamesType, setMygamesType] = useState("");
+  const [mygamesType, setMygamesType] = useState(
+    uncategorized
+      ? "uncategorized"
+      : currentPlaying
+      ? "Current Playing"
+      : finished
+      ? "Finished"
+      : notPlayedYet
+      ? "Not Played Yet"
+      : null
+  );
   const [mygamesadded, setMygamesadded] = useState(
     uncategorized || currentPlaying || finished || notPlayedYet
   );

@@ -1,8 +1,6 @@
 import _ from "lodash";
-import produce from "immer";
 
 const streamsReducer = (state = [], action) => {
-  console.log("state", state);
   switch (action.type) {
     case "EDIT_USER":
       return {
