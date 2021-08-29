@@ -6,11 +6,74 @@ import styled from "@emotion/styled/macro";
 import { useSelector } from "react-redux";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
-import { Spinner, Button } from "@chakra-ui/react";
+import {
+  Spinner,
+  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
 const Main = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div
+      css={{
+        width: "100vw",
+        maxHeight: "100vh",
+        display: "grid",
+        gridTemplateRows: "350px 1fr",
+      }}
+    >
+      <div
+        css={{
+          backgroundColor: "#9999ff",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h1
+          css={{
+            fontSize: "3rem",
+            fontWeight: "bold",
+            fontFamily: "Pacifico",
+            letterSpacing: "0.5rem",
+            color: "black",
+          }}
+        >
+          Dashboard
+        </h1>
+      </div>
+      <div css={{ padding: "4rem" }}>
+        <Tabs isFitted variant="enclosed">
+          <TabList>
+            <Tab>My games</Tab>
+            <Tab>Wishlist</Tab>
+            <Tab>Collection</Tab>
+            <Tab>Settings</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <p>My games</p>
+            </TabPanel>
+            <TabPanel>
+              <p>Wishlist</p>
+            </TabPanel>
+            <TabPanel>
+              <p>Collection</p>
+            </TabPanel>
+            <TabPanel>
+              <p>Settings</p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </div>
+    </div>
+  );
 };
 const Heading = styled.h1({
   fontSize: "3rem",
@@ -66,7 +129,6 @@ const Dashboard = () => {
           <Main />
         </div>
       )}
-      ;
     </div>
   );
 };

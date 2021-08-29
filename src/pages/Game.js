@@ -1238,13 +1238,13 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
-        // const yt = await youtube.get(`/search`, {
-        //   params: {
-        //     q: req.data.name,
-        //   },
-        // });
+        const yt = await youtube.get(`/search`, {
+          params: {
+            q: req.data.name,
+          },
+        });
 
-        // const dataYt = yt.data.items;
+        const dataYt = yt.data.items;
 
         if (!req.status) {
           throw new Error(req.statusText);
@@ -1253,8 +1253,8 @@ const Game = ({ match }) => {
           // console.log(stores);
           // console.log(dlcs);
           // console.log(yt);
-          // setVideos(dataYt);
-          // setCurrent(dataYt[0]);
+          setVideos(dataYt);
+          setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
