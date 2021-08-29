@@ -585,12 +585,23 @@ const ShowData = ({
             variant="outline"
             colorScheme="blue"
           >
-            <Menu placement="auto" enabled={mygamesadded ? false : true}>
+            <Menu
+              placement="auto"
+              enabled={mygamesadded ? false : true}
+              autoSelect={false}
+              closeOnSelect={true}
+            >
               <MenuButton
                 as={Button}
                 variant="solid"
                 colorScheme={mygamesadded ? "red" : "green"}
-                rightIcon={<i className="fas fa-plus"></i>}
+                rightIcon={
+                  mygamesadded ? (
+                    <i class="fas fa-times"></i>
+                  ) : (
+                    <i className="fas fa-plus"></i>
+                  )
+                }
                 onClick={() => addToMyGamesClick(mygamesType, data.id)}
               >
                 {mygamesadded
@@ -634,7 +645,13 @@ const ShowData = ({
               variant="solid"
               colorScheme={wishlistadded ? "red" : "green"}
               mr="-px"
-              rightIcon={<i className="fas fa-gift"></i>}
+              rightIcon={
+                wishlistadded ? (
+                  <i class="fas fa-times"></i>
+                ) : (
+                  <i className="fas fa-gift"></i>
+                )
+              }
               onClick={() => addToWishlistClick(data.id)}
             >
               {wishlistadded ? `Remove from Wishlist` : `Add to Wishlist`}
@@ -644,7 +661,13 @@ const ShowData = ({
               variant="solid"
               colorScheme={collectionadded ? "red" : "green"}
               mr="-px"
-              rightIcon={<i className="fas fa-folder-open"></i>}
+              rightIcon={
+                collectionadded ? (
+                  <i class="fas fa-times"></i>
+                ) : (
+                  <i className="fas fa-folder-open"></i>
+                )
+              }
               onClick={() => addToCollectionClick(data.id)}
             >
               {collectionadded
