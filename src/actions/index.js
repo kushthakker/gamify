@@ -137,6 +137,34 @@ export const addToCollection = (id, values) => async (dispatch) => {
   });
 };
 
+//remove from wishlist
+export const removeFromCollection = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "REMOVE_FROM_COLLECTION",
+    payload: response.data,
+  });
+};
+export const addToMygames = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "ADD_TO_MYGAMES",
+    payload: response.data,
+  });
+};
+
+//remove from wishlist
+export const removeFromMygames = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "REMOVE_FROM_MYGAMES",
+    payload: response.data,
+  });
+};
+
 export const editUser = (id, values) => async (dispatch) => {
   const response = await users.patch(`/users/${Number(id)}`, values);
   dispatch({

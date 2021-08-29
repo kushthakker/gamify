@@ -122,6 +122,12 @@ const App = () => {
             data: { ...JSON.parse(profile) },
             wishlist: [],
             collection: [],
+            mygames: {
+              uncategorized: [],
+              currentPlaying: [],
+              finished: [],
+              notPlayedYet: [],
+            },
           };
           // const getUser = await dispatch(fetchUser(publicAddress));
           // if (getUser === undefined) dispatch(addUser(data));

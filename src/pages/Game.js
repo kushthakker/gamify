@@ -18,6 +18,9 @@ import LoginButton from "../components/LoginButton";
 import { addToWishlist } from "../actions/index";
 import { removeFromWishlist } from "../actions/index";
 import { addToCollection } from "../actions/index";
+import { removeFromCollection } from "../actions/index";
+import { addToMygames } from "../actions/index";
+import { removeFromMygames } from "../actions/index";
 
 import {
   Spinner,
@@ -262,6 +265,19 @@ const ShowData = ({
   const profile = useSelector((state) => state.profileDataApi);
   const collection = useSelector((state) => state.profileDataApi.collection);
   const wishlist = useSelector((state) => state.profileDataApi.wishlist);
+  const mygames = useSelector((state) => state.profileDataApi.mygames);
+  const mygamesUncategorized = useSelector(
+    (state) => state.profileDataApi.mygames.uncategorized
+  );
+  const mygamesCurrentPlaying = useSelector(
+    (state) => state.profileDataApi.mygames.currentPlaying
+  );
+  const mygamesFinished = useSelector(
+    (state) => state.profileDataApi.mygames.finished
+  );
+  const mygamesnotPlayedYet = useSelector(
+    (state) => state.profileDataApi.mygames.notPlayedYet
+  );
 
   const [wishlistadded, setWishlistadded] = useState(
     wishlist.includes(data.id)
@@ -269,6 +285,186 @@ const ShowData = ({
   const [collectionadded, setCollectionadded] = useState(
     collection.includes(data.id)
   );
+
+  const uncategorized = mygamesUncategorized.includes(data.id);
+  const currentPlaying = mygamesCurrentPlaying.includes(data.id);
+  const finished = mygamesFinished.includes(data.id);
+  const notPlayedYet = mygamesnotPlayedYet.includes(data.id);
+
+  const [mygamesType, setMygamesType] = useState("");
+  const [mygamesadded, setMygamesadded] = useState(
+    uncategorized || currentPlaying || finished || notPlayedYet
+  );
+
+  const addToMyGamesClick = (type, id) => {
+    console.log(type);
+    if (type === "uncategorized") {
+      addToMyGamesUncategorized(id);
+    } else if (type === "Current Playing") {
+      addToMyGamesCurrentPlaying(id);
+    } else if (type === "Finished") {
+      addToMyGamesFinished(id);
+    } else if (type === "Not Played Yet") {
+      addToMyGamesNotPlayedYet(id);
+    }
+  };
+  const addToMyGamesUncategorized = (id) => {
+    setMygamesType("uncategorized");
+    if (mygamesadded === true) {
+      // remove from wishlist
+      setMygamesType("");
+      setMygamesadded(!mygamesadded);
+      dispatch(
+        removeFromMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            uncategorized: [
+              ...mygames.uncategorized.filter((item) => item !== id),
+            ],
+          },
+        })
+      );
+    } else {
+      setMygamesadded(!mygamesadded);
+
+      dispatch(
+        addToMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            uncategorized: [...mygames.uncategorized, id],
+          },
+        })
+      );
+    }
+    console.log(mygamesadded);
+    toast({
+      title: mygamesadded
+        ? `Removed from uncategorized`
+        : `Added to uncategorized`,
+      status: mygamesadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+  const addToMyGamesCurrentPlaying = (id) => {
+    setMygamesType("Current Playing");
+    if (mygamesadded === true) {
+      setMygamesType("");
+      // remove from wishlist
+      setMygamesadded(!mygamesadded);
+      dispatch(
+        removeFromMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            currentPlaying: [
+              ...mygames.currentPlaying.filter((item) => item !== id),
+            ],
+          },
+        })
+      );
+    } else {
+      setMygamesadded(!mygamesadded);
+
+      dispatch(
+        addToMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            currentPlaying: [...mygames.currentPlaying, id],
+          },
+        })
+      );
+    }
+    console.log(mygamesadded);
+    toast({
+      title: mygamesadded
+        ? `Removed from Current Playing`
+        : `Added to Current Playing`,
+      status: mygamesadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const addToMyGamesFinished = (id) => {
+    setMygamesType("Finished");
+    if (mygamesadded === true) {
+      // remove from wishlist
+      setMygamesType("");
+      setMygamesadded(!mygamesadded);
+      dispatch(
+        removeFromMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            finished: [...mygames.finished.filter((item) => item !== id)],
+          },
+        })
+      );
+    } else {
+      setMygamesadded(!mygamesadded);
+
+      dispatch(
+        addToMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            finished: [...mygames.finished, id],
+          },
+        })
+      );
+    }
+    console.log(mygamesadded);
+    toast({
+      title: mygamesadded ? `Removed from Finished` : `Added to Finished`,
+      status: mygamesadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const addToMyGamesNotPlayedYet = (id) => {
+    setMygamesType("Not Played Yet");
+    if (mygamesadded === true) {
+      setMygamesType("");
+      setMygamesadded(!mygamesadded);
+      dispatch(
+        removeFromMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            notPlayedYet: [
+              ...mygames.notPlayedYet.filter((item) => item !== id),
+            ],
+          },
+        })
+      );
+    } else {
+      setMygamesadded(!mygamesadded);
+
+      dispatch(
+        addToMygames(userId, {
+          ...profile,
+          mygames: {
+            ...profile.mygames,
+            notPlayedYet: [...mygames.notPlayedYet, id],
+          },
+        })
+      );
+    }
+    console.log(mygamesadded);
+    toast({
+      title: mygamesadded
+        ? `Removed from Not Played Yet`
+        : `Added to Not Played Yet`,
+      status: mygamesadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   const addToWishlistClick = (id) => {
     if (wishlistadded === true) {
@@ -302,7 +498,7 @@ const ShowData = ({
       // remove from wishlist
       setCollectionadded(!collectionadded);
       dispatch(
-        removeFromWishlist(userId, {
+        removeFromCollection(userId, {
           ...profile,
           collection: [...profile.collection.filter((item) => item !== id)],
         })
@@ -325,6 +521,7 @@ const ShowData = ({
       isClosable: true,
     });
   };
+
   function showImgNote() {
     const prompt = localStorage.getItem("imgInfo");
     if (prompt === "1") return;
@@ -388,20 +585,43 @@ const ShowData = ({
             variant="outline"
             colorScheme="blue"
           >
-            <Menu placement="auto">
+            <Menu placement="auto" enabled={mygamesadded ? false : true}>
               <MenuButton
                 as={Button}
                 variant="solid"
-                colorScheme="green"
+                colorScheme={mygamesadded ? "red" : "green"}
                 rightIcon={<i className="fas fa-plus"></i>}
+                onClick={() => addToMyGamesClick(mygamesType, data.id)}
               >
-                Add to my games
+                {mygamesadded
+                  ? `Remove from ${mygamesType}`
+                  : `Add to my games`}
               </MenuButton>
               <MenuList>
-                <MenuItem command="⌘T">Uncategorized</MenuItem>
-                <MenuItem command="⌘N">Currently Playing</MenuItem>
-                <MenuItem command="⌘⇧N">Finished</MenuItem>
-                <MenuItem command="⌘O">Not played yet</MenuItem>
+                <MenuItem
+                  command="⌘T"
+                  onClick={() => addToMyGamesUncategorized(data.id)}
+                >
+                  Uncategorized
+                </MenuItem>
+                <MenuItem
+                  command="⌘N"
+                  onClick={() => addToMyGamesCurrentPlaying(data.id)}
+                >
+                  Currently Playing
+                </MenuItem>
+                <MenuItem
+                  command="⌘⇧N"
+                  onClick={() => addToMyGamesFinished(data.id)}
+                >
+                  Finished
+                </MenuItem>
+                <MenuItem
+                  command="⌘O"
+                  onClick={() => addToMyGamesNotPlayedYet(data.id)}
+                >
+                  Not played yet
+                </MenuItem>
               </MenuList>
               {/* <IconButton
               aria-label="Add to friends"
@@ -948,7 +1168,7 @@ const Game = ({ match }) => {
       console.log(err);
     }
   };
-  const collection = useSelector((state) => state.profileDataApi.collection);
+  const mygames = useSelector((state) => state.profileDataApi.mygames);
 
   useEffect(() => {
     const fetch = async function () {
@@ -1047,7 +1267,7 @@ const Game = ({ match }) => {
     dlcs &&
     gameInSeries &&
     videos &&
-    collection ? (
+    mygames ? (
     // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
