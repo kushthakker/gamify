@@ -16,6 +16,7 @@ import FadeInWhenVisible from "../components/FadeInWhenVisible";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
 import { addToWishlist } from "../actions/index";
+import { removeFromWishlist } from "../actions/index";
 import { addToCollection } from "../actions/index";
 
 import {
@@ -270,13 +271,25 @@ const ShowData = ({
   );
 
   const addToWishlistClick = (id) => {
-    setWishlistadded(!wishlistadded);
-    dispatch(
-      addToWishlist(userId, {
-        ...profile,
-        wishlist: [...profile.wishlist, id],
-      })
-    );
+    if (wishlistadded === true) {
+      // remove from wishlist
+      setWishlistadded(!wishlistadded);
+      dispatch(
+        removeFromWishlist(userId, {
+          ...profile,
+          wishlist: [...profile.wishlist.filter((item) => item !== id)],
+        })
+      );
+    } else {
+      setWishlistadded(!wishlistadded);
+      dispatch(
+        addToWishlist(userId, {
+          ...profile,
+          wishlist: [...profile.wishlist, id],
+        })
+      );
+    }
+    console.log(wishlistadded);
     toast({
       title: wishlistadded ? "Removed from Wishlist" : "Added to Wishlist",
       status: wishlistadded ? "error" : "success",
@@ -285,13 +298,24 @@ const ShowData = ({
     });
   };
   const addToCollectionClick = (id) => {
-    setCollectionadded(!collectionadded);
-    dispatch(
-      addToCollection(userId, {
-        ...profile,
-        collection: [...profile.collection, id],
-      })
-    );
+    if (collectionadded === true) {
+      // remove from wishlist
+      setCollectionadded(!collectionadded);
+      dispatch(
+        removeFromWishlist(userId, {
+          ...profile,
+          collection: [...profile.collection.filter((item) => item !== id)],
+        })
+      );
+    } else {
+      setCollectionadded(!collectionadded);
+      dispatch(
+        addToCollection(userId, {
+          ...profile,
+          collection: [...profile.collection, id],
+        })
+      );
+    }
     toast({
       title: collectionadded
         ? "Removed from Collection"

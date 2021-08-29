@@ -117,6 +117,17 @@ export const addToWishlist = (id, values) => async (dispatch) => {
     payload: response.data,
   });
 };
+
+//remove from wishlist
+export const removeFromWishlist = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "REMOVE_FROM_WISHLIST",
+    payload: response.data,
+  });
+};
+
 export const addToCollection = (id, values) => async (dispatch) => {
   const response = await users.patch(`/users/${id}/`, values);
 

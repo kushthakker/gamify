@@ -11,6 +11,8 @@ const streamsReducer = (state = [], action) => {
       };
     case "ADD_TO_WISHLIST":
       return action.payload;
+    case "REMOVE_FROM_WISHLIST":
+      return action.payload;
     case "ADD_TO_COLLECTION":
       return action.payload;
     case "FETCH_USER":
