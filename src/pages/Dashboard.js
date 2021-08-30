@@ -63,9 +63,9 @@ const Mygames = ({
 
                   <Box p="6">
                     <Box d="flex" alignItems="baseline">
-                      <Badge borderRadius="full" px="2" colorScheme="teal">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
-                      </Badge>
+                      </Badge> */}
                       <Box
                         color="gray.500"
                         fontWeight="semibold"
@@ -117,9 +117,9 @@ const Mygames = ({
 
                   <Box p="6">
                     <Box d="flex" alignItems="baseline">
-                      <Badge borderRadius="full" px="2" colorScheme="teal">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
-                      </Badge>
+                      </Badge> */}
                       <Box
                         color="gray.500"
                         fontWeight="semibold"
@@ -171,9 +171,9 @@ const Mygames = ({
 
                   <Box p="6">
                     <Box d="flex" alignItems="baseline">
-                      <Badge borderRadius="full" px="2" colorScheme="teal">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
-                      </Badge>
+                      </Badge> */}
                       <Box
                         color="gray.500"
                         fontWeight="semibold"
@@ -225,9 +225,9 @@ const Mygames = ({
 
                   <Box p="6">
                     <Box d="flex" alignItems="baseline">
-                      <Badge borderRadius="full" px="2" colorScheme="teal">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
-                      </Badge>
+                      </Badge> */}
                       <Box
                         color="gray.500"
                         fontWeight="semibold"
