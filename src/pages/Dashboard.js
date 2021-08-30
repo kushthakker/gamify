@@ -284,11 +284,143 @@ const Mygames = ({
   );
 };
 
+const myWishlist = ({ wishlist }) => {
+  return (
+    <div>
+      {wishlist.map((game) => (
+        <>
+          <Title>Wishlist</Title>
+          <div
+            css={{
+              display: "grid",
+              gridAutoFlow: "column dense",
+              gap: "2rem",
+            }}
+          >
+            <Link to={`/games/${game.id}`}>
+              <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                <Box
+                  w="27rem"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
+                  <Image
+                    src={game.background_image}
+                    alt={game.name}
+                    h="241px"
+                    w="100%"
+                  />
+
+                  <Box p="6">
+                    <Box d="flex" alignItems="baseline">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                        series
+                      </Badge> */}
+                      <Box
+                        color="gray.500"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
+                      >
+                        {game.released}
+                      </Box>
+                    </Box>
+
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      isTruncated
+                    >
+                      {game.name}
+                    </Box>
+                  </Box>
+                </Box>
+              </div>
+            </Link>
+          </div>
+        </>
+      ))}
+    </div>
+  );
+};
+
+const myCollection = ({ collection }) => {
+  return (
+    <div>
+      {collection.map((game) => (
+        <>
+          <Title>Collection</Title>
+          <div
+            css={{
+              display: "grid",
+              gridAutoFlow: "column dense",
+              gap: "2rem",
+            }}
+          >
+            <Link to={`/games/${game.id}`}>
+              <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                <Box
+                  w="27rem"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
+                  <Image
+                    src={game.background_image}
+                    alt={game.name}
+                    h="241px"
+                    w="100%"
+                  />
+
+                  <Box p="6">
+                    <Box d="flex" alignItems="baseline">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                        series
+                      </Badge> */}
+                      <Box
+                        color="gray.500"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
+                      >
+                        {game.released}
+                      </Box>
+                    </Box>
+
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      isTruncated
+                    >
+                      {game.name}
+                    </Box>
+                  </Box>
+                </Box>
+              </div>
+            </Link>
+          </div>
+        </>
+      ))}
+    </div>
+  );
+};
+
 const Main = ({
   uncategorizedGames,
   notPlayedGames,
   finishedGames,
   currentlyPlayingGames,
+  wishlist,
+  collection,
 }) => {
   return (
     <div
@@ -338,10 +470,10 @@ const Main = ({
               />
             </TabPanel>
             <TabPanel>
-              <p>Wishlist</p>
+              <myWishlist wishlist={wishlist} />
             </TabPanel>
             <TabPanel>
-              <p>Collection</p>
+              <myCollection collection={collection} />
             </TabPanel>
             <TabPanel>
               <p>Settings</p>
@@ -365,6 +497,8 @@ const Dashboard = () => {
   const [currentlyPlayingGames, setCurrentlyPlayingGames] = React.useState([]);
   const [finishedGames, setFinishedGames] = React.useState([]);
   const [notPlayedGames, setNotPlayedGames] = React.useState([]);
+  const [saveWishlist, setSaveWishlist] = React.useState([]);
+  const [savecollection, setSaveCollection] = React.useState([]);
 
   const collection = useSelector((state) => state.profileDataApi.collection);
   const wishlist = useSelector((state) => state.profileDataApi.wishlist);
@@ -390,6 +524,8 @@ const Dashboard = () => {
           currentlyPlayingGames={currentlyPlayingGames}
           finishedGames={finishedGames}
           notPlayedGames={notPlayedGames}
+          collection={savecollection}
+          wishlist={saveWishlist}
         />
       </div>
     );
@@ -401,6 +537,8 @@ const Dashboard = () => {
       let currentPlaying = [];
       let notPlayedYet = [];
       let finished = [];
+      let collection = [];
+      let wishlist = [];
       try {
         await mygamesUncategorized.map(async (ele) => {
           let req = await api.get(`/games/${ele}`, {
@@ -442,21 +580,40 @@ const Dashboard = () => {
           notPlayedYet.push(req.data);
           setNotPlayedGames(notPlayedYet);
         });
+
+        await collection.map(async (ele) => {
+          let req = await api.get(`/games/${ele}`, {
+            params: {
+              id: ele,
+              // search_precise: true,
+            },
+          });
+          collection.push(req.data);
+          setSaveCollection(collection);
+        });
+        await wishlist.map(async (ele) => {
+          let req = await api.get(`/games/${ele}`, {
+            params: {
+              id: ele,
+              // search_precise: true,
+            },
+          });
+          wishlist.push(req.data);
+          setSaveWishlist(wishlist);
+        });
       } catch (err) {
         console.log(err);
       }
     };
     fetch();
   }, [
+    collection,
     mygamesCurrentPlaying,
     mygamesFinished,
     mygamesUncategorized,
     mygamesnotPlayedYet,
+    wishlist,
   ]);
-  console.log(`uncate`, uncategorizedGames);
-  console.log(`current`, currentlyPlayingGames);
-  console.log(`finished`, finishedGames);
-  console.log(`notplayed`, notPlayedGames);
   return (
     <div>
       {isLoggedIn === true ? (
