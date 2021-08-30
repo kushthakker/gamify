@@ -41,220 +41,244 @@ const Mygames = ({
   return (
     <>
       <div>
-        <Title>Uncategorized</Title>
-        <div
-          css={{ display: "grid", gridAutoFlow: "column dense", gap: "2rem" }}
-        >
-          {uncategorizedGames.map((game) => (
-            <Link to={`/games/${game.id}`}>
-              <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
+        {uncategorizedGames.map((game) => (
+          <>
+            <Title>Uncategorized</Title>
+            <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column dense",
+                gap: "2rem",
+              }}
+            >
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                        <Box
+                          color="gray.500"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
+                        >
+                          {game.released}
+                        </Box>
+                      </Box>
+
                       <Box
-                        color="gray.500"
+                        mt="1"
                         fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
                       >
-                        {game.released}
+                        {game.name}
                       </Box>
                     </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
                   </Box>
-                </Box>
-              </div>
-            </Link>
-          ))}
-        </div>
+                </div>
+              </Link>
+            </div>
+          </>
+        ))}
       </div>
       <div>
-        <Title>Currently playing</Title>
-        <div
-          css={{ display: "grid", gridAutoFlow: "column dense", gap: "2rem" }}
-        >
-          {currentlyPlayingGames.map((game) => (
-            <Link to={`/games/${game.id}`}>
-              <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
+        {currentlyPlayingGames.map((game) => (
+          <>
+            <Title>Currently playing</Title>
+            <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column dense",
+                gap: "2rem",
+              }}
+            >
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                        <Box
+                          color="gray.500"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
+                        >
+                          {game.released}
+                        </Box>
+                      </Box>
+
                       <Box
-                        color="gray.500"
+                        mt="1"
                         fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
                       >
-                        {game.released}
+                        {game.name}
                       </Box>
                     </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
                   </Box>
-                </Box>
-              </div>
-            </Link>
-          ))}
-        </div>
+                </div>
+              </Link>
+            </div>
+          </>
+        ))}
       </div>
       <div>
-        <Title>Finished</Title>
-        <div
-          css={{ display: "grid", gridAutoFlow: "column dense", gap: "2rem" }}
-        >
-          {finishedGames.map((game) => (
-            <Link to={`/games/${game.id}`}>
-              <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
+        {finishedGames.map((game) => (
+          <>
+            <Title>Finished</Title>
+            <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column dense",
+                gap: "2rem",
+              }}
+            >
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                        <Box
+                          color="gray.500"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
+                        >
+                          {game.released}
+                        </Box>
+                      </Box>
+
                       <Box
-                        color="gray.500"
+                        mt="1"
                         fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
                       >
-                        {game.released}
+                        {game.name}
                       </Box>
                     </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
                   </Box>
-                </Box>
-              </div>
-            </Link>
-          ))}
-        </div>
+                </div>
+              </Link>
+            </div>
+          </>
+        ))}
       </div>
       <div>
-        <Title>Not played</Title>
-        <div
-          css={{ display: "grid", gridAutoFlow: "column dense", gap: "2rem" }}
-        >
-          {notPlayedGames.map((game) => (
-            <Link to={`/games/${game.id}`}>
-              <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
+        {notPlayedGames.map((game) => (
+          <>
+            <Title>Not played</Title>
+            <div
+              css={{
+                display: "grid",
+                gridAutoFlow: "column dense",
+                gap: "2rem",
+              }}
+            >
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                        <Box
+                          color="gray.500"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
+                        >
+                          {game.released}
+                        </Box>
+                      </Box>
+
                       <Box
-                        color="gray.500"
+                        mt="1"
                         fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
                       >
-                        {game.released}
+                        {game.name}
                       </Box>
                     </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
                   </Box>
-                </Box>
-              </div>
-            </Link>
-          ))}
-        </div>
+                </div>
+              </Link>
+            </div>
+          </>
+        ))}
       </div>
     </>
   );
