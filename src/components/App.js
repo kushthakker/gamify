@@ -88,14 +88,14 @@ const App = () => {
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
           dispatch(userId(publicAddress));
           dispatch(email(metadata.email));
-          dispatch(fetchUser(publicAddress));
+          dispatch(fetchUser(publicAddress)) || m.user.logout();
         } else {
           await m.auth.loginWithMagicLink();
           console.log("not logged in");
           dispatch(isLoggedIn(await m.user.isLoggedIn()));
           const metadata = await m.user.getMetadata();
           const publicAddress = metadata.publicAddress;
-          dispatch(fetchUser(publicAddress));
+          dispatch(fetchUser(publicAddress)) || m.user.logout();
         }
       } catch (err) {
         console.log(err.message);
@@ -132,8 +132,9 @@ const App = () => {
           // const getUser = await dispatch(fetchUser(publicAddress));
           // if (getUser === undefined) dispatch(addUser(data));
           dispatch(addUser(data));
-        } catch {
+        } catch (error) {
           window.location.href = window.location.origin;
+          console.log(error);
         }
       } else {
         console.log("please try again");
