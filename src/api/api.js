@@ -1,5 +1,5 @@
 import axios from "axios";
-const KEY = "9add24d57d554279baa4f2046c96bf99";
+const KEY = "3c5c85124bd043a2b31ab87793d2a31d";
 // const KEY = process.env.GAME_API;
 
 export default axios.create({

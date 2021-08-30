@@ -608,7 +608,7 @@ const ShowData = ({
                 colorScheme={mygamesadded ? "red" : "green"}
                 rightIcon={
                   mygamesadded ? (
-                    <i class="fas fa-times"></i>
+                    <i className="fas fa-times"></i>
                   ) : (
                     <i className="fas fa-plus"></i>
                   )
