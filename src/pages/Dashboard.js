@@ -42,7 +42,7 @@ const Mygames = ({
     <>
       <div>
         {uncategorizedGames.map((game) => (
-          <>
+          <React.Fragment key={Math.random()}>
             <Title>Uncategorized</Title>
             <div
               css={{
@@ -97,12 +97,12 @@ const Mygames = ({
                 </div>
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <div>
         {currentlyPlayingGames.map((game) => (
-          <>
+          <React.Fragment key={Math.random()}>
             <Title>Currently playing</Title>
             <div
               css={{
@@ -157,12 +157,12 @@ const Mygames = ({
                 </div>
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <div>
         {finishedGames.map((game) => (
-          <>
+          <React.Fragment key={Math.random()}>
             <Title>Finished</Title>
             <div
               css={{
@@ -217,12 +217,12 @@ const Mygames = ({
                 </div>
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <div>
         {notPlayedGames.map((game) => (
-          <>
+          <React.Fragment key={Math.random()}>
             <Title>Not played</Title>
             <div
               css={{
@@ -277,18 +277,18 @@ const Mygames = ({
                 </div>
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
     </>
   );
 };
 
-const myWishlist = ({ wishlist }) => {
+const MyWishlist = ({ wishlist }) => {
   return (
     <div>
       {wishlist.map((game) => (
-        <>
+        <React.Fragment key={Math.random()}>
           <Title>Wishlist</Title>
           <div
             css={{
@@ -343,17 +343,17 @@ const myWishlist = ({ wishlist }) => {
               </div>
             </Link>
           </div>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
 };
 
-const myCollection = ({ collection }) => {
+const MyCollection = ({ collection }) => {
   return (
     <div>
       {collection.map((game) => (
-        <>
+        <React.Fragment key={Math.random()}>
           <Title>Collection</Title>
           <div
             css={{
@@ -408,7 +408,7 @@ const myCollection = ({ collection }) => {
               </div>
             </Link>
           </div>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
@@ -470,10 +470,10 @@ const Main = ({
               />
             </TabPanel>
             <TabPanel>
-              <myWishlist wishlist={wishlist} />
+              <MyWishlist wishlist={wishlist} />
             </TabPanel>
             <TabPanel>
-              <myCollection collection={collection} />
+              <MyCollection collection={collection} />
             </TabPanel>
             <TabPanel>
               <p>Settings</p>
@@ -498,10 +498,10 @@ const Dashboard = () => {
   const [finishedGames, setFinishedGames] = React.useState([]);
   const [notPlayedGames, setNotPlayedGames] = React.useState([]);
   const [saveWishlist, setSaveWishlist] = React.useState([]);
-  const [savecollection, setSaveCollection] = React.useState([]);
+  const [saveCollection, setSaveCollection] = React.useState([]);
 
-  const collection = useSelector((state) => state.profileDataApi.collection);
-  const wishlist = useSelector((state) => state.profileDataApi.wishlist);
+  const collection = useSelector((state) => state?.profileDataApi?.collection);
+  const wishlist = useSelector((state) => state?.profileDataApi?.wishlist);
 
   const mygamesUncategorized = useSelector(
     (state) => state?.profileDataApi?.mygames?.uncategorized
@@ -524,7 +524,7 @@ const Dashboard = () => {
           currentlyPlayingGames={currentlyPlayingGames}
           finishedGames={finishedGames}
           notPlayedGames={notPlayedGames}
-          collection={savecollection}
+          collection={saveCollection}
           wishlist={saveWishlist}
         />
       </div>
@@ -570,6 +570,7 @@ const Dashboard = () => {
           finished.push(req.data);
           setFinishedGames(finished);
         });
+
         await mygamesnotPlayedYet.map(async (ele) => {
           let req = await api.get(`/games/${ele}`, {
             params: {
@@ -580,7 +581,12 @@ const Dashboard = () => {
           notPlayedYet.push(req.data);
           setNotPlayedGames(notPlayedYet);
         });
-
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const fetchwishcollection = async function () {
+      try {
         await collection.map(async (ele) => {
           let req = await api.get(`/games/${ele}`, {
             params: {
@@ -591,6 +597,7 @@ const Dashboard = () => {
           collection.push(req.data);
           setSaveCollection(collection);
         });
+
         await wishlist.map(async (ele) => {
           let req = await api.get(`/games/${ele}`, {
             params: {
@@ -606,6 +613,7 @@ const Dashboard = () => {
       }
     };
     fetch();
+    fetchwishcollection();
   }, [
     collection,
     mygamesCurrentPlaying,
@@ -614,6 +622,7 @@ const Dashboard = () => {
     mygamesnotPlayedYet,
     wishlist,
   ]);
+
   return (
     <div>
       {isLoggedIn === true ? (
@@ -623,7 +632,10 @@ const Dashboard = () => {
           <LoginButton />
           <Output />
         </div>
-      ) : isLoggedIn === false && mygamesUncategorized ? (
+      ) : isLoggedIn === false &&
+        mygamesUncategorized &&
+        wishlist &&
+        collection ? (
         <div
           css={{
             width: "100vw",
