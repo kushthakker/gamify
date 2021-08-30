@@ -90,25 +90,16 @@ const LoginButton = () => {
             </MenuItem>
           </MenuList>
         </Menu>
-      ) : isLoggedIn === false || isLoggedIn === null ? (
+      ) : isLoggedIn === false ? (
         <Link to={"/login"}>
           <Button colorScheme="teal" variant="outline" w="6rem">
             Login
           </Button>
         </Link>
       ) : (
-        ({
-          /* <div>
+        <div>
           <SkeletonCircle size="10" />
-        </div> */
-        },
-        (
-          <Link to={"/login"}>
-            <Button colorScheme="teal" variant="outline" w="6rem">
-              Login
-            </Button>
-          </Link>
-        ))
+        </div>
       )}
     </div>
   );

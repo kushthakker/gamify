@@ -500,8 +500,10 @@ const Dashboard = () => {
   const [saveWishlist, setSaveWishlist] = React.useState([]);
   const [saveCollection, setSaveCollection] = React.useState([]);
 
-  const collection = useSelector((state) => state?.profileDataApi?.collection);
-  const wishlist = useSelector((state) => state?.profileDataApi?.wishlist);
+  const collectionState = useSelector(
+    (state) => state?.profileDataApi?.collection
+  );
+  const wishlistState = useSelector((state) => state?.profileDataApi?.wishlist);
 
   const mygamesUncategorized = useSelector(
     (state) => state?.profileDataApi?.mygames?.uncategorized
@@ -581,13 +583,7 @@ const Dashboard = () => {
           notPlayedYet.push(req.data);
           setNotPlayedGames(notPlayedYet);
         });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const fetchwishcollection = async function () {
-      try {
-        await collection.map(async (ele) => {
+        await collectionState.map(async (ele) => {
           let req = await api.get(`/games/${ele}`, {
             params: {
               id: ele,
@@ -598,7 +594,7 @@ const Dashboard = () => {
           setSaveCollection(collection);
         });
 
-        await wishlist.map(async (ele) => {
+        await wishlistState.map(async (ele) => {
           let req = await api.get(`/games/${ele}`, {
             params: {
               id: ele,
@@ -612,15 +608,15 @@ const Dashboard = () => {
         console.log(err);
       }
     };
+
     fetch();
-    fetchwishcollection();
   }, [
-    collection,
+    collectionState,
     mygamesCurrentPlaying,
     mygamesFinished,
     mygamesUncategorized,
     mygamesnotPlayedYet,
-    wishlist,
+    wishlistState,
   ]);
 
   return (
@@ -634,8 +630,8 @@ const Dashboard = () => {
         </div>
       ) : isLoggedIn === false &&
         mygamesUncategorized &&
-        wishlist &&
-        collection ? (
+        collectionState &&
+        wishlistState ? (
         <div
           css={{
             width: "100vw",
