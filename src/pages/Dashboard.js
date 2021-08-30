@@ -287,18 +287,23 @@ const Mygames = ({
 const MyWishlist = ({ wishlist }) => {
   return (
     <div>
-      {wishlist.map((game) => (
-        <React.Fragment key={Math.random()}>
-          <Title>Wishlist</Title>
-          <div
-            css={{
-              display: "grid",
-              gridAutoFlow: "column dense",
-              gap: "2rem",
-            }}
-          >
+      <Title>Wishlist</Title>
+      <div
+        css={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gridAutoFlow: "dense row",
+          gridTemplateRows: "masonry",
+          masonryAutoFlow: "next",
+          columnGap: "1.5rem",
+          rowGap: "2.5rem",
+          padding: "2rem",
+        }}
+      >
+        {wishlist.map((game) => (
+          <div key={Math.random()}>
             <Link to={`/games/${game.id}`}>
-              <div key={Math.random()} css={{ marginRight: "3rem" }}>
+              <div css={{ marginRight: "3rem" }}>
                 <Box
                   w="27rem"
                   borderWidth="1px"
@@ -343,8 +348,8 @@ const MyWishlist = ({ wishlist }) => {
               </div>
             </Link>
           </div>
-        </React.Fragment>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
@@ -352,64 +357,72 @@ const MyWishlist = ({ wishlist }) => {
 const MyCollection = ({ collection }) => {
   return (
     <div>
-      {collection.map((game) => (
-        <React.Fragment key={Math.random()}>
-          <Title>Collection</Title>
-          <div
-            css={{
-              display: "grid",
-              gridAutoFlow: "column dense",
-              gap: "2rem",
-            }}
-          >
-            <Link to={`/games/${game.id}`}>
-              <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
+      <Title>Collection</Title>
+      <div
+        css={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          justifyContent: "space-between",
+          gridAutoFlow: "dense row",
+          gridTemplateRows: "masonry",
+          masonryAutoFlow: "next",
+          columnGap: "1.5rem",
+          rowGap: "2.5rem",
+          padding: "2rem",
+        }}
+      >
+        {collection.map((game) => (
+          <React.Fragment key={Math.random()}>
+            <div>
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                        <Box
+                          color="gray.500"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
+                        >
+                          {game.released}
+                        </Box>
+                      </Box>
+
                       <Box
-                        color="gray.500"
+                        mt="1"
                         fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
                       >
-                        {game.released}
+                        {game.name}
                       </Box>
                     </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
                   </Box>
-                </Box>
-              </div>
-            </Link>
-          </div>
-        </React.Fragment>
-      ))}
+                </div>
+              </Link>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 };
@@ -603,7 +616,9 @@ const Dashboard = () => {
           });
           wishlist.push(req.data);
           setSaveWishlist(wishlist);
+          return wishlist;
         });
+        console.log(`wishlist saved`, wishlist);
       } catch (err) {
         console.log(err);
       }
@@ -618,6 +633,9 @@ const Dashboard = () => {
     mygamesnotPlayedYet,
     wishlistState,
   ]);
+
+  console.log(`wishlist`, saveWishlist);
+  console.log(`collection`, saveCollection);
 
   return (
     <div>
@@ -674,7 +692,7 @@ const Dashboard = () => {
   );
 };
 
-export default React.memo(Dashboard);
+export default Dashboard;
 
 //TODO: add a rest api server and host it on heroku. Store all users in it with id as the identifier and in that id store the user didToken, name, avatar and user's data like their wishlist, collection, etc.
 //TODO: A option to show merge both accounts in the user dashboard if we have different mails in same userid/didId.
