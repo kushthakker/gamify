@@ -29,20 +29,26 @@ const Title = styled.h1({
   display: "flex",
   justifyContent: "flex-start",
   marginBottom: "3rem",
-  marginTop: "1rem",
+  marginTop: "2rem",
+  marginLeft: "2rem",
+});
+
+const parentCenterDiv = styled.div({
+  display: "grid",
+  justifyContent: "center",
+  justifyItems: "center",
+  padding: "0.5rem",
 });
 
 const CenterEle = styled.div({
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  justifyItems: "center",
+  gridTemplateColumns: "repeat(3, 1fr)",
   justifyContent: "center",
+  justifyItems: "center",
   gridAutoFlow: "dense row",
   gridTemplateRows: "masonry",
   masonryAutoFlow: "next",
-  columnGap: "2rem",
-  rowGap: "2rem",
-  padding: "2rem",
+  rowGap: "3rem",
 });
 
 const Mygames = ({
@@ -53,12 +59,12 @@ const Mygames = ({
 }) => {
   return (
     <>
-      <div>
+      <parentCenterDiv>
         {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
 
         <CenterEle>
           {uncategorizedGames.map((game) => (
-            <div key={Math.random()}>
+            <div>
               <Link to={`/games/${game.id}`}>
                 <div key={Math.random()}>
                   <Box
@@ -107,134 +113,118 @@ const Mygames = ({
             </div>
           ))}
         </CenterEle>
-      </div>
-      <div>
+      </parentCenterDiv>
+      <parentCenterDiv>
         {currentlyPlayingGames.length > 0 ? (
           <Title>Current Playing</Title>
         ) : null}
         <CenterEle>
           {currentlyPlayingGames.map((game) => (
             <React.Fragment key={Math.random()}>
-              <div
-                css={{
-                  display: "grid",
-                  gridAutoFlow: "column dense",
-                  gap: "2rem",
-                }}
-              >
-                <Link to={`/games/${game.id}`}>
-                  <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                    <Box
-                      w="27rem"
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      overflow="hidden"
-                    >
-                      <Image
-                        src={game.background_image}
-                        alt={game.name}
-                        h="241px"
-                        w="100%"
-                      />
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                      <Box p="6">
-                        <Box d="flex" alignItems="baseline">
-                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
-                          <Box
-                            color="gray.500"
-                            fontWeight="semibold"
-                            letterSpacing="wide"
-                            fontSize="xs"
-                            textTransform="uppercase"
-                            ml="2"
-                          >
-                            {game.released}
-                          </Box>
-                        </Box>
-
                         <Box
-                          mt="1"
+                          color="gray.500"
                           fontWeight="semibold"
-                          as="h4"
-                          lineHeight="tight"
-                          isTruncated
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
                         >
-                          {game.name}
+                          {game.released}
                         </Box>
                       </Box>
+
+                      <Box
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
+                      >
+                        {game.name}
+                      </Box>
                     </Box>
-                  </div>
-                </Link>
-              </div>
+                  </Box>
+                </div>
+              </Link>
             </React.Fragment>
           ))}
         </CenterEle>
-      </div>
-      <div>
+      </parentCenterDiv>
+      <parentCenterDiv>
         {finishedGames.length > 0 ? <Title>Finished</Title> : null}
         <CenterEle>
           {finishedGames.map((game) => (
             <React.Fragment key={Math.random()}>
-              <div
-                css={{
-                  display: "grid",
-                  gridAutoFlow: "column dense",
-                  gap: "2rem",
-                }}
-              >
-                <Link to={`/games/${game.id}`}>
-                  <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                    <Box
-                      w="27rem"
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      overflow="hidden"
-                    >
-                      <Image
-                        src={game.background_image}
-                        alt={game.name}
-                        h="241px"
-                        w="100%"
-                      />
+              <Link to={`/games/${game.id}`}>
+                <div key={Math.random()}>
+                  <Box
+                    w="23rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                      <Box p="6">
-                        <Box d="flex" alignItems="baseline">
-                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
-                          <Box
-                            color="gray.500"
-                            fontWeight="semibold"
-                            letterSpacing="wide"
-                            fontSize="xs"
-                            textTransform="uppercase"
-                            ml="2"
-                          >
-                            {game.released}
-                          </Box>
-                        </Box>
-
                         <Box
-                          mt="1"
+                          color="gray.500"
                           fontWeight="semibold"
-                          as="h4"
-                          lineHeight="tight"
-                          isTruncated
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
                         >
-                          {game.name}
+                          {game.released}
                         </Box>
                       </Box>
+
+                      <Box
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
+                      >
+                        {game.name}
+                      </Box>
                     </Box>
-                  </div>
-                </Link>
-              </div>
+                  </Box>
+                </div>
+              </Link>
             </React.Fragment>
           ))}
         </CenterEle>
-      </div>
-      <div>
+      </parentCenterDiv>
+      <parentCenterDiv>
         {notPlayedGames.length > 0 ? <Title>Not played yet</Title> : null}
         <CenterEle>
           {notPlayedGames.map((game) => (
@@ -295,14 +285,14 @@ const Mygames = ({
             </React.Fragment>
           ))}
         </CenterEle>
-      </div>
+      </parentCenterDiv>
     </>
   );
 };
 
 const MyWishlist = ({ wishlist }) => {
   return (
-    <div>
+    <parentCenterDiv>
       {console.log(`wishlist`)}
       <Title>Wishlist</Title>
       <CenterEle>
@@ -356,13 +346,13 @@ const MyWishlist = ({ wishlist }) => {
           </div>
         ))}
       </CenterEle>
-    </div>
+    </parentCenterDiv>
   );
 };
 
 const MyCollection = ({ collection }) => {
   return (
-    <div>
+    <parentCenterDiv>
       <Title>Collection</Title>
       <CenterEle>
         {collection.map((game) => (
@@ -417,7 +407,7 @@ const MyCollection = ({ collection }) => {
           </React.Fragment>
         ))}
       </CenterEle>
-    </div>
+    </parentCenterDiv>
   );
 };
 
@@ -458,15 +448,16 @@ const Main = ({
           Dashboard
         </h1>
       </div>
-      <div css={{ padding: "4rem" }}>
+      <div>
         <Tabs isFitted variant="enclosed" colorScheme="facebook">
-          <TabList>
-            <Tab>My games</Tab>
-            <Tab>Wishlist</Tab>
-            <Tab>Collection</Tab>
-            <Tab>Settings</Tab>
-          </TabList>
-
+          <div css={{ padding: "3rem", justifyContent: "center" }}>
+            <TabList>
+              <Tab>My games</Tab>
+              <Tab>Wishlist</Tab>
+              <Tab>Collection</Tab>
+              <Tab>Settings</Tab>
+            </TabList>
+          </div>
           <TabPanels>
             <TabPanel>
               <Mygames
@@ -665,7 +656,7 @@ const Dashboard = () => {
       mygamesUncategorized &&
       collectionState &&
       wishlistState ? (
-        <div>
+        <div css={{ maxWidth: "100vw", overflowX: "hidden" }}>
           {console.log(`mygamesUncategorized`)}
           <SideBarMemoized />
           <LoginButton />
