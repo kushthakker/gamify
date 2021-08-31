@@ -17,9 +17,25 @@ import {
   Box,
   Badge,
   Image,
+  Input,
+  InputRightElement,
+  InputGroup,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 import { useHistory, Link } from "react-router-dom";
 import api from "../api/api";
+import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
+import { Magic } from "magic-sdk";
+import { OAuthExtension } from "@magic-ext/oauth";
+import { isLoggedIn } from "../actions/index";
+import { userId } from "../actions/index";
+import { email } from "../actions/index";
+import { deleteUser } from "../actions/index";
 
 const Title = styled.h1({
   textAlign: "center",
@@ -33,7 +49,7 @@ const Title = styled.h1({
   marginLeft: "2rem",
 });
 
-const parentCenterDiv = styled.div({
+const ParentCenterDiv = styled.div({
   display: "grid",
   justifyContent: "center",
   justifyItems: "center",
@@ -51,6 +67,9 @@ const CenterEle = styled.div({
   rowGap: "3rem",
 });
 
+const m = new Magic("pk_live_8BB9335EFCCF939E", {
+  extensions: [new OAuthExtension()],
+}); // ✨
 const Mygames = ({
   uncategorizedGames,
   notPlayedGames,
@@ -59,7 +78,7 @@ const Mygames = ({
 }) => {
   return (
     <>
-      <parentCenterDiv>
+      <ParentCenterDiv>
         {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
 
         <CenterEle>
@@ -113,8 +132,8 @@ const Mygames = ({
             </div>
           ))}
         </CenterEle>
-      </parentCenterDiv>
-      <parentCenterDiv>
+      </ParentCenterDiv>
+      <ParentCenterDiv>
         {currentlyPlayingGames.length > 0 ? (
           <Title>Current Playing</Title>
         ) : null}
@@ -169,8 +188,8 @@ const Mygames = ({
             </React.Fragment>
           ))}
         </CenterEle>
-      </parentCenterDiv>
-      <parentCenterDiv>
+      </ParentCenterDiv>
+      <ParentCenterDiv>
         {finishedGames.length > 0 ? <Title>Finished</Title> : null}
         <CenterEle>
           {finishedGames.map((game) => (
@@ -223,8 +242,8 @@ const Mygames = ({
             </React.Fragment>
           ))}
         </CenterEle>
-      </parentCenterDiv>
-      <parentCenterDiv>
+      </ParentCenterDiv>
+      <ParentCenterDiv>
         {notPlayedGames.length > 0 ? <Title>Not played yet</Title> : null}
         <CenterEle>
           {notPlayedGames.map((game) => (
@@ -285,14 +304,14 @@ const Mygames = ({
             </React.Fragment>
           ))}
         </CenterEle>
-      </parentCenterDiv>
+      </ParentCenterDiv>
     </>
   );
 };
 
 const MyWishlist = ({ wishlist }) => {
   return (
-    <parentCenterDiv>
+    <ParentCenterDiv>
       {console.log(`wishlist`)}
       <Title>Wishlist</Title>
       <CenterEle>
@@ -346,13 +365,13 @@ const MyWishlist = ({ wishlist }) => {
           </div>
         ))}
       </CenterEle>
-    </parentCenterDiv>
+    </ParentCenterDiv>
   );
 };
 
 const MyCollection = ({ collection }) => {
   return (
-    <parentCenterDiv>
+    <ParentCenterDiv>
       <Title>Collection</Title>
       <CenterEle>
         {collection.map((game) => (
@@ -407,7 +426,164 @@ const MyCollection = ({ collection }) => {
           </React.Fragment>
         ))}
       </CenterEle>
-    </parentCenterDiv>
+    </ParentCenterDiv>
+  );
+};
+
+const MySettings = ({ profile, id }) => {
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
+
+  const logout = async function (dispatch) {
+    try {
+      await m.user.logout();
+      dispatch(isLoggedIn(false));
+      dispatch(userId(null));
+      dispatch(email(null));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const deleteAccount = async function (dispatch) {
+    try {
+      await m.user.logout();
+      dispatch(isLoggedIn(false));
+      dispatch(userId(null));
+      dispatch(email(null));
+      dispatch(deleteUser(id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div>
+      <Title css={{ marginTop: "-1rem" }}>Settings</Title>
+      <div css={{ display: "flex", width: "auto" }}>
+        <h3
+          css={{
+            fontSize: "1.5rem",
+            width: "15rem",
+            textAlign: "center",
+            marginBottom: "2rem",
+            position: "relative",
+            top: "0.5rem",
+          }}
+        >
+          Change the name :
+        </h3>
+        <InputGroup>
+          <Input
+            size="md"
+            w="20rem"
+            h="3rem"
+            pos="relative"
+            defaultValue={profile.name}
+            fontSize="1.5rem"
+          />
+          <InputRightElement width="4.5rem">
+            <div onClick={handleClick}>
+              {show ? (
+                <div
+                  css={{
+                    display: "grid",
+                    width: "5rem",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "0.5rem",
+                    position: "relative",
+                    top: "0.2rem",
+                    right: "1.5rem",
+                  }}
+                >
+                  <Button h="2rem" w="1.5rem" p="0.5rem">
+                    <CheckIcon />
+                  </Button>
+                  <Button h="2rem" w="1.5rem" p="0.5rem">
+                    <CloseIcon />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  h="2rem"
+                  w="1.5rem"
+                  p="0.5rem"
+                  position="relative"
+                  top="0.2rem"
+                >
+                  Edit
+                </Button>
+              )}
+            </div>
+          </InputRightElement>
+        </InputGroup>
+      </div>
+      <div
+        css={{
+          display: "flex",
+          width: "100vw",
+          marginTop: "2rem",
+        }}
+      >
+        <div
+          css={{
+            margin: "0 6rem 0 3rem",
+            d: "flex",
+            justify: "flex-start",
+            position: "relative",
+            right: "1rem",
+          }}
+        >
+          <Button backgroundColor="red" onClick={() => setIsOpen(true)}>
+            Delete Customer
+          </Button>
+
+          <AlertDialog
+            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onClose}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Delete Customer
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  All your saved games will be deleted from your account. Are
+                  you sure? You can't undo this action afterwards.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onClose}>
+                    Cancel
+                  </Button>
+                  <Button
+                    backgroundColor="red"
+                    onClick={() => deleteAccount(dispatch)}
+                    ml={3}
+                  >
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+        </div>
+        <Button
+          colorScheme="red"
+          variant="solid"
+          d="flex"
+          justify="flex-end"
+          onClick={() => logout(dispatch)}
+        >
+          Logout
+        </Button>
+      </div>
+    </div>
   );
 };
 
@@ -418,6 +594,8 @@ const Main = ({
   currentlyPlayingGames,
   wishlist,
   collection,
+  profile,
+  id,
 }) => {
   return (
     <div
@@ -474,7 +652,7 @@ const Main = ({
               <MyCollection collection={collection} />
             </TabPanel>
             <TabPanel>
-              <p>Settings</p>
+              <MySettings profile={profile} id={id} />
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -501,6 +679,8 @@ const Dashboard = () => {
   const collectionState = useSelector(
     (state) => state?.profileDataApi?.collection
   );
+
+  const profileDataApi = useSelector((state) => state?.profileDataApi?.data);
   const wishlistState = useSelector((state) => state?.profileDataApi?.wishlist);
   const id = useSelector((state) => state?.profileDataApi?.id);
 
@@ -527,6 +707,8 @@ const Dashboard = () => {
           notPlayedGames={notPlayedGames}
           collection={saveCollection}
           wishlist={saveWishlist}
+          profile={profileDataApi}
+          id={id}
         />
       </div>
     );
