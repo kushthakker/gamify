@@ -431,8 +431,8 @@ const MyCollection = ({ collection }) => {
 };
 
 const MySettings = ({ profile, id }) => {
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
+  const [edit, setEdit] = React.useState(false);
+  const handleClick = () => setEdit(!edit);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
@@ -476,18 +476,30 @@ const MySettings = ({ profile, id }) => {
         >
           Change the name :
         </h3>
-        <InputGroup>
-          <Input
-            size="md"
-            w="20rem"
-            h="3rem"
-            pos="relative"
-            defaultValue={profile.name}
-            fontSize="1.5rem"
-          />
+        <InputGroup w="20rem">
+          {edit ? (
+            <Input
+              size="md"
+              w="20rem"
+              h="3rem"
+              pos="relative"
+              defaultValue={profile.name}
+              fontSize="1.5rem"
+            />
+          ) : (
+            <Input
+              size="md"
+              w="20rem"
+              h="3rem"
+              pos="relative"
+              value={profile.name}
+              fontSize="1.5rem"
+              isReadOnly
+            />
+          )}
           <InputRightElement width="4.5rem">
             <div onClick={handleClick}>
-              {show ? (
+              {edit ? (
                 <div
                   css={{
                     display: "grid",
@@ -499,10 +511,20 @@ const MySettings = ({ profile, id }) => {
                     right: "1.5rem",
                   }}
                 >
-                  <Button h="2rem" w="1.5rem" p="0.5rem">
+                  <Button
+                    h="2rem"
+                    w="1.5rem"
+                    p="0.5rem"
+                    onClick={() => setEdit(false)}
+                  >
                     <CheckIcon />
                   </Button>
-                  <Button h="2rem" w="1.5rem" p="0.5rem">
+                  <Button
+                    h="2rem"
+                    w="1.5rem"
+                    p="0.5rem"
+                    onClick={() => setEdit(false)}
+                  >
                     <CloseIcon />
                   </Button>
                 </div>
