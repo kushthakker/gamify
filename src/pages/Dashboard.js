@@ -32,6 +32,19 @@ const Title = styled.h1({
   marginTop: "1rem",
 });
 
+const CenterEle = styled.div({
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  justifyItems: "center",
+  justifyContent: "center",
+  gridAutoFlow: "dense row",
+  gridTemplateRows: "masonry",
+  masonryAutoFlow: "next",
+  columnGap: "2rem",
+  rowGap: "2rem",
+  padding: "2rem",
+});
+
 const Mygames = ({
   uncategorizedGames,
   notPlayedGames,
@@ -43,20 +56,7 @@ const Mygames = ({
       <div>
         {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
 
-        <div
-          css={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyItems: "center",
-            justifyContent: "space-between",
-            gridAutoFlow: "dense column",
-            gridTemplateRows: "masonry",
-            masonryAutoFlow: "next",
-            columnGap: "1.5rem",
-            rowGap: "2.5rem",
-            padding: "2rem",
-          }}
-        >
+        <CenterEle>
           {uncategorizedGames.map((game) => (
             <div key={Math.random()}>
               <Link to={`/games/${game.id}`}>
@@ -106,26 +106,13 @@ const Mygames = ({
               </Link>
             </div>
           ))}
-        </div>
+        </CenterEle>
       </div>
       <div>
         {currentlyPlayingGames.length > 0 ? (
           <Title>Current Playing</Title>
         ) : null}
-        <div
-          css={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyItems: "center",
-            justifyContent: "space-between",
-            gridAutoFlow: "dense column",
-            gridTemplateRows: "masonry",
-            masonryAutoFlow: "next",
-            columnGap: "1.5rem",
-            rowGap: "2.5rem",
-            padding: "2rem",
-          }}
-        >
+        <CenterEle>
           {currentlyPlayingGames.map((game) => (
             <React.Fragment key={Math.random()}>
               <div
@@ -183,24 +170,11 @@ const Mygames = ({
               </div>
             </React.Fragment>
           ))}
-        </div>
+        </CenterEle>
       </div>
       <div>
         {finishedGames.length > 0 ? <Title>Finished</Title> : null}
-        <div
-          css={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyItems: "center",
-            justifyContent: "space-between",
-            gridAutoFlow: "dense column",
-            gridTemplateRows: "masonry",
-            masonryAutoFlow: "next",
-            columnGap: "1.5rem",
-            rowGap: "2.5rem",
-            padding: "2rem",
-          }}
-        >
+        <CenterEle>
           {finishedGames.map((game) => (
             <React.Fragment key={Math.random()}>
               <div
@@ -258,24 +232,11 @@ const Mygames = ({
               </div>
             </React.Fragment>
           ))}
-        </div>
+        </CenterEle>
       </div>
       <div>
         {notPlayedGames.length > 0 ? <Title>Not played yet</Title> : null}
-        <div
-          css={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyItems: "center",
-            justifyContent: "space-between",
-            gridAutoFlow: "dense column",
-            gridTemplateRows: "masonry",
-            masonryAutoFlow: "next",
-            columnGap: "1.5rem",
-            rowGap: "2.5rem",
-            padding: "2rem",
-          }}
-        >
+        <CenterEle>
           {notPlayedGames.map((game) => (
             <React.Fragment key={Math.random()}>
               <div
@@ -333,7 +294,7 @@ const Mygames = ({
               </div>
             </React.Fragment>
           ))}
-        </div>
+        </CenterEle>
       </div>
     </>
   );
@@ -344,20 +305,7 @@ const MyWishlist = ({ wishlist }) => {
     <div>
       {console.log(`wishlist`)}
       <Title>Wishlist</Title>
-      <div
-        css={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          justifyItems: "center",
-          justifyContent: "center",
-          gridAutoFlow: "dense row",
-          gridTemplateRows: "masonry",
-          masonryAutoFlow: "next",
-          columnGap: "2rem",
-          rowGap: "2rem",
-          padding: "2rem",
-        }}
-      >
+      <CenterEle>
         {wishlist.map((game) => (
           <div key={Math.random()}>
             <Link to={`/games/${game.id}`}>
@@ -407,7 +355,7 @@ const MyWishlist = ({ wishlist }) => {
             </Link>
           </div>
         ))}
-      </div>
+      </CenterEle>
     </div>
   );
 };
@@ -416,21 +364,7 @@ const MyCollection = ({ collection }) => {
   return (
     <div>
       <Title>Collection</Title>
-      <div
-        css={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          justifyContent: "center",
-          justifyItems: "center",
-          gridAutoFlow: "dense row",
-          gridTemplateRows: "masonry",
-          masonryAutoFlow: "next",
-          // columnGap: "2rem",
-          rowGap: "2rem",
-          padding: "2rem",
-          maxWidth: "100vw",
-        }}
-      >
+      <CenterEle>
         {collection.map((game) => (
           <React.Fragment key={Math.random()}>
             <div>
@@ -482,7 +416,7 @@ const MyCollection = ({ collection }) => {
             </div>
           </React.Fragment>
         ))}
-      </div>
+      </CenterEle>
     </div>
   );
 };
