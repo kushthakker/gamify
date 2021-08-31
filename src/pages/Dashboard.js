@@ -41,14 +41,20 @@ const Mygames = ({
   return (
     <>
       <div>
+        <Title>Uncategorized</Title>
         {uncategorizedGames.map((game) => (
           <React.Fragment key={Math.random()}>
-            <Title>Uncategorized</Title>
             <div
               css={{
                 display: "grid",
-                gridAutoFlow: "column dense",
-                gap: "2rem",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                justifyContent: "space-between",
+                gridAutoFlow: "dense row",
+                gridTemplateRows: "masonry",
+                masonryAutoFlow: "next",
+                columnGap: "1.5rem",
+                rowGap: "2.5rem",
+                padding: "2rem",
               }}
             >
               <Link to={`/games/${game.id}`}>
@@ -291,7 +297,8 @@ const MyWishlist = ({ wishlist }) => {
       <div
         css={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          justifyContent: "space-between",
           gridAutoFlow: "dense row",
           gridTemplateRows: "masonry",
           masonryAutoFlow: "next",
@@ -546,7 +553,7 @@ const Dashboard = () => {
     );
   };
 
-  React.useEffect(() => {
+  React.useState(() => {
     const fetch = async function () {
       let uncategorized = [];
       let currentPlaying = [];
@@ -616,7 +623,7 @@ const Dashboard = () => {
           });
           wishlist.push(req.data);
           setSaveWishlist(wishlist);
-          return wishlist;
+          // return wishlist;
         });
         console.log(`wishlist saved`, wishlist);
       } catch (err) {
@@ -625,14 +632,7 @@ const Dashboard = () => {
     };
 
     fetch();
-  }, [
-    collectionState,
-    mygamesCurrentPlaying,
-    mygamesFinished,
-    mygamesUncategorized,
-    mygamesnotPlayedYet,
-    wishlistState,
-  ]);
+  });
 
   console.log(`wishlist`, saveWishlist);
   console.log(`collection`, saveCollection);
