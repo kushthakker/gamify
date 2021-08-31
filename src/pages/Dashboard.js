@@ -40,26 +40,27 @@ const Mygames = ({
 }) => {
   return (
     <>
-      {console.log(`mygames`)}
       <div>
-        <Title>Uncategorized</Title>
-        {uncategorizedGames.map((game) => (
-          <React.Fragment key={Math.random()}>
-            <div
-              css={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                justifyContent: "space-between",
-                gridAutoFlow: "dense row",
-                gridTemplateRows: "masonry",
-                masonryAutoFlow: "next",
-                columnGap: "1.5rem",
-                rowGap: "2.5rem",
-                padding: "2rem",
-              }}
-            >
+        {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
+
+        <div
+          css={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            justifyItems: "center",
+            justifyContent: "space-between",
+            gridAutoFlow: "dense column",
+            gridTemplateRows: "masonry",
+            masonryAutoFlow: "next",
+            columnGap: "1.5rem",
+            rowGap: "2.5rem",
+            padding: "2rem",
+          }}
+        >
+          {uncategorizedGames.map((game) => (
+            <div key={Math.random()}>
               <Link to={`/games/${game.id}`}>
-                <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                <div key={Math.random()}>
                   <Box
                     w="27rem"
                     borderWidth="1px"
@@ -104,188 +105,233 @@ const Mygames = ({
                 </div>
               </Link>
             </div>
-          </React.Fragment>
-        ))}
+          ))}
+        </div>
       </div>
       <div>
-        {currentlyPlayingGames.map((game) => (
-          <React.Fragment key={Math.random()}>
-            <Title>Currently playing</Title>
-            <div
-              css={{
-                display: "grid",
-                gridAutoFlow: "column dense",
-                gap: "2rem",
-              }}
-            >
-              <Link to={`/games/${game.id}`}>
-                <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                  <Box
-                    w="27rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+        {currentlyPlayingGames.length > 0 ? <Title>Uncategorized</Title> : null}
+        <div
+          css={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            justifyItems: "center",
+            justifyContent: "space-between",
+            gridAutoFlow: "dense column",
+            gridTemplateRows: "masonry",
+            masonryAutoFlow: "next",
+            columnGap: "1.5rem",
+            rowGap: "2.5rem",
+            padding: "2rem",
+          }}
+        >
+          {currentlyPlayingGames.map((game) => (
+            <React.Fragment key={Math.random()}>
+              <div
+                css={{
+                  display: "grid",
+                  gridAutoFlow: "column dense",
+                  gap: "2rem",
+                }}
+              >
+                <Link to={`/games/${game.id}`}>
+                  <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image
+                        src={game.background_image}
+                        alt={game.name}
+                        h="241px"
+                        w="100%"
+                      />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {game.released}
+                          </Box>
+                        </Box>
+
                         <Box
-                          color="gray.500"
+                          mt="1"
                           fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
                         >
-                          {game.released}
+                          {game.name}
                         </Box>
                       </Box>
-
-                      <Box
-                        mt="1"
-                        fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
-                      >
-                        {game.name}
-                      </Box>
                     </Box>
-                  </Box>
-                </div>
-              </Link>
-            </div>
-          </React.Fragment>
-        ))}
+                  </div>
+                </Link>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
       <div>
-        {finishedGames.map((game) => (
-          <React.Fragment key={Math.random()}>
-            <Title>Finished</Title>
-            <div
-              css={{
-                display: "grid",
-                gridAutoFlow: "column dense",
-                gap: "2rem",
-              }}
-            >
-              <Link to={`/games/${game.id}`}>
-                <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                  <Box
-                    w="27rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+        {finishedGames.length > 0 ? <Title>Uncategorized</Title> : null}
+        <div
+          css={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            justifyItems: "center",
+            justifyContent: "space-between",
+            gridAutoFlow: "dense column",
+            gridTemplateRows: "masonry",
+            masonryAutoFlow: "next",
+            columnGap: "1.5rem",
+            rowGap: "2.5rem",
+            padding: "2rem",
+          }}
+        >
+          {finishedGames.map((game) => (
+            <React.Fragment key={Math.random()}>
+              <div
+                css={{
+                  display: "grid",
+                  gridAutoFlow: "column dense",
+                  gap: "2rem",
+                }}
+              >
+                <Link to={`/games/${game.id}`}>
+                  <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image
+                        src={game.background_image}
+                        alt={game.name}
+                        h="241px"
+                        w="100%"
+                      />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {game.released}
+                          </Box>
+                        </Box>
+
                         <Box
-                          color="gray.500"
+                          mt="1"
                           fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
                         >
-                          {game.released}
+                          {game.name}
                         </Box>
                       </Box>
-
-                      <Box
-                        mt="1"
-                        fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
-                      >
-                        {game.name}
-                      </Box>
                     </Box>
-                  </Box>
-                </div>
-              </Link>
-            </div>
-          </React.Fragment>
-        ))}
+                  </div>
+                </Link>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
       <div>
-        {notPlayedGames.map((game) => (
-          <React.Fragment key={Math.random()}>
-            <Title>Not played</Title>
-            <div
-              css={{
-                display: "grid",
-                gridAutoFlow: "column dense",
-                gap: "2rem",
-              }}
-            >
-              <Link to={`/games/${game.id}`}>
-                <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                  <Box
-                    w="27rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+        {notPlayedGames.length > 0 ? <Title>Uncategorized</Title> : null}
+        <div
+          css={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            justifyItems: "center",
+            justifyContent: "space-between",
+            gridAutoFlow: "dense column",
+            gridTemplateRows: "masonry",
+            masonryAutoFlow: "next",
+            columnGap: "1.5rem",
+            rowGap: "2.5rem",
+            padding: "2rem",
+          }}
+        >
+          {notPlayedGames.map((game) => (
+            <React.Fragment key={Math.random()}>
+              <div
+                css={{
+                  display: "grid",
+                  gridAutoFlow: "column dense",
+                  gap: "2rem",
+                }}
+              >
+                <Link to={`/games/${game.id}`}>
+                  <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image
+                        src={game.background_image}
+                        alt={game.name}
+                        h="241px"
+                        w="100%"
+                      />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {game.released}
+                          </Box>
+                        </Box>
+
                         <Box
-                          color="gray.500"
+                          mt="1"
                           fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
                         >
-                          {game.released}
+                          {game.name}
                         </Box>
                       </Box>
-
-                      <Box
-                        mt="1"
-                        fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
-                      >
-                        {game.name}
-                      </Box>
                     </Box>
-                  </Box>
-                </div>
-              </Link>
-            </div>
-          </React.Fragment>
-        ))}
+                  </div>
+                </Link>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </>
   );
@@ -300,12 +346,13 @@ const MyWishlist = ({ wishlist }) => {
         css={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          justifyContent: "space-between",
+          justifyItems: "center",
+          justifyContent: "center",
           gridAutoFlow: "dense row",
           gridTemplateRows: "masonry",
           masonryAutoFlow: "next",
-          columnGap: "1.5rem",
-          rowGap: "2.5rem",
+          columnGap: "2rem",
+          rowGap: "2rem",
           padding: "2rem",
         }}
       >
@@ -371,13 +418,15 @@ const MyCollection = ({ collection }) => {
         css={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          justifyContent: "space-between",
+          justifyContent: "center",
+          justifyItems: "center",
           gridAutoFlow: "dense row",
           gridTemplateRows: "masonry",
           masonryAutoFlow: "next",
-          columnGap: "1.5rem",
-          rowGap: "2.5rem",
+          // columnGap: "2rem",
+          rowGap: "2rem",
           padding: "2rem",
+          maxWidth: "100vw",
         }}
       >
         {collection.map((game) => (
@@ -447,7 +496,7 @@ const Main = ({
   return (
     <div
       css={{
-        width: "100vw",
+        maxWidth: "100vw",
         maxHeight: "100vh",
         display: "grid",
         gridTemplateRows: "350px 1fr",
@@ -584,7 +633,8 @@ const Dashboard = () => {
               },
             });
             currentPlaying.push(req.data);
-            setCurrentlyPlayingGames(currentPlaying);
+            if (currentPlaying.length === mygamesCurrentPlaying.length)
+              setCurrentlyPlayingGames(currentPlaying);
           });
           await mygamesFinished.map(async (ele) => {
             let req = await api.get(`/games/${ele}`, {
@@ -594,7 +644,9 @@ const Dashboard = () => {
               },
             });
             finished.push(req.data);
-            setFinishedGames(finished);
+
+            if (finished.length === mygamesFinished.length)
+              setFinishedGames(finished);
           });
 
           await mygamesnotPlayedYet.map(async (ele) => {
@@ -605,7 +657,8 @@ const Dashboard = () => {
               },
             });
             notPlayedYet.push(req.data);
-            setNotPlayedGames(notPlayedYet);
+            if (notPlayedYet.length === mygamesnotPlayedYet.length)
+              setNotPlayedGames(notPlayedYet);
           });
           await collectionState.map(async (ele) => {
             let req = await api.get(`/games/${ele}`, {
@@ -615,7 +668,8 @@ const Dashboard = () => {
               },
             });
             collection.push(req.data);
-            setSaveCollection(collection);
+            if (collection.length === collectionState.length)
+              setSaveCollection(collection);
           });
 
           await wishlistState.map(async (ele) => {
