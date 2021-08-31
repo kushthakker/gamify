@@ -40,6 +40,7 @@ const Mygames = ({
 }) => {
   return (
     <>
+      {console.log(`mygames`)}
       <div>
         <Title>Uncategorized</Title>
         {uncategorizedGames.map((game) => (
@@ -293,6 +294,7 @@ const Mygames = ({
 const MyWishlist = ({ wishlist }) => {
   return (
     <div>
+      {console.log(`wishlist`)}
       <Title>Wishlist</Title>
       <div
         css={{
@@ -524,6 +526,7 @@ const Dashboard = () => {
     (state) => state?.profileDataApi?.collection
   );
   const wishlistState = useSelector((state) => state?.profileDataApi?.wishlist);
+  const id = useSelector((state) => state?.profileDataApi?.id);
 
   const mygamesUncategorized = useSelector(
     (state) => state?.profileDataApi?.mygames?.uncategorized
@@ -553,7 +556,7 @@ const Dashboard = () => {
     );
   };
 
-  React.useState(() => {
+  React.useLayoutEffect(() => {
     const fetch = async function () {
       let uncategorized = [];
       let currentPlaying = [];
@@ -561,95 +564,124 @@ const Dashboard = () => {
       let finished = [];
       let collection = [];
       let wishlist = [];
-      try {
-        await mygamesUncategorized.map(async (ele) => {
-          let req = await api.get(`/games/${ele}`, {
-            params: {
-              id: ele,
-              // search_precise: true,
-            },
+      if (id) {
+        try {
+          await mygamesUncategorized.map(async (ele) => {
+            let req = await api.get(`/games/${ele}`, {
+              params: {
+                id: ele,
+                // search_precise: true,
+              },
+            });
+            uncategorized.push(req.data);
+            setUncategorizedGames(uncategorized);
           });
-          uncategorized.push(req.data);
-          setUncategorizedGames(uncategorized);
-        });
-        await mygamesCurrentPlaying.map(async (ele) => {
-          let req = await api.get(`/games/${ele}`, {
-            params: {
-              id: ele,
-              // search_precise: true,
-            },
+          await mygamesCurrentPlaying.map(async (ele) => {
+            let req = await api.get(`/games/${ele}`, {
+              params: {
+                id: ele,
+                // search_precise: true,
+              },
+            });
+            currentPlaying.push(req.data);
+            setCurrentlyPlayingGames(currentPlaying);
           });
-          currentPlaying.push(req.data);
-          setCurrentlyPlayingGames(currentPlaying);
-        });
-        await mygamesFinished.map(async (ele) => {
-          let req = await api.get(`/games/${ele}`, {
-            params: {
-              id: ele,
-              // search_precise: true,
-            },
+          await mygamesFinished.map(async (ele) => {
+            let req = await api.get(`/games/${ele}`, {
+              params: {
+                id: ele,
+                // search_precise: true,
+              },
+            });
+            finished.push(req.data);
+            setFinishedGames(finished);
           });
-          finished.push(req.data);
-          setFinishedGames(finished);
-        });
 
-        await mygamesnotPlayedYet.map(async (ele) => {
-          let req = await api.get(`/games/${ele}`, {
-            params: {
-              id: ele,
-              // search_precise: true,
-            },
+          await mygamesnotPlayedYet.map(async (ele) => {
+            let req = await api.get(`/games/${ele}`, {
+              params: {
+                id: ele,
+                // search_precise: true,
+              },
+            });
+            notPlayedYet.push(req.data);
+            setNotPlayedGames(notPlayedYet);
           });
-          notPlayedYet.push(req.data);
-          setNotPlayedGames(notPlayedYet);
-        });
-        await collectionState.map(async (ele) => {
-          let req = await api.get(`/games/${ele}`, {
-            params: {
-              id: ele,
-              // search_precise: true,
-            },
+          await collectionState.map(async (ele) => {
+            let req = await api.get(`/games/${ele}`, {
+              params: {
+                id: ele,
+                // search_precise: true,
+              },
+            });
+            collection.push(req.data);
+            setSaveCollection(collection);
           });
-          collection.push(req.data);
-          setSaveCollection(collection);
-        });
 
-        await wishlistState.map(async (ele) => {
-          let req = await api.get(`/games/${ele}`, {
-            params: {
-              id: ele,
-              // search_precise: true,
-            },
+          await wishlistState.map(async (ele) => {
+            let req = await api.get(`/games/${ele}`, {
+              params: {
+                id: ele,
+                // search_precise: true,
+              },
+            });
+            wishlist.push(req.data);
+
+            // return wishlist;
+            if (wishlist.length === wishlistState.length)
+              setSaveWishlist(wishlist);
           });
-          wishlist.push(req.data);
-          setSaveWishlist(wishlist);
-          // return wishlist;
-        });
-        console.log(`wishlist saved`, wishlist);
-      } catch (err) {
-        console.log(err);
+
+          console.log("coll", collection);
+          console.log("wish", wishlist);
+
+          console.log(`wishlist saved`, wishlist);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        <div
+          css={{
+            width: "100vw",
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "0",
+          }}
+        >
+          <Spinner />
+        </div>;
       }
     };
 
     fetch();
-  });
+  }, [
+    collectionState,
+    id,
+    mygamesCurrentPlaying,
+    mygamesFinished,
+    mygamesUncategorized,
+    mygamesnotPlayedYet,
+    wishlistState,
+  ]);
 
   console.log(`wishlist`, saveWishlist);
   console.log(`collection`, saveCollection);
 
   return (
     <div>
-      {isLoggedIn === true ? (
+      {isLoggedIn === true &&
+      mygamesUncategorized &&
+      collectionState &&
+      wishlistState ? (
         <div>
           {console.log(`mygamesUncategorized`)}
           <SideBarMemoized />
           <LoginButton />
           <Output />
         </div>
-      ) : isLoggedIn === false &&
-        mygamesUncategorized &&
-        collectionState &&
-        wishlistState ? (
+      ) : isLoggedIn === false ? (
         <div
           css={{
             width: "100vw",
