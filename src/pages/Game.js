@@ -552,6 +552,8 @@ const ShowData = ({
     }
   }
 
+  const location = lastLocation?.pathname ? lastLocation.pathname : "/";
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div
@@ -562,15 +564,50 @@ const ShowData = ({
         }}
         transition={transition}
       >
+        <Link to={location}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: 1,
+              y: 5,
+              transition: { delay: 1.2, ...transition },
+            }}
+            css={{
+              marginTop: "2rem",
+              marginLeft: "2rem",
+              width: "5rem",
+              zIndex: "99",
+            }}
+          >
+            <div
+              css={{
+                display: "flex",
+                width: "5rem",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                <i className="fas fa-arrow-left"></i>
+              </div>
+              <div>
+                <span css={{ fontFamily: "Staatliches", fontSize: "1.2rem" }}>
+                  Go Back
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </Link>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 0 }}
           animate={{
             opacity: 1,
             y: -6,
             transition: { delay: 1.2, ...transition },
           }}
+          css={{ width: "auto" }}
         >
-          <SearchBar posTop="-2rem" posLeft="-50rem" width="20rem" />
+          <SearchBar posLeft="-50rem" width="20rem" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -1198,6 +1235,8 @@ const Game = ({ match }) => {
   const location = useLocation();
   const history = useHistory();
 
+  console.log(lastLocation);
+
   const Fetch = function (id) {
     try {
       const req = api
@@ -1251,13 +1290,13 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
-        const yt = await youtube.get(`/search`, {
-          params: {
-            q: req.data.name,
-          },
-        });
+        // const yt = await youtube.get(`/search`, {
+        //   params: {
+        //     q: req.data.name,
+        //   },
+        // });
 
-        const dataYt = yt.data.items;
+        // const dataYt = yt.data.items;
 
         if (!req.status) {
           throw new Error(req.statusText);
@@ -1266,8 +1305,8 @@ const Game = ({ match }) => {
           // console.log(stores);
           // console.log(dlcs);
           // console.log(yt);
-          setVideos(dataYt);
-          setCurrent(dataYt[0]);
+          // setVideos(dataYt);
+          // setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);

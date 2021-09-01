@@ -13,6 +13,7 @@ import SearchBar from "../components/SearchBar";
 import { urlQuery } from "../actions/index";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
+import HomeIcon from "../components/HomeIcon";
 
 const transition = {
   duration: 0.4,
@@ -250,8 +251,7 @@ const Output = ({ match }) => {
         searchResult?.length !== 0 ? (
           <div>
             <LoginButton />
-            {/* <SideBarMemoized /> */}
-            {/* <SearchBar /> */}
+            <HomeIcon />
             <div>
               <div css={{ marginTop: "3rem" }}>
                 <Data searchResult={searchResult} />
