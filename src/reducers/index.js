@@ -6,11 +6,13 @@ import homepageDataReducer from "./homepageDataReducer";
 import timerReducer from "./timerReducer";
 import userReducer from "./userReducer";
 import profileDataApiReducer from "./profileDataApiReducer";
+import lastUrlBeforeLoginReducer from "./lastUrlBeforeLoginReducer";
 
 export default combineReducers({
   searchResult: searchResultReducer,
   status: statusReducer,
   urlQuery: urlQueryReducer,
+  lastUrlBeforeLogin: lastUrlBeforeLoginReducer,
   homepageData: homepageDataReducer,
   timer: timerReducer,
   user: userReducer,

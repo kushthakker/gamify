@@ -264,36 +264,37 @@ const ShowData = ({
     setCurrent(video);
   };
 
-  const userId = useSelector((state) => state.user.userID);
-  const profile = useSelector((state) => state.profileDataApi);
-  const collection = useSelector((state) => state.profileDataApi.collection);
-  const wishlist = useSelector((state) => state.profileDataApi.wishlist);
-  const mygames = useSelector((state) => state.profileDataApi.mygames);
+  const userId = useSelector((state) => state?.user?.userID);
+  const profile = useSelector((state) => state?.profileDataApi);
+  const collection = useSelector((state) => state?.profileDataApi?.collection);
+  const wishlist = useSelector((state) => state?.profileDataApi?.wishlist);
+  const mygames = useSelector((state) => state?.profileDataApi?.mygames);
 
   const mygamesUncategorized = useSelector(
-    (state) => state.profileDataApi.mygames.uncategorized
+    (state) => state?.profileDataApi?.mygames?.uncategorized
   );
   const mygamesCurrentPlaying = useSelector(
-    (state) => state.profileDataApi.mygames.currentPlaying
+    (state) => state?.profileDataApi?.mygames?.currentPlaying
   );
   const mygamesFinished = useSelector(
-    (state) => state.profileDataApi.mygames.finished
+    (state) => state?.profileDataApi?.mygames?.finished
   );
   const mygamesnotPlayedYet = useSelector(
-    (state) => state.profileDataApi.mygames.notPlayedYet
+    (state) => state?.profileDataApi?.mygames?.notPlayedYet
   );
 
   const [wishlistadded, setWishlistadded] = useState(
-    wishlist.includes(data.id)
+    wishlist?.includes(data.id)
   );
   const [collectionadded, setCollectionadded] = useState(
-    collection.includes(data.id)
+    collection?.includes(data.id)
   );
 
-  const uncategorized = mygamesUncategorized.includes(data.id);
-  const currentPlaying = mygamesCurrentPlaying.includes(data.id);
-  const finished = mygamesFinished.includes(data.id);
-  const notPlayedYet = mygamesnotPlayedYet.includes(data.id);
+  const uncategorized = mygamesUncategorized?.includes(data.id);
+  const currentPlaying = mygamesCurrentPlaying?.includes(data.id);
+  const finished = mygamesFinished?.includes(data.id);
+  const notPlayedYet = mygamesnotPlayedYet?.includes(data.id);
+  const isLoggedIn = useSelector((state) => state?.user?.isLoggedIn);
 
   const [mygamesType, setMygamesType] = useState(
     uncategorized
@@ -311,163 +312,208 @@ const ShowData = ({
   );
 
   const addToMyGamesClick = (type, id) => {
-    console.log(type);
-    if (type === "uncategorized") {
-      addToMyGamesUncategorized(id);
-    } else if (type === "Current Playing") {
-      addToMyGamesCurrentPlaying(id);
-    } else if (type === "Finished") {
-      addToMyGamesFinished(id);
-    } else if (type === "Not Played Yet") {
-      addToMyGamesNotPlayedYet(id);
+    if (isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      console.log(type);
+      if (type === "uncategorized") {
+        addToMyGamesUncategorized(id);
+      } else if (type === "Current Playing") {
+        addToMyGamesCurrentPlaying(id);
+      } else if (type === "Finished") {
+        addToMyGamesFinished(id);
+      } else if (type === "Not Played Yet") {
+        addToMyGamesNotPlayedYet(id);
+      }
     }
   };
   const addToMyGamesUncategorized = (id) => {
-    setMygamesType("uncategorized");
-    if (mygamesadded === true) {
-      // remove from wishlist
-      setMygamesType("");
-      setMygamesadded(!mygamesadded);
-      dispatch(
-        removeFromMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            uncategorized: [
-              ...mygames.uncategorized.filter((item) => item !== id),
-            ],
-          },
-        })
-      );
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
-      setMygamesadded(!mygamesadded);
+      setMygamesType("uncategorized");
+      if (mygamesadded === true) {
+        // remove from wishlist
+        setMygamesType("");
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              uncategorized: [
+                ...mygames.uncategorized.filter((item) => item !== id),
+              ],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
 
-      dispatch(
-        addToMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            uncategorized: [...mygames.uncategorized, id],
-          },
-        })
-      );
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              uncategorized: [...mygames.uncategorized, id],
+            },
+          })
+        );
+      }
+      console.log(mygamesadded);
+      toast({
+        title: mygamesadded
+          ? `Removed from uncategorized`
+          : `Added to uncategorized`,
+        status: mygamesadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    console.log(mygamesadded);
-    toast({
-      title: mygamesadded
-        ? `Removed from uncategorized`
-        : `Added to uncategorized`,
-      status: mygamesadded ? "error" : "success",
-      duration: 3000,
-      isClosable: true,
-    });
   };
   const addToMyGamesCurrentPlaying = (id) => {
-    setMygamesType("Current Playing");
-    if (mygamesadded === true) {
-      setMygamesType("");
-      // remove from wishlist
-      setMygamesadded(!mygamesadded);
-      dispatch(
-        removeFromMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            currentPlaying: [
-              ...mygames.currentPlaying.filter((item) => item !== id),
-            ],
-          },
-        })
-      );
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
-      setMygamesadded(!mygamesadded);
+      setMygamesType("Current Playing");
+      if (mygamesadded === true) {
+        setMygamesType("");
+        // remove from wishlist
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              currentPlaying: [
+                ...mygames.currentPlaying.filter((item) => item !== id),
+              ],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
 
-      dispatch(
-        addToMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            currentPlaying: [...mygames.currentPlaying, id],
-          },
-        })
-      );
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              currentPlaying: [...mygames.currentPlaying, id],
+            },
+          })
+        );
+      }
+      console.log(mygamesadded);
+      toast({
+        title: mygamesadded
+          ? `Removed from Current Playing`
+          : `Added to Current Playing`,
+        status: mygamesadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    console.log(mygamesadded);
-    toast({
-      title: mygamesadded
-        ? `Removed from Current Playing`
-        : `Added to Current Playing`,
-      status: mygamesadded ? "error" : "success",
-      duration: 3000,
-      isClosable: true,
-    });
   };
 
   const addToMyGamesFinished = (id) => {
-    setMygamesType("Finished");
-    if (mygamesadded === true) {
-      // remove from wishlist
-      setMygamesType("");
-      setMygamesadded(!mygamesadded);
-      dispatch(
-        removeFromMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            finished: [...mygames.finished.filter((item) => item !== id)],
-          },
-        })
-      );
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
-      setMygamesadded(!mygamesadded);
+      setMygamesType("Finished");
+      if (mygamesadded === true) {
+        // remove from wishlist
+        setMygamesType("");
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              finished: [...mygames.finished.filter((item) => item !== id)],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
 
-      dispatch(
-        addToMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            finished: [...mygames.finished, id],
-          },
-        })
-      );
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              finished: [...mygames.finished, id],
+            },
+          })
+        );
+      }
+      console.log(mygamesadded);
+      toast({
+        title: mygamesadded ? `Removed from Finished` : `Added to Finished`,
+        status: mygamesadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    console.log(mygamesadded);
-    toast({
-      title: mygamesadded ? `Removed from Finished` : `Added to Finished`,
-      status: mygamesadded ? "error" : "success",
-      duration: 3000,
-      isClosable: true,
-    });
   };
 
   const addToMyGamesNotPlayedYet = (id) => {
-    setMygamesType("Not Played Yet");
-    if (mygamesadded === true) {
-      setMygamesType("");
-      setMygamesadded(!mygamesadded);
-      dispatch(
-        removeFromMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            notPlayedYet: [
-              ...mygames.notPlayedYet.filter((item) => item !== id),
-            ],
-          },
-        })
-      );
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
-      setMygamesadded(!mygamesadded);
+      setMygamesType("Not Played Yet");
+      if (mygamesadded === true) {
+        setMygamesType("");
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              notPlayedYet: [
+                ...mygames.notPlayedYet.filter((item) => item !== id),
+              ],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
 
-      dispatch(
-        addToMygames(userId, {
-          ...profile,
-          mygames: {
-            ...profile.mygames,
-            notPlayedYet: [...mygames.notPlayedYet, id],
-          },
-        })
-      );
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              notPlayedYet: [...mygames.notPlayedYet, id],
+            },
+          })
+        );
+      }
     }
     console.log(mygamesadded);
     toast({
@@ -481,59 +527,77 @@ const ShowData = ({
   };
 
   const addToWishlistClick = (id) => {
-    if (wishlistadded === true) {
-      // remove from wishlist
-      setWishlistadded(!wishlistadded);
-      dispatch(
-        removeFromWishlist(userId, {
-          ...profile,
-          wishlist: [...profile.wishlist.filter((item) => item !== id)],
-        })
-      );
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
-      setWishlistadded(!wishlistadded);
-      dispatch(
-        addToWishlist(userId, {
-          ...profile,
-          wishlist: [...profile.wishlist, id],
-        })
-      );
+      if (wishlistadded === true) {
+        // remove from wishlist
+        setWishlistadded(!wishlistadded);
+        dispatch(
+          removeFromWishlist(userId, {
+            ...profile,
+            wishlist: [...profile.wishlist.filter((item) => item !== id)],
+          })
+        );
+      } else {
+        setWishlistadded(!wishlistadded);
+        dispatch(
+          addToWishlist(userId, {
+            ...profile,
+            wishlist: [...profile.wishlist, id],
+          })
+        );
+      }
+      console.log(wishlistadded);
+      toast({
+        title: wishlistadded ? "Removed from Wishlist" : "Added to Wishlist",
+        status: wishlistadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    console.log(wishlistadded);
-    toast({
-      title: wishlistadded ? "Removed from Wishlist" : "Added to Wishlist",
-      status: wishlistadded ? "error" : "success",
-      duration: 3000,
-      isClosable: true,
-    });
   };
   const addToCollectionClick = (id) => {
-    if (collectionadded === true) {
-      // remove from wishlist
-      setCollectionadded(!collectionadded);
-      dispatch(
-        removeFromCollection(userId, {
-          ...profile,
-          collection: [...profile.collection.filter((item) => item !== id)],
-        })
-      );
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
-      setCollectionadded(!collectionadded);
-      dispatch(
-        addToCollection(userId, {
-          ...profile,
-          collection: [...profile.collection, id],
-        })
-      );
+      if (collectionadded === true) {
+        // remove from wishlist
+        setCollectionadded(!collectionadded);
+        dispatch(
+          removeFromCollection(userId, {
+            ...profile,
+            collection: [...profile.collection.filter((item) => item !== id)],
+          })
+        );
+      } else {
+        setCollectionadded(!collectionadded);
+        dispatch(
+          addToCollection(userId, {
+            ...profile,
+            collection: [...profile.collection, id],
+          })
+        );
+      }
+      toast({
+        title: collectionadded
+          ? "Removed from Collection"
+          : "Added to Collection",
+        status: collectionadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    toast({
-      title: collectionadded
-        ? "Removed from Collection"
-        : "Added to Collection",
-      status: collectionadded ? "error" : "success",
-      duration: 3000,
-      isClosable: true,
-    });
   };
 
   function showImgNote() {
@@ -1351,15 +1415,7 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return (data &&
-    img &&
-    storeData &&
-    Fetch &&
-    dlcs &&
-    gameInSeries &&
-    videos &&
-    mygames) ||
-    isLoggedIn === false ? (
+  return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
     // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
