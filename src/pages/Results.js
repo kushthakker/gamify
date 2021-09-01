@@ -8,7 +8,7 @@ import { useVirtual } from "react-virtual";
 import { motion } from "framer-motion";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { useSelector, useDispatch } from "react-redux";
-import { Spinner, CloseIcon, Box, Badge, Image } from "@chakra-ui/react";
+import { Box, Badge } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import { urlQuery } from "../actions/index";
 import SideBarMemoized from "../components/Sidebar";
@@ -56,7 +56,7 @@ const MyListData = ({ searchResult }) => {
 
   const List = (props) => {
     return (
-      <motion.div
+      <div
         css={{
           position: "relative",
           display: "grid",
@@ -69,7 +69,7 @@ const MyListData = ({ searchResult }) => {
           padding: "2rem",
         }}
         {...props}
-      ></motion.div>
+      ></div>
     );
   };
 
@@ -77,11 +77,11 @@ const MyListData = ({ searchResult }) => {
     <div ref={listRef}>
       {console.log(`return render`)}
       <List
-        exit={{ opacity: 0 }}
-        transition={transition}
-        variants={container}
-        initial="hidden"
-        animate="visible"
+      // exit={{ opacity: 0 }}
+      // transition={transition}
+      // variants={container}
+      // initial="hidden"
+      // animate="visible"
       >
         {rowVirtualizer.virtualItems.map(({ index, size, start }) => {
           const item = searchResult[index];
@@ -127,7 +127,7 @@ const MyListData = ({ searchResult }) => {
 
           return (
             <Link to={`/games/${item.id}`} key={Math.random()}>
-              <div variants={itemVariant}>
+              <div>
                 <Box
                   w="20rem"
                   borderWidth="1px"
@@ -250,11 +250,13 @@ const Output = ({ match }) => {
       {isSuccess ? (
         searchResult?.length !== 0 ? (
           <div>
-            <SideBarMemoized />
             <LoginButton />
+            <SideBarMemoized />
             <SearchBar />
-            <div css={{ marginTop: "3rem" }}>
-              <Data searchResult={searchResult} />
+            <div>
+              <div css={{ marginTop: "3rem" }}>
+                <Data searchResult={searchResult} />
+              </div>
             </div>
           </div>
         ) : (

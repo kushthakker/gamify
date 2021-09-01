@@ -6,7 +6,16 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import api from "../api/api";
-import { Spinner } from "@chakra-ui/react";
+import {
+  Spinner,
+  Button,
+  Kbd,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  InputLeftElement,
+} from "@chakra-ui/react";
 import { searchValue } from "../actions/index";
 import { status } from "../actions/index";
 
@@ -16,15 +25,15 @@ import { motion } from "framer-motion";
 import Prompt from "../components/Prompt";
 
 const Result = ({ status, inputValue, setValue }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const onSubmit = (event) => {
     console.log(`render`);
     event.preventDefault();
     const value = inputValue.current.value;
     setValue(value);
   };
-
   return (
-    <motion.div
+    <div
       css={{
         display: "flex",
         alignItems: "center",
@@ -32,22 +41,54 @@ const Result = ({ status, inputValue, setValue }) => {
         marginTop: "2rem",
       }}
     >
-      <form type="search" onSubmit={onSubmit}>
-        <InputGroup>
-          <Input
-            variant="outline"
-            ref={inputValue}
-            placeholder={`Search`}
-            css={{
-              width: "500px",
-            }}
-          />
-          <InputRightElement
-            children={status === "loading" ? <Spinner /> : null}
-          />
-        </InputGroup>
-      </form>
-    </motion.div>
+      <Button
+        d="flex"
+        w="30rem"
+        borderRadius="0.5rem"
+        p="1.5rem"
+        alignItems="center"
+        onClick={onOpen}
+      >
+        <div
+          css={{ display: "flex", justifyContent: "flex-start", width: "100%" }}
+        >
+          <i class="fas fa-search"></i>
+        </div>
+        <div css={{ position: "relative", right: "8rem" }}>
+          <p> Search Games</p>
+        </div>
+        <div
+          css={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+        >
+          <span>
+            <Kbd>cmd</Kbd> + <Kbd>K</Kbd>
+          </span>
+        </div>
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputValue}>
+        <ModalOverlay />
+        <ModalContent top="5rem">
+          <form type="search" onSubmit={onSubmit}>
+            <InputGroup>
+              <InputLeftElement
+                children={<i class="fas fa-search"></i>}
+                pointerEvents="none"
+                d="flex"
+                h="100%"
+                alignContent="center"
+              />
+              <Input ref={inputValue} placeholder={`Search Games`} size="lg" />
+              <InputRightElement
+                children={status === "loading" ? <Spinner /> : null}
+                d="flex"
+                h="100%"
+                alignContent="center"
+              />
+            </InputGroup>
+          </form>
+        </ModalContent>
+      </Modal>
+    </div>
   );
 };
 
@@ -102,8 +143,6 @@ const SearchBar = () => {
   const keyDownFnc = (e) => {
     if (e.key === "k" && e.ctrlKey) {
       e.preventDefault();
-      inputValue.current.scrollIntoView({ behavior: "smooth" });
-      inputValue.current.focus();
     }
   };
 

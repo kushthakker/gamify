@@ -150,31 +150,31 @@ const App = () => {
       <div>
         <BrowserRouter>
           <div css={{ height: "100vh", width: "100vw" }}>
-            <AnimatePresence exitBeforeEnter>
-              <Switch>
-                <Route path="/" exact component={Home} key={1} />
-                <Route path="/discover/:q" exact component={Results} key={2} />
+            <Switch>
+              <Route path="/" exact component={Home} key={1} />
+              <Route path="/discover/:q" exact component={Results} key={2} />
 
+              <AnimatePresence exitBeforeEnter>
                 <Route path="/games/:id" exact component={Game} key={3} />
-                <Route path="/login" exact component={LoginPage} key={4} />
-                <Route
-                  exact
-                  path="/success"
-                  component={Success}
-                  key={5}
-                  // condition={false}
-                />
-                <Route
-                  exact
-                  path="/dashboard"
-                  component={Dashboard}
-                  key={6}
+              </AnimatePresence>
+              <Route path="/login" exact component={LoginPage} key={4} />
+              <Route
+                exact
+                path="/success"
+                component={Success}
+                key={5}
+                // condition={false}
+              />
+              <Route
+                exact
+                path="/dashboard"
+                component={Dashboard}
+                key={6}
 
-                  // condition={true}
-                />
-                <Route path="*" component={ErrorPage} />
-              </Switch>
-            </AnimatePresence>
+                // condition={true}
+              />
+              <Route path="*" component={ErrorPage} />
+            </Switch>
           </div>
         </BrowserRouter>
       </div>
