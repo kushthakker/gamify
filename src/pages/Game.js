@@ -564,25 +564,24 @@ const ShowData = ({
         }}
         transition={transition}
       >
-        <Link to={location}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: 1,
-              y: 5,
-              transition: { delay: 1.2, ...transition },
-            }}
-            css={{
-              marginTop: "2rem",
-              marginLeft: "2rem",
-              width: "5rem",
-              zIndex: "99",
-            }}
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: 1,
+            y: 5,
+            transition: { delay: 1.2, ...transition },
+          }}
+          style={{
+            marginTop: "2rem",
+            marginLeft: "2.5rem",
+            maxWidth: "5rem",
+          }}
+        >
+          <Link to={location}>
             <div
               css={{
                 display: "flex",
-                width: "5rem",
+                maxWidth: "5rem",
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
@@ -596,18 +595,23 @@ const ShowData = ({
                 </span>
               </div>
             </div>
-          </motion.div>
-        </Link>
+          </Link>
+        </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 0 }}
+          initial={{ opacity: 0, y: -30 }}
           animate={{
             opacity: 1,
-            y: -6,
+            y: -68,
             transition: { delay: 1.2, ...transition },
           }}
-          css={{ width: "auto" }}
+          style={{
+            width: "20rem",
+            position: "relative",
+            top: "0.1rem",
+            left: "180px",
+          }}
         >
-          <SearchBar posLeft="-50rem" width="20rem" />
+          <SearchBar width="20rem" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

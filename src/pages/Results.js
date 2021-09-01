@@ -239,6 +239,10 @@ const Output = ({ match }) => {
   //     dispatch(urlQuery(match.params.q));
   //   }, [dispatch, match.params.q]);
 
+  useEffect(() => {
+    if (statusState === "success") window.scrollTo(0, 0);
+  }, [statusState]);
+
   return (
     <div>
       {isError ? (
