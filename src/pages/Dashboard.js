@@ -923,7 +923,7 @@ const Dashboard = () => {
       wishlistState ? (
         <div>
           {console.log(`mygamesUncategorized`)}
-          <SideBarMemoized />
+          {/* <SideBarMemoized /> */}
           <LoginButton />
           <Output />
         </div>

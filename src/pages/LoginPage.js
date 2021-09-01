@@ -85,7 +85,7 @@ const LoginPage = () => {
         history.push("/")
       ) : ( */}
       <div css={{ maxHeight: "100vh", maxWidth: "100vw", overflow: "hidden" }}>
-        <SideBarMemoized />
+        {/* <SideBarMemoized /> */}
 
         <Box maxW="100vw" maxH="100vh">
           <Heading>Login</Heading>

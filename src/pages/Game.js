@@ -22,6 +22,7 @@ import { removeFromCollection } from "../actions/index";
 import { addToMygames } from "../actions/index";
 import { removeFromMygames } from "../actions/index";
 import SearchBar from "../components/SearchBar";
+import { useLastLocation } from "react-router-last-location";
 
 import {
   Spinner,
@@ -252,6 +253,7 @@ const ShowData = ({
   videos,
   current,
   setCurrent,
+  lastLocation,
 }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
@@ -568,7 +570,7 @@ const ShowData = ({
             transition: { delay: 1.2, ...transition },
           }}
         >
-          <SearchBar posLeft="-50rem" width="20rem" />
+          <SearchBar posTop="-2rem" posLeft="-50rem" width="20rem" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -1192,7 +1194,7 @@ const Game = ({ match }) => {
   const [gameInSeries, setGameInSeries] = useState(null);
   const [videos, setVideos] = React.useState([]);
   const [current, setCurrent] = React.useState(null);
-
+  const lastLocation = useLastLocation();
   const location = useLocation();
   const history = useHistory();
 
@@ -1316,7 +1318,7 @@ const Game = ({ match }) => {
     // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
-        <SideBarMemoized />
+        {/* <SideBarMemoized /> */}
 
         <LoginButton />
         <DataMemoized
@@ -1329,6 +1331,7 @@ const Game = ({ match }) => {
           videos={videos}
           current={current}
           setCurrent={setCurrent}
+          lastLocation={lastLocation}
         />
       </div>
     </ErrorBoundary>

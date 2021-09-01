@@ -12,10 +12,9 @@ import {
   MenuItem,
   Image,
   MenuDivider,
-  Spinner,
-  Skeleton,
   SkeletonCircle,
   Kbd,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { Magic } from "magic-sdk";
@@ -59,15 +58,26 @@ const LoginButton = () => {
       history.push("/dashboard");
     }
   };
+  const ModeFnc = (e) => {
+    if (e.key === "m" && e.ctrlKey) {
+      e.preventDefault();
+      toggleColorMode();
+    }
+  };
 
   useEffect(() => {
     document.documentElement.addEventListener("keydown", LogoutFnc);
     document.documentElement.addEventListener("keydown", DashboardFnc);
+    document.documentElement.addEventListener("keydown", ModeFnc);
     return () => {
       document.documentElement.removeEventListener("keydown", LogoutFnc);
       document.documentElement.removeEventListener("keydown", DashboardFnc);
+      document.documentElement.removeEventListener("keydown", ModeFnc);
     };
   }, []);
+
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <div
       css={{
@@ -103,6 +113,28 @@ const LoginButton = () => {
               }
             >
               Dashboard
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem
+              onClick={toggleColorMode}
+              icon={
+                colorMode === "light" ? (
+                  <i className="fas fa-moon"></i>
+                ) : (
+                  <i className="fas fa-sun"></i>
+                )
+              }
+              command={
+                <span>
+                  <Kbd>ctrl</Kbd> + <Kbd>M</Kbd>
+                </span>
+              }
+            >
+              {colorMode === "light" ? (
+                <span>Dark Mode</span>
+              ) : (
+                <span>Light Mode</span>
+              )}
             </MenuItem>
             <MenuDivider />
             <MenuItem

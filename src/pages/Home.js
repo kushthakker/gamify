@@ -23,6 +23,7 @@ import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
 import LoginButton from "../components/LoginButton";
 import SideBarMemoized from "../components/Sidebar";
+import HomeIcon from "../components/HomeIcon";
 
 import dayjs from "dayjs";
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -494,12 +495,6 @@ const Home = ({ match }) => {
             throw new Error(req.statusText);
           } else {
             console.log(`render main api`);
-            // console.log(Microsoft);
-            // console.log(Sony);
-            // console.log(Nintendo);
-            // setCarousel(req.data.results);
-            // setComingSoon(comingSoon.data.results);
-            // setFeatured(featured.data);
             dispatch(homepageData_carousel(req.data.results));
             dispatch(homepageData_comingsoon(comingSoon.data.results));
             dispatch(homepageData_featured(featured.data));
@@ -523,7 +518,8 @@ const Home = ({ match }) => {
 
   return status === "success" ? (
     <div css={{ overflow: "auto" }}>
-      <SideBarMemoized />
+      {/* <SideBarMemoized /> */}
+      <HomeIcon />
       <SearchBar match={match} />
       <LoginButton />
       <Main />

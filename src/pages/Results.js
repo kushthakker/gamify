@@ -20,7 +20,6 @@ const transition = {
 };
 
 const MyListData = ({ searchResult }) => {
-  console.log(searchResult);
   console.log(`my list data`);
   const listRef = useRef();
   // const [imageData, setImageData] = useState(null);
@@ -77,11 +76,11 @@ const MyListData = ({ searchResult }) => {
     <div ref={listRef}>
       {console.log(`return render`)}
       <List
-      // exit={{ opacity: 0 }}
-      // transition={transition}
-      // variants={container}
-      // initial="hidden"
-      // animate="visible"
+        exit={{ opacity: 0 }}
+        transition={transition}
+        variants={container}
+        initial="hidden"
+        animate="visible"
       >
         {rowVirtualizer.virtualItems.map(({ index, size, start }) => {
           const item = searchResult[index];
@@ -251,7 +250,7 @@ const Output = ({ match }) => {
         searchResult?.length !== 0 ? (
           <div>
             <LoginButton />
-            <SideBarMemoized />
+            {/* <SideBarMemoized /> */}
             {/* <SearchBar /> */}
             <div>
               <div css={{ marginTop: "3rem" }}>

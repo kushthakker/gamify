@@ -28,6 +28,7 @@ import { fetchUser } from "../actions/index";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 import SearchBar from "../components/SearchBar";
+import { LastLocationProvider } from "react-router-last-location";
 
 function ErrorFallback({ error }) {
   const history = useHistory();
@@ -150,42 +151,44 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div>
         <BrowserRouter>
-          <div css={{ height: "100vh", width: "100vw" }}>
-            <Switch>
-              <AnimatePresence exitBeforeEnter>
-                <Route path="/" exact component={Home} key={1} />
-                <Route path="/discover/">
-                  <SearchBar />
+          <LastLocationProvider>
+            <div css={{ height: "100vh", width: "100vw" }}>
+              <Switch>
+                <AnimatePresence exitBeforeEnter>
+                  <Route path="/" exact component={Home} key={1} />
+                  <Route path="/discover/">
+                    <SearchBar />
+                    <Route
+                      path="/discover/:q"
+                      exact
+                      component={Results}
+                      key={2}
+                    />
+                  </Route>
+
+                  <Route path="/games/:id" exact component={Game} key={3} />
+
+                  <Route path="/login" exact component={LoginPage} key={4} />
                   <Route
-                    path="/discover/:q"
                     exact
-                    component={Results}
-                    key={2}
+                    path="/success"
+                    component={Success}
+                    key={5}
+                    // condition={false}
                   />
-                </Route>
+                  <Route
+                    exact
+                    path="/dashboard"
+                    component={Dashboard}
+                    key={6}
 
-                <Route path="/games/:id" exact component={Game} key={3} />
-
-                <Route path="/login" exact component={LoginPage} key={4} />
-                <Route
-                  exact
-                  path="/success"
-                  component={Success}
-                  key={5}
-                  // condition={false}
-                />
-                <Route
-                  exact
-                  path="/dashboard"
-                  component={Dashboard}
-                  key={6}
-
-                  // condition={true}
-                />
-              </AnimatePresence>
-              <Route path="*" component={ErrorPage} />
-            </Switch>
-          </div>
+                    // condition={true}
+                  />
+                </AnimatePresence>
+                <Route path="*" component={ErrorPage} />
+              </Switch>
+            </div>
+          </LastLocationProvider>
         </BrowserRouter>
       </div>
     </ErrorBoundary>

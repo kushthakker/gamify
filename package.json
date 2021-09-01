@@ -30,6 +30,7 @@
     "react-responsive-carousel": "^3.2.21",
     "react-rough-notation": "^1.0.1",
     "react-router-dom": "^5.2.0",
+    "react-router-last-location": "^2.0.1",
     "react-scripts": "4.0.3",
     "react-virtual": "^2.8.1",
     "react-virtualized": "^9.22.3",

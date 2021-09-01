@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { css, jsx } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, useColorMode } from "@chakra-ui/react";
+
 import { Link } from "react-router-dom";
 import { Magic } from "magic-sdk";
 import {
@@ -15,6 +15,8 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  Button,
+  useColorMode,
 } from "@chakra-ui/react";
 import { findAllByTestId } from "@testing-library/react";
 import Dashboard from "../pages/Dashboard";
