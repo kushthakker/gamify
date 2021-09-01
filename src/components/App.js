@@ -32,9 +32,11 @@ import Dashboard from "../pages/Dashboard";
 import SearchBar from "../components/SearchBar";
 import { LastLocationProvider } from "react-router-last-location";
 import { isMobile } from "react-device-detect";
+import { useColorMode } from "@chakra-ui/react";
 
 function ErrorFallback({ error }) {
   const history = useHistory();
+
   return (
     <div
       role="alert"
@@ -71,10 +73,12 @@ function ErrorFallback({ error }) {
 
 const App = () => {
   const dispatch = useDispatch();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   // const [profileDataState, setProfileDataState] = useState({});
 
   useState(() => {
+    colorMode === "light" ? toggleColorMode("dark") : toggleColorMode("light");
     const m = new Magic("pk_live_8BB9335EFCCF939E", {
       extensions: [new OAuthExtension()],
     }); // ✨
