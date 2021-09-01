@@ -153,7 +153,19 @@ const App = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {isMobile ? (
-        <div> This content is unavailable on mobile</div>
+        <div
+          css={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            margin: "0",
+            fontSize: "2rem",
+          }}
+        >
+          This Content is not available on mobile. Please try accessing it from
+          your desktop/laptop browser.
+        </div>
       ) : (
         <div>
           <BrowserRouter>
