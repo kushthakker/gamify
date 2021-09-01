@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { error } from "../actions";
 import SideBarMemoized from "./Sidebar";
 import Success from "../pages/Success";
+import HomeIcon from "../components/HomeIcon";
+import LoginButton from "../components/LoginButton";
 
 import Game from "../pages/Game";
 import Home from "../pages/Home";
@@ -157,7 +159,9 @@ const App = () => {
                 <AnimatePresence exitBeforeEnter>
                   <Route path="/" exact component={Home} key={1} />
                   <Route path="/discover/">
+                    <HomeIcon />
                     <SearchBar />
+                    <LoginButton />
                     <Route
                       path="/discover/:q"
                       exact

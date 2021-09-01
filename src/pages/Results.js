@@ -21,7 +21,6 @@ const transition = {
 };
 
 const MyListData = ({ searchResult }) => {
-  console.log(`my list data`);
   const listRef = useRef();
   // const [imageData, setImageData] = useState(null);
   const rowVirtualizer = useVirtual({
@@ -75,7 +74,6 @@ const MyListData = ({ searchResult }) => {
 
   return (
     <div ref={listRef}>
-      {console.log(`return render`)}
       <List
         exit={{ opacity: 0 }}
         transition={transition}
@@ -127,7 +125,15 @@ const MyListData = ({ searchResult }) => {
 
           return (
             <Link to={`/games/${item.id}`} key={Math.random()}>
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity: 1,
+                  y: 5,
+                  transition: { delay: 1.2, ...transition },
+                }}
+                transition={transition}
+              >
                 <Box
                   w="20rem"
                   borderWidth="1px"
@@ -211,7 +217,7 @@ const MyListData = ({ searchResult }) => {
                     </Box>
                   </Box>
                 </Box>
-              </div>
+              </motion.div>
             </Link>
           );
         })}
@@ -223,25 +229,20 @@ const MyListData = ({ searchResult }) => {
 const Data = React.memo(MyListData);
 
 const Output = ({ match }) => {
-  console.log(`search result page`);
-
   //   const isLoading = status === "loading";
   const statusState = useSelector((state) => state.status);
   const searchResult = useSelector((state) => state.searchResult);
   const isError = statusState === "error";
   const isSuccess = statusState === "success";
 
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  console.log(match.params.q);
+  console.log(`match`, match.params.q);
 
-  //   useEffect(() => {
-  //     dispatch(urlQuery(match.params.q));
-  //   }, [dispatch, match.params.q]);
-
-  useEffect(() => {
+  useState(() => {
     if (statusState === "success") window.scrollTo(0, 0);
-  }, [statusState]);
+    dispatch(urlQuery(match.params.q));
+  });
 
   return (
     <div>
@@ -263,7 +264,7 @@ const Output = ({ match }) => {
             </div>
           </div>
         ) : (
-          <p>No books found. Try another search.</p>
+          <p>No Games found. Try another search.</p>
         )
       ) : null}
     </div>

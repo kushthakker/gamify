@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { searchValue } from "../actions/index";
 import { status } from "../actions/index";
-
+import { urlQuery } from "../actions/index";
 import "react-circular-progressbar/dist/styles.css";
 import { useHistory } from "react-router-dom";
 
@@ -31,12 +31,13 @@ const Result = ({
   width = "30rem",
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const history = useHistory();
   const onSubmit = (event) => {
     console.log(`render`);
     event.preventDefault();
     const value = inputValue.current.value;
     setValue(value);
+    history.push(`/discover/${value}`);
   };
 
   const keyDownFnc = (e) => {
@@ -130,44 +131,46 @@ const SearchBar = ({ posLeft, posTop, width }) => {
   const inputValue = useRef();
 
   const statusState = useSelector((state) => state.status);
-
+  const query = useSelector((state) => state.urlQuery);
   const dispatch = useDispatch();
-  const history = useHistory();
-
   const fetchGames = useCallback(() => {
-    console.log(`render1`);
-    if (value === null) return;
+    console.log(`value`, value, "query", query);
 
-    dispatch(status("loading"));
+    if (!query) dispatch(status("idle"));
+    else {
+      dispatch(status("loading"));
 
-    const fetchApi = async function () {
-      try {
-        const req = await api.get("/games", {
-          params: {
-            search: value,
-            //   ? encodeURIComponent(value)
-            //   : encodeURIComponent(query),
-            // search_precise: true,
-            page_size: 50,
-          },
-        });
+      const fetchApi = async function () {
+        console.log(value);
+        try {
+          const req = await api.get("/games", {
+            params: {
+              search: value
+                ? encodeURIComponent(value)
+                : encodeURIComponent(query),
 
-        if (!req.status) {
-          dispatch(status("error"));
-          throw new Error(req.statusText);
-        } else {
-          console.log(req);
-          dispatch(searchValue(req.data.results));
+              // search_precise: true,
+              page_size: 50,
+            },
+          });
 
-          dispatch(status("success"));
-          history.push(`/discover/${value}`);
+          if (!req.status) {
+            dispatch(status("error"));
+            throw new Error(req.statusText);
+          } else {
+            console.log(req);
+            dispatch(searchValue(req.data.results));
+
+            dispatch(status("success"));
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchApi();
-  }, [dispatch, history, value]);
+      };
+
+      fetchApi();
+    }
+  }, [dispatch, query, value]);
 
   useEffect(() => {
     fetchGames();
