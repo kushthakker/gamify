@@ -20,18 +20,40 @@ import { searchValue } from "../actions/index";
 import { status } from "../actions/index";
 
 import "react-circular-progressbar/dist/styles.css";
-import { Link, useHistory } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useHistory } from "react-router-dom";
+
 import Prompt from "../components/Prompt";
 
 const Result = ({ status, inputValue, setValue }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const onSubmit = (event) => {
     console.log(`render`);
     event.preventDefault();
     const value = inputValue.current.value;
     setValue(value);
   };
+
+  const keyDownFnc = (e) => {
+    if (e.key === "k" && e.ctrlKey) {
+      e.preventDefault();
+      isOpen ? onClose() : onOpen();
+    }
+  };
+
+  useEffect(() => {
+    if (status === "success") {
+      onClose();
+    }
+  }, [onClose, status]);
+
+  useEffect(() => {
+    document.documentElement.addEventListener("keydown", keyDownFnc);
+    return () => {
+      document.documentElement.removeEventListener("keydown", keyDownFnc);
+    };
+  }, []);
+
   return (
     <div
       css={{
@@ -52,7 +74,7 @@ const Result = ({ status, inputValue, setValue }) => {
         <div
           css={{ display: "flex", justifyContent: "flex-start", width: "100%" }}
         >
-          <i class="fas fa-search"></i>
+          <i className="fas fa-search"></i>
         </div>
         <div css={{ position: "relative", right: "8rem" }}>
           <p> Search Games</p>
@@ -71,7 +93,7 @@ const Result = ({ status, inputValue, setValue }) => {
           <form type="search" onSubmit={onSubmit}>
             <InputGroup>
               <InputLeftElement
-                children={<i class="fas fa-search"></i>}
+                children={<i className="fas fa-search"></i>}
                 pointerEvents="none"
                 d="flex"
                 h="100%"
@@ -140,19 +162,6 @@ const SearchBar = () => {
     fetchGames();
   }, [fetchGames]);
 
-  const keyDownFnc = (e) => {
-    if (e.key === "k" && e.ctrlKey) {
-      e.preventDefault();
-    }
-  };
-
-  useEffect(() => {
-    document.documentElement.addEventListener("keydown", keyDownFnc);
-    return () => {
-      document.documentElement.removeEventListener("keydown", keyDownFnc);
-    };
-  }, []);
-
   Prompt("Press control+K to Search from anywhere", "searchPrompt");
 
   return (
@@ -166,6 +175,6 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default React.memo(SearchBar);
 
 // TODO: on submit the query will be pushed to url like discoved/cyberpunk then the api gets called from that url extract so every time we go back from any game it goes to search item rather then plane discover page

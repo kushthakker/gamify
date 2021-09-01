@@ -252,7 +252,7 @@ const Output = ({ match }) => {
           <div>
             <LoginButton />
             <SideBarMemoized />
-            <SearchBar />
+            {/* <SearchBar /> */}
             <div>
               <div css={{ marginTop: "3rem" }}>
                 <Data searchResult={searchResult} />

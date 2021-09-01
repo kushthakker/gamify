@@ -27,6 +27,7 @@ import { addUser } from "../actions/index";
 import { fetchUser } from "../actions/index";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
+import SearchBar from "../components/SearchBar";
 
 function ErrorFallback({ error }) {
   const history = useHistory();
@@ -150,6 +151,7 @@ const App = () => {
       <div>
         <BrowserRouter>
           <div css={{ height: "100vh", width: "100vw" }}>
+            <SearchBar />
             <Switch>
               <Route path="/" exact component={Home} key={1} />
               <Route path="/discover/:q" exact component={Results} key={2} />
