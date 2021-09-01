@@ -267,7 +267,9 @@ const Output = ({ match }) => {
           <p>No Games found. Try another search.</p>
         )
       ) : (
-        <div
+        <div>
+          {null}
+          {/* <div
           css={{
             display: "flex",
             justifyContent: "center",
@@ -277,6 +279,7 @@ const Output = ({ match }) => {
           }}
         >
           <Spinner />
+        </div> */}
         </div>
       )}
     </div>
