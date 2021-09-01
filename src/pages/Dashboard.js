@@ -81,180 +81,263 @@ const Mygames = ({
 }) => {
   return (
     <div>
-      <ParentCenterDiv>
-        {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
-        <CenterEle css={{ gap: "1rem" }}>
-          {uncategorizedGames.map((game) => (
-            <div key={Math.random()}>
-              <Link to={`/games/${game.id}`}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
-
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
-                        series
-                      </Badge> */}
-                      <Box
-                        color="gray.500"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
-                      >
-                        {game.released}
-                      </Box>
-                    </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
-                  </Box>
-                </Box>
-              </Link>
-            </div>
-          ))}
-        </CenterEle>
-      </ParentCenterDiv>
-      <ParentCenterDiv css={{ position: "relative", right: "1rem" }}>
-        {currentlyPlayingGames.length > 0 ? (
-          <Title>Current Playing</Title>
-        ) : null}
-        <CenterEle css={{ gap: "1rem" }}>
-          {currentlyPlayingGames.map((game) => (
-            <React.Fragment key={Math.random()}>
-              <Link to={`/games/${game.id}`}>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
-
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
-                        series
-                      </Badge> */}
-                      <Box
-                        color="gray.500"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
-                      >
-                        {game.released}
-                      </Box>
-                    </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
-                  </Box>
-                </Box>
-              </Link>
-            </React.Fragment>
-          ))}
-        </CenterEle>
-      </ParentCenterDiv>
-      <ParentCenterDiv>
-        {finishedGames.length > 0 ? <Title>Finished</Title> : null}
-        <CenterEle css={{ gap: "1rem" }}>
-          {finishedGames.map((game) => (
-            <React.Fragment key={Math.random()}>
-              <Link to={`/games/${game.id}`}>
+      {uncategorizedGames.length === 0 &&
+      notPlayedGames.length === 0 &&
+      finishedGames.length === 0 &&
+      currentlyPlayingGames.length === 0 ? (
+        <div>
+          <Title>
+            No games saved!! Please try adding it from individual game page.
+          </Title>
+        </div>
+      ) : (
+        <div>
+          <ParentCenterDiv>
+            {uncategorizedGames.length > 0 ? (
+              <Title>Uncategorized</Title>
+            ) : null}
+            <CenterEle css={{ gap: "1rem" }}>
+              {uncategorizedGames.map((game) => (
                 <div key={Math.random()}>
-                  <Box
-                    w="23rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+                  <Link to={`/games/${game.id}`}>
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image
+                        src={game.background_image}
+                        alt={game.name}
+                        h="241px"
+                        w="100%"
+                      />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {game.released}
+                          </Box>
+                        </Box>
+
                         <Box
-                          color="gray.500"
+                          mt="1"
                           fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
                         >
-                          {game.released}
+                          {game.name}
                         </Box>
                       </Box>
+                    </Box>
+                  </Link>
+                </div>
+              ))}
+            </CenterEle>
+          </ParentCenterDiv>
+          <ParentCenterDiv css={{ position: "relative", right: "1rem" }}>
+            {currentlyPlayingGames.length > 0 ? (
+              <Title>Current Playing</Title>
+            ) : null}
+            <CenterEle css={{ gap: "1rem" }}>
+              {currentlyPlayingGames.map((game) => (
+                <React.Fragment key={Math.random()}>
+                  <Link to={`/games/${game.id}`}>
+                    <Box
+                      w="27rem"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                    >
+                      <Image
+                        src={game.background_image}
+                        alt={game.name}
+                        h="241px"
+                        w="100%"
+                      />
 
-                      <Box
-                        mt="1"
-                        fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
-                      >
-                        {game.name}
+                      <Box p="6">
+                        <Box d="flex" alignItems="baseline">
+                          {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                        series
+                      </Badge> */}
+                          <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                          >
+                            {game.released}
+                          </Box>
+                        </Box>
+
+                        <Box
+                          mt="1"
+                          fontWeight="semibold"
+                          as="h4"
+                          lineHeight="tight"
+                          isTruncated
+                        >
+                          {game.name}
+                        </Box>
                       </Box>
                     </Box>
-                  </Box>
-                </div>
-              </Link>
-            </React.Fragment>
-          ))}
-        </CenterEle>
-      </ParentCenterDiv>
-      <ParentCenterDiv>
-        {notPlayedGames.length > 0 ? <Title>Not played yet</Title> : null}
-        <CenterEle>
-          {notPlayedGames.map((game) => (
-            <React.Fragment key={Math.random()}>
-              <div
-                css={{
-                  display: "grid",
-                  gridAutoFlow: "column dense",
-                  gap: "2rem",
-                }}
-              >
+                  </Link>
+                </React.Fragment>
+              ))}
+            </CenterEle>
+          </ParentCenterDiv>
+          <ParentCenterDiv>
+            {finishedGames.length > 0 ? <Title>Finished</Title> : null}
+            <CenterEle css={{ gap: "1rem" }}>
+              {finishedGames.map((game) => (
+                <React.Fragment key={Math.random()}>
+                  <Link to={`/games/${game.id}`}>
+                    <div key={Math.random()}>
+                      <Box
+                        w="23rem"
+                        borderWidth="1px"
+                        borderRadius="lg"
+                        overflow="hidden"
+                      >
+                        <Image
+                          src={game.background_image}
+                          alt={game.name}
+                          h="241px"
+                          w="100%"
+                        />
+
+                        <Box p="6">
+                          <Box d="flex" alignItems="baseline">
+                            {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                        series
+                      </Badge> */}
+                            <Box
+                              color="gray.500"
+                              fontWeight="semibold"
+                              letterSpacing="wide"
+                              fontSize="xs"
+                              textTransform="uppercase"
+                              ml="2"
+                            >
+                              {game.released}
+                            </Box>
+                          </Box>
+
+                          <Box
+                            mt="1"
+                            fontWeight="semibold"
+                            as="h4"
+                            lineHeight="tight"
+                            isTruncated
+                          >
+                            {game.name}
+                          </Box>
+                        </Box>
+                      </Box>
+                    </div>
+                  </Link>
+                </React.Fragment>
+              ))}
+            </CenterEle>
+          </ParentCenterDiv>
+          <ParentCenterDiv>
+            {notPlayedGames.length > 0 ? <Title>Not played yet</Title> : null}
+            <CenterEle>
+              {notPlayedGames.map((game) => (
+                <React.Fragment key={Math.random()}>
+                  <div
+                    css={{
+                      display: "grid",
+                      gridAutoFlow: "column dense",
+                      gap: "2rem",
+                    }}
+                  >
+                    <Link to={`/games/${game.id}`}>
+                      <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                        <Box
+                          w="27rem"
+                          borderWidth="1px"
+                          borderRadius="lg"
+                          overflow="hidden"
+                        >
+                          <Image
+                            src={game.background_image}
+                            alt={game.name}
+                            h="241px"
+                            w="100%"
+                          />
+
+                          <Box p="6">
+                            <Box d="flex" alignItems="baseline">
+                              {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                        series
+                      </Badge> */}
+                              <Box
+                                color="gray.500"
+                                fontWeight="semibold"
+                                letterSpacing="wide"
+                                fontSize="xs"
+                                textTransform="uppercase"
+                                ml="2"
+                              >
+                                {game.released}
+                              </Box>
+                            </Box>
+
+                            <Box
+                              mt="1"
+                              fontWeight="semibold"
+                              as="h4"
+                              lineHeight="tight"
+                              isTruncated
+                            >
+                              {game.name}
+                            </Box>
+                          </Box>
+                        </Box>
+                      </div>
+                    </Link>
+                  </div>
+                </React.Fragment>
+              ))}
+            </CenterEle>
+          </ParentCenterDiv>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MyWishlist = ({ wishlist }) => {
+  return (
+    <div>
+      {wishlist.length === 0 ? (
+        <Title>
+          No games added as wishlist. Try adding it from the individual game
+          page
+        </Title>
+      ) : (
+        <ParentCenterDiv>
+          <Title>Wishlist</Title>
+          <CenterEle>
+            {wishlist.map((game) => (
+              <div key={Math.random()}>
                 <Link to={`/games/${game.id}`}>
-                  <div key={Math.random()} css={{ marginRight: "3rem" }}>
+                  <div>
                     <Box
                       w="27rem"
                       borderWidth="1px"
@@ -299,127 +382,77 @@ const Mygames = ({
                   </div>
                 </Link>
               </div>
-            </React.Fragment>
-          ))}
-        </CenterEle>
-      </ParentCenterDiv>
+            ))}
+          </CenterEle>
+        </ParentCenterDiv>
+      )}
     </div>
-  );
-};
-
-const MyWishlist = ({ wishlist }) => {
-  return (
-    <ParentCenterDiv>
-      <Title>Wishlist</Title>
-      <CenterEle>
-        {wishlist.map((game) => (
-          <div key={Math.random()}>
-            <Link to={`/games/${game.id}`}>
-              <div>
-                <Box
-                  w="27rem"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    src={game.background_image}
-                    alt={game.name}
-                    h="241px"
-                    w="100%"
-                  />
-
-                  <Box p="6">
-                    <Box d="flex" alignItems="baseline">
-                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
-                        series
-                      </Badge> */}
-                      <Box
-                        color="gray.500"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
-                      >
-                        {game.released}
-                      </Box>
-                    </Box>
-
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {game.name}
-                    </Box>
-                  </Box>
-                </Box>
-              </div>
-            </Link>
-          </div>
-        ))}
-      </CenterEle>
-    </ParentCenterDiv>
   );
 };
 
 const MyCollection = ({ collection }) => {
   return (
-    <ParentCenterDiv>
-      <Title>Collection</Title>
-      <CenterEle>
-        {collection.map((game) => (
-          <div key={Math.random()}>
-            <Link to={`/games/${game.id}`}>
-              <Box
-                w="27rem"
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-              >
-                <Image
-                  src={game.background_image}
-                  alt={game.name}
-                  h="241px"
-                  w="100%"
-                />
+    <div>
+      {collection.length === 0 ? (
+        <Title>
+          No games added to Collection. Try adding it from the individual game
+          page
+        </Title>
+      ) : (
+        <ParentCenterDiv>
+          <Title>Collection</Title>
+          <CenterEle>
+            {collection.map((game) => (
+              <div key={Math.random()}>
+                <Link to={`/games/${game.id}`}>
+                  <Box
+                    w="27rem"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={game.background_image}
+                      alt={game.name}
+                      h="241px"
+                      w="100%"
+                    />
 
-                <Box p="6">
-                  <Box d="flex" alignItems="baseline">
-                    {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                    <Box p="6">
+                      <Box d="flex" alignItems="baseline">
+                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
-                    <Box
-                      color="gray.500"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      fontSize="xs"
-                      textTransform="uppercase"
-                      ml="2"
-                    >
-                      {game.released}
+                        <Box
+                          color="gray.500"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          ml="2"
+                        >
+                          {game.released}
+                        </Box>
+                      </Box>
+
+                      <Box
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
+                      >
+                        {game.name}
+                      </Box>
                     </Box>
                   </Box>
-
-                  <Box
-                    mt="1"
-                    fontWeight="semibold"
-                    as="h4"
-                    lineHeight="tight"
-                    isTruncated
-                  >
-                    {game.name}
-                  </Box>
-                </Box>
-              </Box>
-            </Link>
-          </div>
-        ))}
-      </CenterEle>
-    </ParentCenterDiv>
+                </Link>
+              </div>
+            ))}
+          </CenterEle>
+        </ParentCenterDiv>
+      )}
+    </div>
   );
 };
 
@@ -510,6 +543,7 @@ const MySettings = ({ profile, id }) => {
                 fontSize="1.5rem"
                 type="text"
                 onChange={onChange}
+                maxLength="14"
                 // ref={input}
               />
             ) : (
@@ -550,7 +584,7 @@ const MySettings = ({ profile, id }) => {
                       h="2rem"
                       w="1.5rem"
                       p="0.5rem"
-                      onClick={() => setEdit(false)}
+                      onClick={() => setCurrentName(profile.name)}
                     >
                       <CloseIcon />
                     </Button>
@@ -662,6 +696,7 @@ const Main = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          maxWidth: "100vw",
         }}
       >
         <h1
@@ -678,7 +713,13 @@ const Main = ({
       </div>
       <div>
         <Tabs isFitted variant="enclosed" colorScheme="facebook">
-          <div css={{ padding: "3rem", justifyContent: "center" }}>
+          <div
+            css={{
+              padding: "3rem",
+              justifyContent: "center",
+              maxWidth: "100vw",
+            }}
+          >
             <TabList>
               <Tab>My games</Tab>
               <Tab>Wishlist</Tab>
@@ -844,11 +885,6 @@ const Dashboard = () => {
             if (wishlist.length === wishlistState.length)
               setSaveWishlist(wishlist);
           });
-
-          console.log("coll", collection);
-          console.log("wish", wishlist);
-
-          console.log(`wishlist saved`, wishlist);
         } catch (err) {
           console.log(err);
         }
@@ -885,7 +921,7 @@ const Dashboard = () => {
       mygamesUncategorized &&
       collectionState &&
       wishlistState ? (
-        <div css={{ maxWidth: "100vw", overflowX: "hidden" }}>
+        <div>
           {console.log(`mygamesUncategorized`)}
           <SideBarMemoized />
           <LoginButton />

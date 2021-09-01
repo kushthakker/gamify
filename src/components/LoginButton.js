@@ -68,7 +68,8 @@ const LoginButton = () => {
             }
             variant="ghost"
             colorScheme="teal"
-            width="200px"
+            width="210px"
+            isTruncated
           >
             {data.name}
           </MenuButton>
