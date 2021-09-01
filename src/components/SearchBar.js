@@ -22,8 +22,6 @@ import { status } from "../actions/index";
 import "react-circular-progressbar/dist/styles.css";
 import { useHistory } from "react-router-dom";
 
-import Prompt from "../components/Prompt";
-
 const Result = ({
   status,
   inputValue,
@@ -174,8 +172,6 @@ const SearchBar = ({ posLeft, posTop, width }) => {
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
-
-  Prompt("Press control+K to Search from anywhere", "searchPrompt");
 
   return (
     <div>

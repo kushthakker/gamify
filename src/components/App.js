@@ -182,8 +182,8 @@ const App = () => {
 
                   // condition={true}
                 />
-                <Route path="*" component={ErrorPage} />
               </AnimatePresence>
+              <Route path="*" component={ErrorPage} />
             </Switch>
           </div>
         </BrowserRouter>

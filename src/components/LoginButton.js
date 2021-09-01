@@ -15,6 +15,7 @@ import {
   Spinner,
   Skeleton,
   SkeletonCircle,
+  Kbd,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { Magic } from "magic-sdk";
@@ -88,7 +89,6 @@ const LoginButton = () => {
             variant="ghost"
             colorScheme="teal"
             width="210px"
-            isTruncated
           >
             {data.name}
           </MenuButton>
@@ -96,7 +96,11 @@ const LoginButton = () => {
             <MenuItem
               onClick={() => history.push("/dashboard")}
               icon={<i className="fas fa-users-cog"></i>}
-              command="⌘B"
+              command={
+                <span>
+                  <Kbd>ctrl</Kbd> + <Kbd>K</Kbd>
+                </span>
+              }
             >
               Dashboard
             </MenuItem>
@@ -104,7 +108,11 @@ const LoginButton = () => {
             <MenuItem
               onClick={() => logout(dispatch)}
               icon={<i className="fas fa-sign-out-alt"></i>}
-              command="⌘J"
+              command={
+                <span>
+                  <Kbd>ctrl</Kbd> + <Kbd>J</Kbd>
+                </span>
+              }
             >
               Logout
             </MenuItem>

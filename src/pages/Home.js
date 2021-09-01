@@ -519,7 +519,7 @@ const Home = ({ match }) => {
     }
   }, [dispatch, timerState]);
 
-  Prompt("Press control + S to open Side Menu from any page", "prompt");
+  Prompt("Press control + K to search a game from anywhere", "prompt");
 
   return status === "success" ? (
     <div css={{ overflow: "auto" }}>
