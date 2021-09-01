@@ -66,7 +66,8 @@ const CenterEle = styled.div({
   gridAutoFlow: "dense row",
   gridTemplateRows: "masonry",
   masonryAutoFlow: "next",
-  rowGap: "3rem",
+  rowGap: "2rem",
+  columnGap: "1rem",
 });
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
@@ -79,63 +80,60 @@ const Mygames = ({
   currentlyPlayingGames,
 }) => {
   return (
-    <>
+    <div>
       <ParentCenterDiv>
         {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
-
         <CenterEle css={{ gap: "1rem" }}>
           {uncategorizedGames.map((game) => (
-            <div>
+            <div key={Math.random()}>
               <Link to={`/games/${game.id}`}>
-                <div key={Math.random()}>
-                  <Box
-                    w="27rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+                <Box
+                  w="27rem"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
+                  <Image
+                    src={game.background_image}
+                    alt={game.name}
+                    h="241px"
+                    w="100%"
+                  />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                  <Box p="6">
+                    <Box d="flex" alignItems="baseline">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
-                        <Box
-                          color="gray.500"
-                          fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
-                        >
-                          {game.released}
-                        </Box>
-                      </Box>
-
                       <Box
-                        mt="1"
+                        color="gray.500"
                         fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
                       >
-                        {game.name}
+                        {game.released}
                       </Box>
                     </Box>
+
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      isTruncated
+                    >
+                      {game.name}
+                    </Box>
                   </Box>
-                </div>
+                </Box>
               </Link>
             </div>
           ))}
         </CenterEle>
       </ParentCenterDiv>
-      <ParentCenterDiv>
+      <ParentCenterDiv css={{ position: "relative", right: "1rem" }}>
         {currentlyPlayingGames.length > 0 ? (
           <Title>Current Playing</Title>
         ) : null}
@@ -143,49 +141,47 @@ const Mygames = ({
           {currentlyPlayingGames.map((game) => (
             <React.Fragment key={Math.random()}>
               <Link to={`/games/${game.id}`}>
-                <div key={Math.random()}>
-                  <Box
-                    w="27rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+                <Box
+                  w="27rem"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                >
+                  <Image
+                    src={game.background_image}
+                    alt={game.name}
+                    h="241px"
+                    w="100%"
+                  />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                  <Box p="6">
+                    <Box d="flex" alignItems="baseline">
+                      {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
-                        <Box
-                          color="gray.500"
-                          fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
-                        >
-                          {game.released}
-                        </Box>
-                      </Box>
-
                       <Box
-                        mt="1"
+                        color="gray.500"
                         fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
                       >
-                        {game.name}
+                        {game.released}
                       </Box>
                     </Box>
+
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      isTruncated
+                    >
+                      {game.name}
+                    </Box>
                   </Box>
-                </div>
+                </Box>
               </Link>
             </React.Fragment>
           ))}
@@ -307,20 +303,19 @@ const Mygames = ({
           ))}
         </CenterEle>
       </ParentCenterDiv>
-    </>
+    </div>
   );
 };
 
 const MyWishlist = ({ wishlist }) => {
   return (
     <ParentCenterDiv>
-      {console.log(`wishlist`)}
       <Title>Wishlist</Title>
       <CenterEle>
         {wishlist.map((game) => (
           <div key={Math.random()}>
             <Link to={`/games/${game.id}`}>
-              <div css={{ marginRight: "3rem" }}>
+              <div>
                 <Box
                   w="27rem"
                   borderWidth="1px"
@@ -377,55 +372,51 @@ const MyCollection = ({ collection }) => {
       <Title>Collection</Title>
       <CenterEle>
         {collection.map((game) => (
-          <React.Fragment key={Math.random()}>
-            <div>
-              <Link to={`/games/${game.id}`}>
-                <div key={Math.random()} css={{ marginRight: "3rem" }}>
-                  <Box
-                    w="27rem"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={game.background_image}
-                      alt={game.name}
-                      h="241px"
-                      w="100%"
-                    />
+          <div key={Math.random()}>
+            <Link to={`/games/${game.id}`}>
+              <Box
+                w="27rem"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+              >
+                <Image
+                  src={game.background_image}
+                  alt={game.name}
+                  h="241px"
+                  w="100%"
+                />
 
-                    <Box p="6">
-                      <Box d="flex" alignItems="baseline">
-                        {/* <Badge borderRadius="full" px="2" colorScheme="teal">
+                <Box p="6">
+                  <Box d="flex" alignItems="baseline">
+                    {/* <Badge borderRadius="full" px="2" colorScheme="teal">
                         series
                       </Badge> */}
-                        <Box
-                          color="gray.500"
-                          fontWeight="semibold"
-                          letterSpacing="wide"
-                          fontSize="xs"
-                          textTransform="uppercase"
-                          ml="2"
-                        >
-                          {game.released}
-                        </Box>
-                      </Box>
-
-                      <Box
-                        mt="1"
-                        fontWeight="semibold"
-                        as="h4"
-                        lineHeight="tight"
-                        isTruncated
-                      >
-                        {game.name}
-                      </Box>
+                    <Box
+                      color="gray.500"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      ml="2"
+                    >
+                      {game.released}
                     </Box>
                   </Box>
-                </div>
-              </Link>
-            </div>
-          </React.Fragment>
+
+                  <Box
+                    mt="1"
+                    fontWeight="semibold"
+                    as="h4"
+                    lineHeight="tight"
+                    isTruncated
+                  >
+                    {game.name}
+                  </Box>
+                </Box>
+              </Box>
+            </Link>
+          </div>
         ))}
       </CenterEle>
     </ParentCenterDiv>
