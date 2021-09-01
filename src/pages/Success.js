@@ -12,8 +12,8 @@ const Heading = styled.h1({
 });
 
 const Success = () => {
-  const history = useHistory();
-  // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const path = useSelector((state) => state.lastLoginUrlQuery);
+  const prompt = localStorage.getItem("lastLoginUrlQuery");
   const [redirect, setRedirect] = React.useState(false);
   const [timeLeft, setTimeLeft] = React.useState(7);
   React.useEffect(() => {
@@ -30,12 +30,17 @@ const Success = () => {
       };
   }, [timeLeft]);
 
-  // /* (window.location.href = "/") */
+  function timeComplete() {
+    window.location.href = prompt;
+    // localStorage.removeItem("lastLoginUrlQuery");
+  }
 
+  // /* (window.location.href = "/") */
+  console.log(`path`, path);
   return (
     <div>
       {redirect && timeLeft === 1 ? (
-        (window.location.href = "/")
+        timeComplete()
       ) : (
         <div
           css={{

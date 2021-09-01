@@ -15,12 +15,12 @@ const Position = styled.div({
   zIndex: "99",
 });
 
-const HomeIcon = () => {
+const HomeIcon = ({ color = "white" }) => {
   return (
     <Position>
       <Link to="/">
         <div>
-          <span>Gamify</span>
+          <span css={{ color: color }}>Gamify</span>
         </div>
       </Link>
     </Position>

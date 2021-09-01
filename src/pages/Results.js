@@ -8,7 +8,7 @@ import { useVirtual } from "react-virtual";
 import { motion } from "framer-motion";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Badge } from "@chakra-ui/react";
+import { Box, Badge, Spinner } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import { urlQuery } from "../actions/index";
 import SideBarMemoized from "../components/Sidebar";
@@ -266,7 +266,19 @@ const Output = ({ match }) => {
         ) : (
           <p>No Games found. Try another search.</p>
         )
-      ) : null}
+      ) : (
+        <div
+          css={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            margin: "0",
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 };

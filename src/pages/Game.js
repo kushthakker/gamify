@@ -312,7 +312,7 @@ const ShowData = ({
   );
 
   const addToMyGamesClick = (type, id) => {
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
       toast({
         title: "Please Login to add items",
         status: "error",
@@ -642,30 +642,32 @@ const ShowData = ({
           }}
         >
           <Link to={location}>
-            <div
+            <Button
               css={{
                 display: "flex",
-                maxWidth: "5rem",
+                maxWidth: "10rem",
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
+              colorScheme="teal"
+              variant="solid"
             >
-              <div>
+              <div css={{ paddingRight: ".5rem" }}>
                 <i className="fas fa-arrow-left"></i>
               </div>
               <div>
-                <span css={{ fontFamily: "Staatliches", fontSize: "1.2rem" }}>
+                <span css={{ fontFamily: "Staatliches", fontSize: "1.4rem" }}>
                   Go Back
                 </span>
               </div>
-            </div>
+            </Button>
           </Link>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{
             opacity: 1,
-            y: -68,
+            y: -73,
             transition: { delay: 1.2, ...transition },
           }}
           style={{
@@ -1322,9 +1324,6 @@ const Game = ({ match }) => {
       console.log(err);
     }
   };
-  const mygames = useSelector((state) => state?.profileDataApi?.mygames);
-  const isLoggedIn = useSelector((state) => state?.user?.isLoggedIn);
-
   useEffect(() => {
     const fetch = async function () {
       try {
@@ -1370,12 +1369,6 @@ const Game = ({ match }) => {
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
-          // console.log(req);
-          // console.log(stores);
-          // console.log(dlcs);
-          // console.log(yt);
-          // setVideos(dataYt);
-          // setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);

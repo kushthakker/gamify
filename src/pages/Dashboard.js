@@ -6,6 +6,7 @@ import styled from "@emotion/styled/macro";
 import { useSelector, useDispatch } from "react-redux";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
+import { useLastLocation } from "react-router-last-location";
 import {
   Spinner,
   Button,
@@ -30,6 +31,7 @@ import {
 } from "@chakra-ui/react";
 import { useHistory, Link } from "react-router-dom";
 import api from "../api/api";
+import HomeIcon from "../components/HomeIcon";
 import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import { Magic } from "magic-sdk";
 import { OAuthExtension } from "@magic-ext/oauth";
@@ -73,6 +75,39 @@ const CenterEle = styled.div({
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
   extensions: [new OAuthExtension()],
 }); // ✨
+
+const GoBack = () => {
+  const lastLocation = useLastLocation();
+  const location = lastLocation?.pathname ? lastLocation.pathname : "/";
+  return (
+    <Link to={location}>
+      <Button
+        css={{
+          display: "flex",
+          maxWidth: "10rem",
+          justifyContent: "space-between",
+          alignItems: "center",
+          position: "absolute",
+          top: "2rem",
+          left: "12rem",
+          color: "black",
+        }}
+        colorScheme="teal"
+        variant="solid"
+      >
+        <div css={{ paddingRight: ".5rem" }}>
+          <i className="fas fa-arrow-left"></i>
+        </div>
+        <div>
+          <span css={{ fontFamily: "Staatliches", fontSize: "1.4rem" }}>
+            Go Back
+          </span>
+        </div>
+      </Button>
+    </Link>
+  );
+};
+
 const Mygames = ({
   uncategorizedGames,
   notPlayedGames,
@@ -146,13 +181,13 @@ const Mygames = ({
               ))}
             </CenterEle>
           </ParentCenterDiv>
-          <ParentCenterDiv css={{ position: "relative", right: "1rem" }}>
+          <ParentCenterDiv>
             {currentlyPlayingGames.length > 0 ? (
               <Title>Current Playing</Title>
             ) : null}
             <CenterEle css={{ gap: "1rem" }}>
               {currentlyPlayingGames.map((game) => (
-                <React.Fragment key={Math.random()}>
+                <div key={Math.random()}>
                   <Link to={`/games/${game.id}`}>
                     <Box
                       w="27rem"
@@ -196,7 +231,7 @@ const Mygames = ({
                       </Box>
                     </Box>
                   </Link>
-                </React.Fragment>
+                </div>
               ))}
             </CenterEle>
           </ParentCenterDiv>
@@ -204,11 +239,11 @@ const Mygames = ({
             {finishedGames.length > 0 ? <Title>Finished</Title> : null}
             <CenterEle css={{ gap: "1rem" }}>
               {finishedGames.map((game) => (
-                <React.Fragment key={Math.random()}>
+                <div key={Math.random()}>
                   <Link to={`/games/${game.id}`}>
                     <div key={Math.random()}>
                       <Box
-                        w="23rem"
+                        w="27rem"
                         borderWidth="1px"
                         borderRadius="lg"
                         overflow="hidden"
@@ -250,7 +285,7 @@ const Mygames = ({
                       </Box>
                     </div>
                   </Link>
-                </React.Fragment>
+                </div>
               ))}
             </CenterEle>
           </ParentCenterDiv>
@@ -699,6 +734,7 @@ const Main = ({
           maxWidth: "100vw",
         }}
       >
+        <GoBack />
         <h1
           css={{
             fontSize: "3rem",
@@ -922,8 +958,7 @@ const Dashboard = () => {
       collectionState &&
       wishlistState ? (
         <div>
-          {console.log(`mygamesUncategorized`)}
-          {/* <SideBarMemoized /> */}
+          <HomeIcon color="black" />
           <LoginButton />
           <Output />
         </div>
@@ -940,7 +975,7 @@ const Dashboard = () => {
             flexDirection: "column",
           }}
         >
-          <SideBarMemoized />
+          <HomeIcon />
           <Heading>Please login to view this page </Heading>
           <Button
             colorScheme="white"

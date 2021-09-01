@@ -20,6 +20,7 @@ import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import SideBarMemoized from "../components/Sidebar";
 import { isLoggedIn } from "../actions/index";
+import { lastLoginUrlQuery } from "../actions/index";
 import { useLastLocation } from "react-router-last-location";
 
 const m = new Magic("pk_live_8BB9335EFCCF939E", {
@@ -36,8 +37,8 @@ const Heading = styled.h1({
 const LoginPage = () => {
   const history = useHistory();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const location = useLocation();
   const lastLocation = useLastLocation();
+  const dispatch = useDispatch();
 
   const [emailData, setEmailData] = useState(null);
 
@@ -83,10 +84,17 @@ const LoginPage = () => {
 
   console.log(lastLocation);
 
+  useState(() => {
+    dispatch(lastLoginUrlQuery(lastLocation.pathname));
+    localStorage.setItem(`lastLoginUrlQuery`, lastLocation.pathname);
+  });
+
+  const prompt = localStorage.getItem("lastLoginUrlQuery");
+
   return (
     <div>
       {isLoggedIn ? (
-        history.push("/")
+        history.push(prompt)
       ) : (
         <div
           css={{ maxHeight: "100vh", maxWidth: "100vw", overflow: "hidden" }}

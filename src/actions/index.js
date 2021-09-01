@@ -26,6 +26,14 @@ export const urlQuery = (value) => {
     payload: value,
   };
 };
+
+export const lastLoginUrlQuery = (value) => {
+  return {
+    type: "LAST_LOGIN_URL_QUERY",
+    payload: value,
+  };
+};
+
 export const homepageData_carousel = (value) => {
   return {
     type: "HOMEPAGE_DATA_CAROUSEL",

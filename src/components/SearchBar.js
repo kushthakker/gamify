@@ -26,6 +26,7 @@ const Result = ({
   status,
   inputValue,
   setValue,
+
   posTop = "2rem",
   posLeft = "",
   width = "30rem",
@@ -160,7 +161,6 @@ const SearchBar = ({ posLeft, posTop, width }) => {
           } else {
             console.log(req);
             dispatch(searchValue(req.data.results));
-
             dispatch(status("success"));
           }
         } catch (err) {
