@@ -524,7 +524,7 @@ const Home = ({ match }) => {
   return status === "success" ? (
     <div css={{ overflow: "auto" }}>
       <SideBarMemoized />
-      {/* <SearchBar match={match} /> */}
+      <SearchBar match={match} />
       <LoginButton />
       <Main />
     </div>

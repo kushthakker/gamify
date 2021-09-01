@@ -150,12 +150,15 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div>
         <BrowserRouter>
+          {/* <SearchBar /> */}
           <div css={{ height: "100vh", width: "100vw" }}>
-            <SearchBar />
             <Switch>
               <Route path="/" exact component={Home} key={1} />
-              <Route path="/discover/:q" exact component={Results} key={2} />
 
+              <Route path="/discover/:q">
+                <SearchBar />
+                <Route path="/discover/:q" exact component={Results} key={2} />
+              </Route>
               <AnimatePresence exitBeforeEnter>
                 <Route path="/games/:id" exact component={Game} key={3} />
               </AnimatePresence>
