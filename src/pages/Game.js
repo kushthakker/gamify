@@ -1258,7 +1258,8 @@ const Game = ({ match }) => {
       console.log(err);
     }
   };
-  const mygames = useSelector((state) => state.profileDataApi.mygames);
+  const mygames = useSelector((state) => state?.profileDataApi?.mygames);
+  const isLoggedIn = useSelector((state) => state?.user?.isLoggedIn);
 
   useEffect(() => {
     const fetch = async function () {
@@ -1350,14 +1351,15 @@ const Game = ({ match }) => {
 
   // console.log(img);
 
-  return data &&
+  return (data &&
     img &&
     storeData &&
     Fetch &&
     dlcs &&
     gameInSeries &&
     videos &&
-    mygames ? (
+    mygames) ||
+    isLoggedIn === false ? (
     // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>

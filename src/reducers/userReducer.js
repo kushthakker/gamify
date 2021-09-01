@@ -1,5 +1,5 @@
 const user = {
-  isLoggedIn: {},
+  isLoggedIn: false,
   userID: {},
   email: {},
 };
