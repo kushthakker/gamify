@@ -240,7 +240,7 @@ const Output = ({ match }) => {
   console.log(`match`, match.params.q);
 
   useState(() => {
-    if (statusState === "success") window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     dispatch(urlQuery(match.params.q));
   });
 

@@ -34,7 +34,6 @@ const Result = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
   const onSubmit = (event) => {
-    console.log(`render`);
     event.preventDefault();
     const value = inputValue.current.value;
     setValue(value);
