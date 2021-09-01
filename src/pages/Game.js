@@ -21,6 +21,7 @@ import { addToCollection } from "../actions/index";
 import { removeFromCollection } from "../actions/index";
 import { addToMygames } from "../actions/index";
 import { removeFromMygames } from "../actions/index";
+import SearchBar from "../components/SearchBar";
 
 import {
   Spinner,
@@ -559,6 +560,16 @@ const ShowData = ({
         }}
         transition={transition}
       >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: 1,
+            y: -6,
+            transition: { delay: 1.2, ...transition },
+          }}
+        >
+          <SearchBar posLeft="-50rem" width="20rem" />
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{
@@ -1306,6 +1317,7 @@ const Game = ({ match }) => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
         <SideBarMemoized />
+
         <LoginButton />
         <DataMemoized
           data={data}

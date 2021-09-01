@@ -43,11 +43,30 @@ const LoginButton = () => {
   const history = useHistory();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  // const data = useSelector((state) => Object.values(state.profileDataApi)[0]);
   const data = useSelector((state) => state.profileDataApi.data);
 
-  // const profilePicture = data.data.picture;
   const dispatch = useDispatch();
+  const LogoutFnc = (e) => {
+    if (e.key === "j" && e.ctrlKey) {
+      e.preventDefault();
+      logout(dispatch);
+    }
+  };
+  const DashboardFnc = (e) => {
+    if (e.key === "b" && e.ctrlKey) {
+      e.preventDefault();
+      history.push("/dashboard");
+    }
+  };
+
+  useEffect(() => {
+    document.documentElement.addEventListener("keydown", LogoutFnc);
+    document.documentElement.addEventListener("keydown", DashboardFnc);
+    return () => {
+      document.documentElement.removeEventListener("keydown", LogoutFnc);
+      document.documentElement.removeEventListener("keydown", DashboardFnc);
+    };
+  }, []);
   return (
     <div
       css={{

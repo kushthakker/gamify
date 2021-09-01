@@ -24,7 +24,14 @@ import { useHistory } from "react-router-dom";
 
 import Prompt from "../components/Prompt";
 
-const Result = ({ status, inputValue, setValue }) => {
+const Result = ({
+  status,
+  inputValue,
+  setValue,
+  posTop = "2rem",
+  posLeft = "",
+  width = "30rem",
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onSubmit = (event) => {
@@ -60,30 +67,36 @@ const Result = ({ status, inputValue, setValue }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: "2rem",
+        marginTop: posTop,
+        marginLeft: posLeft,
       }}
     >
       <Button
         d="flex"
-        w="30rem"
+        w={width}
         borderRadius="0.5rem"
         p="1.5rem"
         alignItems="center"
         onClick={onOpen}
       >
         <div
-          css={{ display: "flex", justifyContent: "flex-start", width: "100%" }}
+          css={{
+            display: "flex",
+            justifyContent: "flex-start",
+            width: "100%",
+            position: "relative",
+          }}
         >
           <i className="fas fa-search"></i>
         </div>
-        <div css={{ position: "relative", right: "8rem" }}>
+        <div css={{ position: "absolute", left: "5rem" }}>
           <p> Search Games</p>
         </div>
         <div
           css={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
         >
           <span>
-            <Kbd>cmd</Kbd> + <Kbd>K</Kbd>
+            <Kbd>ctrl</Kbd> + <Kbd>K</Kbd>
           </span>
         </div>
       </Button>
@@ -114,7 +127,7 @@ const Result = ({ status, inputValue, setValue }) => {
   );
 };
 
-const SearchBar = () => {
+const SearchBar = ({ posLeft, posTop, width }) => {
   const [value, setValue] = useState(null);
   const inputValue = useRef();
 
@@ -170,6 +183,9 @@ const SearchBar = () => {
         setValue={setValue}
         status={statusState}
         inputValue={inputValue}
+        posLeft={posLeft}
+        posTop={posTop}
+        width={width}
       />
     </div>
   );

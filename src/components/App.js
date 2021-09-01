@@ -150,35 +150,40 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div>
         <BrowserRouter>
-          {/* <SearchBar /> */}
           <div css={{ height: "100vh", width: "100vw" }}>
             <Switch>
-              <Route path="/" exact component={Home} key={1} />
-
-              <Route path="/discover/:q">
-                <SearchBar />
-                <Route path="/discover/:q" exact component={Results} key={2} />
-              </Route>
               <AnimatePresence exitBeforeEnter>
-                <Route path="/games/:id" exact component={Game} key={3} />
-              </AnimatePresence>
-              <Route path="/login" exact component={LoginPage} key={4} />
-              <Route
-                exact
-                path="/success"
-                component={Success}
-                key={5}
-                // condition={false}
-              />
-              <Route
-                exact
-                path="/dashboard"
-                component={Dashboard}
-                key={6}
+                <Route path="/" exact component={Home} key={1} />
+                <Route path="/discover/">
+                  <SearchBar />
+                  <Route
+                    path="/discover/:q"
+                    exact
+                    component={Results}
+                    key={2}
+                  />
+                </Route>
 
-                // condition={true}
-              />
-              <Route path="*" component={ErrorPage} />
+                <Route path="/games/:id" exact component={Game} key={3} />
+
+                <Route path="/login" exact component={LoginPage} key={4} />
+                <Route
+                  exact
+                  path="/success"
+                  component={Success}
+                  key={5}
+                  // condition={false}
+                />
+                <Route
+                  exact
+                  path="/dashboard"
+                  component={Dashboard}
+                  key={6}
+
+                  // condition={true}
+                />
+                <Route path="*" component={ErrorPage} />
+              </AnimatePresence>
             </Switch>
           </div>
         </BrowserRouter>
