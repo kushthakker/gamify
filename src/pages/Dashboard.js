@@ -657,7 +657,7 @@ const MySettings = ({ profile, id }) => {
           }}
         >
           <Button backgroundColor="red" onClick={() => setIsOpen(true)}>
-            Delete Customer
+            Delete Account
           </Button>
 
           <AlertDialog
@@ -668,7 +668,7 @@ const MySettings = ({ profile, id }) => {
             <AlertDialogOverlay>
               <AlertDialogContent>
                 <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                  Delete Customer
+                  Delete Account
                 </AlertDialogHeader>
 
                 <AlertDialogBody>
