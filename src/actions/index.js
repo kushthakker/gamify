@@ -166,7 +166,7 @@ export const removeFromMygames = (id, values) => async (dispatch) => {
 };
 
 export const editUser = (id, values) => async (dispatch) => {
-  const response = await users.patch(`/users/${Number(id)}`, values);
+  const response = await users.patch(`/users/${id}`, values);
   dispatch({
     type: "EDIT_USER",
     payload: response.data,

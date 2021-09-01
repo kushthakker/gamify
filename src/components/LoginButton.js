@@ -105,4 +105,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default React.memo(LoginButton);

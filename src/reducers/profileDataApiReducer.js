@@ -3,10 +3,7 @@ import _ from "lodash";
 const streamsReducer = (state = [], action) => {
   switch (action.type) {
     case "EDIT_USER":
-      return {
-        ...state,
-        [action.payload.id]: action.payload,
-      };
+      return action.payload;
     case "ADD_TO_WISHLIST":
       return action.payload;
     case "REMOVE_FROM_WISHLIST":

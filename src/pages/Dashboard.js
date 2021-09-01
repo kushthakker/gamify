@@ -26,6 +26,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  useToast,
 } from "@chakra-ui/react";
 import { useHistory, Link } from "react-router-dom";
 import api from "../api/api";
@@ -36,6 +37,7 @@ import { isLoggedIn } from "../actions/index";
 import { userId } from "../actions/index";
 import { email } from "../actions/index";
 import { deleteUser } from "../actions/index";
+import { editUser } from "../actions/index";
 
 const Title = styled.h1({
   textAlign: "center",
@@ -81,7 +83,7 @@ const Mygames = ({
       <ParentCenterDiv>
         {uncategorizedGames.length > 0 ? <Title>Uncategorized</Title> : null}
 
-        <CenterEle>
+        <CenterEle css={{ gap: "1rem" }}>
           {uncategorizedGames.map((game) => (
             <div>
               <Link to={`/games/${game.id}`}>
@@ -137,7 +139,7 @@ const Mygames = ({
         {currentlyPlayingGames.length > 0 ? (
           <Title>Current Playing</Title>
         ) : null}
-        <CenterEle>
+        <CenterEle css={{ gap: "1rem" }}>
           {currentlyPlayingGames.map((game) => (
             <React.Fragment key={Math.random()}>
               <Link to={`/games/${game.id}`}>
@@ -191,7 +193,7 @@ const Mygames = ({
       </ParentCenterDiv>
       <ParentCenterDiv>
         {finishedGames.length > 0 ? <Title>Finished</Title> : null}
-        <CenterEle>
+        <CenterEle css={{ gap: "1rem" }}>
           {finishedGames.map((game) => (
             <React.Fragment key={Math.random()}>
               <Link to={`/games/${game.id}`}>
@@ -437,6 +439,10 @@ const MySettings = ({ profile, id }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
+  const [currentName, setCurrentName] = React.useState(profile.name);
+  const userIdProfile = useSelector((state) => state.profileDataApi.id);
+  const profileData = useSelector((state) => state.profileDataApi);
+  const toast = useToast();
 
   const logout = async function (dispatch) {
     try {
@@ -460,6 +466,30 @@ const MySettings = ({ profile, id }) => {
     }
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(userIdProfile);
+    console.log(currentName);
+    setEdit(false);
+    dispatch(
+      editUser(userIdProfile, {
+        ...profileData,
+        data: { ...profileData.data, name: currentName },
+      })
+    );
+    toast({
+      title: "Changes Saved",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setCurrentName(e.target.value);
+  };
+
   return (
     <div>
       <Title css={{ marginTop: "-1rem" }}>Settings</Title>
@@ -476,72 +506,79 @@ const MySettings = ({ profile, id }) => {
         >
           Change the name :
         </h3>
-        <InputGroup w="20rem">
-          {edit ? (
-            <Input
-              size="md"
-              w="20rem"
-              h="3rem"
-              pos="relative"
-              defaultValue={profile.name}
-              fontSize="1.5rem"
-            />
-          ) : (
-            <Input
-              size="md"
-              w="20rem"
-              h="3rem"
-              pos="relative"
-              value={profile.name}
-              fontSize="1.5rem"
-              isReadOnly
-            />
-          )}
-          <InputRightElement width="4.5rem">
-            <div onClick={handleClick}>
-              {edit ? (
-                <div
-                  css={{
-                    display: "grid",
-                    width: "5rem",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "0.5rem",
-                    position: "relative",
-                    top: "0.2rem",
-                    right: "1.5rem",
-                  }}
-                >
+        <form onSubmit={onSubmit}>
+          <InputGroup w="20rem">
+            {edit ? (
+              <Input
+                size="md"
+                as="input"
+                w="20rem"
+                h="3rem"
+                pos="relative"
+                defaultValue={currentName}
+                fontSize="1.5rem"
+                type="text"
+                onChange={onChange}
+                // ref={input}
+              />
+            ) : (
+              <Input
+                size="md"
+                w="20rem"
+                h="3rem"
+                pos="relative"
+                value={currentName}
+                fontSize="1.5rem"
+                isReadOnly
+              />
+            )}
+            <InputRightElement width="4.5rem">
+              <div onClick={handleClick}>
+                {edit ? (
+                  <div
+                    css={{
+                      display: "grid",
+                      width: "5rem",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "0.5rem",
+                      position: "relative",
+                      top: "0.2rem",
+                      right: "1.5rem",
+                    }}
+                  >
+                    <Button
+                      h="2rem"
+                      w="1.5rem"
+                      p="0.5rem"
+                      type="submit"
+                      onClick={onSubmit}
+                    >
+                      <CheckIcon />
+                    </Button>
+                    <Button
+                      h="2rem"
+                      w="1.5rem"
+                      p="0.5rem"
+                      onClick={() => setEdit(false)}
+                    >
+                      <CloseIcon />
+                    </Button>
+                  </div>
+                ) : (
                   <Button
                     h="2rem"
                     w="1.5rem"
                     p="0.5rem"
-                    onClick={() => setEdit(false)}
+                    position="relative"
+                    top="0.2rem"
                   >
-                    <CheckIcon />
+                    Edit
                   </Button>
-                  <Button
-                    h="2rem"
-                    w="1.5rem"
-                    p="0.5rem"
-                    onClick={() => setEdit(false)}
-                  >
-                    <CloseIcon />
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  h="2rem"
-                  w="1.5rem"
-                  p="0.5rem"
-                  position="relative"
-                  top="0.2rem"
-                >
-                  Edit
-                </Button>
-              )}
-            </div>
-          </InputRightElement>
-        </InputGroup>
+                )}
+              </div>
+            </InputRightElement>
+          </InputGroup>
+        </form>
       </div>
       <div
         css={{
@@ -850,9 +887,6 @@ const Dashboard = () => {
     mygamesnotPlayedYet,
     wishlistState,
   ]);
-
-  console.log(`wishlist`, saveWishlist);
-  console.log(`collection`, saveCollection);
 
   return (
     <div>
