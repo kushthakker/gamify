@@ -1288,6 +1288,14 @@
   dependencies:
     "@chakra-ui/utils" "1.8.2"
 
+"@chakra-ui/icons@^1.0.15":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-1.0.15.tgz#90b0e3c2c161c5a100d6b83a277941b22945f880"
+  integrity sha512-MMuPwmeCil9vAXceIN/Fxn6CNHbhkLofFQaKUfs+UaBsviiU2tvS0nqGaxm/9FNzLr5ithPVWpbz3uV7DXc77g==
+  dependencies:
+    "@chakra-ui/icon" "1.1.11"
+    "@types/react" "^17.0.0"
+
 "@chakra-ui/image@1.0.18":
   version "1.0.18"
   resolved "https://registry.npmjs.org/@chakra-ui/image/-/image-1.0.18.tgz"
@@ -2526,6 +2534,15 @@
   version "17.0.15"
   resolved "https://registry.npmjs.org/@types/react/-/react-17.0.15.tgz"
   integrity sha512-uTKHDK9STXFHLaKv6IMnwp52fm0hwU+N89w/p9grdUqcFA6WuqDyPhaWopbNyE1k/VhgzmHl8pu1L4wITtmlLw==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.0":
+  version "17.0.19"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.19.tgz#8f2a85e8180a43b57966b237d26a29481dacc991"
+  integrity sha512-sX1HisdB1/ZESixMTGnMxH9TDe8Sk709734fEQZzCV/4lSu9kJCPbo2PbTRoZM+53Pp0P10hYVyReUueGwUi4A==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -6551,6 +6568,11 @@ immer@8.0.1:
   resolved "https://registry.npmjs.org/immer/-/immer-8.0.1.tgz"
   integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
 
+immer@^9.0.5:
+  version "9.0.5"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.5.tgz#a7154f34fe7064f15f00554cc94c66cc0bf453ec"
+  integrity sha512-2WuIehr2y4lmYz9gaQzetPR2ECniCifk4ORaQbU3g5EalLt+0IVTosEPJ5BoYl/75ky2mivzdRzV8wWgQGOSYQ==
+
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/import-cwd/-/import-cwd-2.1.0.tgz"
@@ -9986,6 +10008,13 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-device-detect@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/react-device-detect/-/react-device-detect-1.17.0.tgz#a00b4fd6880cebfab3fd8a42a79dc0290cdddca9"
+  integrity sha512-bBblIStwpHmoS281JFIVqeimcN3LhpoP5YKDWzxQdBIUP8S2xPvHDgizLDhUq2ScguLfVPmwfF5y268EEQR60w==
+  dependencies:
+    ua-parser-js "^0.7.24"
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
@@ -10137,6 +10166,11 @@ react-router-dom@^5.2.0:
     react-router "5.2.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-router-last-location@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-router-last-location/-/react-router-last-location-2.0.1.tgz#54d625876dd1448594fa1114aa02e7e21db12970"
+  integrity sha512-3FbFIWwUr2qN28vN9DNdFp6RhUH/yif6ILVff1zT+hLdyGmlNPh3GuPhveb7bHQLgB744QW8L0qtWjX58ESuZQ==
 
 react-router@5.2.0:
   version "5.2.0"
@@ -11911,6 +11945,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+ua-parser-js@^0.7.24:
+  version "0.7.28"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
+  integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

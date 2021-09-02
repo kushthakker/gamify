@@ -8,11 +8,12 @@ import { useVirtual } from "react-virtual";
 import { motion } from "framer-motion";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { useSelector, useDispatch } from "react-redux";
-import { Spinner, CloseIcon, Box, Badge, Image } from "@chakra-ui/react";
+import { Box, Badge, Spinner } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import { urlQuery } from "../actions/index";
 import SideBarMemoized from "../components/Sidebar";
 import LoginButton from "../components/LoginButton";
+import HomeIcon from "../components/HomeIcon";
 
 const transition = {
   duration: 0.4,
@@ -20,8 +21,6 @@ const transition = {
 };
 
 const MyListData = ({ searchResult }) => {
-  console.log(searchResult);
-  console.log(`my list data`);
   const listRef = useRef();
   // const [imageData, setImageData] = useState(null);
   const rowVirtualizer = useVirtual({
@@ -56,7 +55,7 @@ const MyListData = ({ searchResult }) => {
 
   const List = (props) => {
     return (
-      <motion.div
+      <div
         css={{
           position: "relative",
           display: "grid",
@@ -69,13 +68,12 @@ const MyListData = ({ searchResult }) => {
           padding: "2rem",
         }}
         {...props}
-      ></motion.div>
+      ></div>
     );
   };
 
   return (
     <div ref={listRef}>
-      {console.log(`return render`)}
       <List
         exit={{ opacity: 0 }}
         transition={transition}
@@ -127,7 +125,15 @@ const MyListData = ({ searchResult }) => {
 
           return (
             <Link to={`/games/${item.id}`} key={Math.random()}>
-              <div variants={itemVariant}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity: 1,
+                  y: 5,
+                  transition: { delay: 1.2, ...transition },
+                }}
+                transition={transition}
+              >
                 <Box
                   w="20rem"
                   borderWidth="1px"
@@ -211,7 +217,7 @@ const MyListData = ({ searchResult }) => {
                     </Box>
                   </Box>
                 </Box>
-              </div>
+              </motion.div>
             </Link>
           );
         })}
@@ -223,21 +229,20 @@ const MyListData = ({ searchResult }) => {
 const Data = React.memo(MyListData);
 
 const Output = ({ match }) => {
-  console.log(`search result page`);
-
   //   const isLoading = status === "loading";
   const statusState = useSelector((state) => state.status);
   const searchResult = useSelector((state) => state.searchResult);
   const isError = statusState === "error";
   const isSuccess = statusState === "success";
 
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  console.log(match.params.q);
+  console.log(`match`, match.params.q);
 
-  //   useEffect(() => {
-  //     dispatch(urlQuery(match.params.q));
-  //   }, [dispatch, match.params.q]);
+  useState(() => {
+    window.scrollTo(0, 0);
+    dispatch(urlQuery(match.params.q));
+  });
 
   return (
     <div>
@@ -250,17 +255,33 @@ const Output = ({ match }) => {
       {isSuccess ? (
         searchResult?.length !== 0 ? (
           <div>
-            <SideBarMemoized />
             <LoginButton />
-            <SearchBar />
-            <div css={{ marginTop: "3rem" }}>
-              <Data searchResult={searchResult} />
+            <HomeIcon />
+            <div>
+              <div css={{ marginTop: "3rem" }}>
+                <Data searchResult={searchResult} />
+              </div>
             </div>
           </div>
         ) : (
-          <p>No books found. Try another search.</p>
+          <p>No Games found. Try another search.</p>
         )
-      ) : null}
+      ) : (
+        <div>
+          {null}
+          {/* <div
+          css={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            margin: "0",
+          }}
+        >
+          <Spinner />
+        </div> */}
+        </div>
+      )}
     </div>
   );
 };

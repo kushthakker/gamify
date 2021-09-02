@@ -14,6 +14,15 @@ import Vidlist from "../components/Vidlist";
 import Marquee from "react-fast-marquee";
 import FadeInWhenVisible from "../components/FadeInWhenVisible";
 import SideBarMemoized from "../components/Sidebar";
+import LoginButton from "../components/LoginButton";
+import { addToWishlist } from "../actions/index";
+import { removeFromWishlist } from "../actions/index";
+import { addToCollection } from "../actions/index";
+import { removeFromCollection } from "../actions/index";
+import { addToMygames } from "../actions/index";
+import { removeFromMygames } from "../actions/index";
+import SearchBar from "../components/SearchBar";
+import { useLastLocation } from "react-router-last-location";
 
 import {
   Spinner,
@@ -244,59 +253,352 @@ const ShowData = ({
   videos,
   current,
   setCurrent,
+  lastLocation,
 }) => {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const image = React.useRef();
   const toast = useToast();
-  // const [ytData, setYtData] = useState(null);
-  // const modal = (ele, img) => {
-  //   console.log(img);
-  //   return (
-  //     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
-  //       <ModalOverlay />
-  //       <ModalContent maxW="1024px" maxH="1080px">
-  //         {/* <ModalHeader>ScreenShot</ModalHeader> */}
-  //         {/* <ModalCloseButton /> */}
-  //         <ModalBody>
-  //           <img
-  //             src={ele.image}
-  //             alt={ele.id}
-  //             css={{ borderRadius: "0.3rem" }}
-  //           />
-  //         </ModalBody>
-
-  //         <ModalFooter>
-  //           <Button colorScheme="red" mr={3} onClick={onClose}>
-  //             Close
-  //           </Button>
-  //         </ModalFooter>
-  //       </ModalContent>
-  //     </Modal>
-  //   );
-  // };
+  const dispatch = useDispatch();
 
   const showDetail = (video) => {
     setCurrent(video);
   };
 
-  // function useHorizontalScroll() {
-  //   const elRef = React.useRef();
-  //   useEffect(() => {
-  //     const el = elRef.current;
-  //     if (el) {
-  //       const onWheel = (e) => {
-  //         if (e.deltaY === 0) return;
-  //         e.preventDefault();
-  //         el.scrollTo({
-  //           left: el.scrollLeft + e.deltaY,
-  //         });
-  //       };
-  //       el.addEventListener("wheel", onWheel);
-  //       return () => el.removeEventListener("wheel", onWheel);
-  //     }
-  //   }, []);
-  //   return elRef;
-  // }
+  const userId = useSelector((state) => state?.user?.userID);
+  const profile = useSelector((state) => state?.profileDataApi);
+  const collection = useSelector((state) => state?.profileDataApi?.collection);
+  const wishlist = useSelector((state) => state?.profileDataApi?.wishlist);
+  const mygames = useSelector((state) => state?.profileDataApi?.mygames);
+
+  const mygamesUncategorized = useSelector(
+    (state) => state?.profileDataApi?.mygames?.uncategorized
+  );
+  const mygamesCurrentPlaying = useSelector(
+    (state) => state?.profileDataApi?.mygames?.currentPlaying
+  );
+  const mygamesFinished = useSelector(
+    (state) => state?.profileDataApi?.mygames?.finished
+  );
+  const mygamesnotPlayedYet = useSelector(
+    (state) => state?.profileDataApi?.mygames?.notPlayedYet
+  );
+
+  const [wishlistadded, setWishlistadded] = useState(
+    wishlist?.includes(data.id)
+  );
+  const [collectionadded, setCollectionadded] = useState(
+    collection?.includes(data.id)
+  );
+
+  const uncategorized = mygamesUncategorized?.includes(data.id);
+  const currentPlaying = mygamesCurrentPlaying?.includes(data.id);
+  const finished = mygamesFinished?.includes(data.id);
+  const notPlayedYet = mygamesnotPlayedYet?.includes(data.id);
+  const isLoggedIn = useSelector((state) => state?.user?.isLoggedIn);
+
+  const [mygamesType, setMygamesType] = useState(
+    uncategorized
+      ? "uncategorized"
+      : currentPlaying
+      ? "Current Playing"
+      : finished
+      ? "Finished"
+      : notPlayedYet
+      ? "Not Played Yet"
+      : null
+  );
+  const [mygamesadded, setMygamesadded] = useState(
+    uncategorized || currentPlaying || finished || notPlayedYet
+  );
+
+  const addToMyGamesClick = (type, id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      console.log(type);
+      if (type === "uncategorized") {
+        addToMyGamesUncategorized(id);
+      } else if (type === "Current Playing") {
+        addToMyGamesCurrentPlaying(id);
+      } else if (type === "Finished") {
+        addToMyGamesFinished(id);
+      } else if (type === "Not Played Yet") {
+        addToMyGamesNotPlayedYet(id);
+      }
+    }
+  };
+  const addToMyGamesUncategorized = (id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      setMygamesType("uncategorized");
+      if (mygamesadded === true) {
+        // remove from wishlist
+        setMygamesType("");
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              uncategorized: [
+                ...mygames.uncategorized.filter((item) => item !== id),
+              ],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
+
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              uncategorized: [...mygames.uncategorized, id],
+            },
+          })
+        );
+      }
+      console.log(mygamesadded);
+      toast({
+        title: mygamesadded
+          ? `Removed from uncategorized`
+          : `Added to uncategorized`,
+        status: mygamesadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+  const addToMyGamesCurrentPlaying = (id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      setMygamesType("Current Playing");
+      if (mygamesadded === true) {
+        setMygamesType("");
+        // remove from wishlist
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              currentPlaying: [
+                ...mygames.currentPlaying.filter((item) => item !== id),
+              ],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
+
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              currentPlaying: [...mygames.currentPlaying, id],
+            },
+          })
+        );
+      }
+      console.log(mygamesadded);
+      toast({
+        title: mygamesadded
+          ? `Removed from Current Playing`
+          : `Added to Current Playing`,
+        status: mygamesadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const addToMyGamesFinished = (id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      setMygamesType("Finished");
+      if (mygamesadded === true) {
+        // remove from wishlist
+        setMygamesType("");
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              finished: [...mygames.finished.filter((item) => item !== id)],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
+
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              finished: [...mygames.finished, id],
+            },
+          })
+        );
+      }
+      console.log(mygamesadded);
+      toast({
+        title: mygamesadded ? `Removed from Finished` : `Added to Finished`,
+        status: mygamesadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const addToMyGamesNotPlayedYet = (id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      setMygamesType("Not Played Yet");
+      if (mygamesadded === true) {
+        setMygamesType("");
+        setMygamesadded(!mygamesadded);
+        dispatch(
+          removeFromMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              notPlayedYet: [
+                ...mygames.notPlayedYet.filter((item) => item !== id),
+              ],
+            },
+          })
+        );
+      } else {
+        setMygamesadded(!mygamesadded);
+
+        dispatch(
+          addToMygames(userId, {
+            ...profile,
+            mygames: {
+              ...profile.mygames,
+              notPlayedYet: [...mygames.notPlayedYet, id],
+            },
+          })
+        );
+      }
+    }
+    console.log(mygamesadded);
+    toast({
+      title: mygamesadded
+        ? `Removed from Not Played Yet`
+        : `Added to Not Played Yet`,
+      status: mygamesadded ? "error" : "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const addToWishlistClick = (id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      if (wishlistadded === true) {
+        // remove from wishlist
+        setWishlistadded(!wishlistadded);
+        dispatch(
+          removeFromWishlist(userId, {
+            ...profile,
+            wishlist: [...profile.wishlist.filter((item) => item !== id)],
+          })
+        );
+      } else {
+        setWishlistadded(!wishlistadded);
+        dispatch(
+          addToWishlist(userId, {
+            ...profile,
+            wishlist: [...profile.wishlist, id],
+          })
+        );
+      }
+      console.log(wishlistadded);
+      toast({
+        title: wishlistadded ? "Removed from Wishlist" : "Added to Wishlist",
+        status: wishlistadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+  const addToCollectionClick = (id) => {
+    if (!isLoggedIn) {
+      toast({
+        title: "Please Login to add items",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      if (collectionadded === true) {
+        // remove from wishlist
+        setCollectionadded(!collectionadded);
+        dispatch(
+          removeFromCollection(userId, {
+            ...profile,
+            collection: [...profile.collection.filter((item) => item !== id)],
+          })
+        );
+      } else {
+        setCollectionadded(!collectionadded);
+        dispatch(
+          addToCollection(userId, {
+            ...profile,
+            collection: [...profile.collection, id],
+          })
+        );
+      }
+      toast({
+        title: collectionadded
+          ? "Removed from Collection"
+          : "Added to Collection",
+        status: collectionadded ? "error" : "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   function showImgNote() {
     const prompt = localStorage.getItem("imgInfo");
@@ -314,6 +616,8 @@ const ShowData = ({
     }
   }
 
+  const location = lastLocation?.pathname ? lastLocation.pathname : "/";
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div
@@ -324,6 +628,57 @@ const ShowData = ({
         }}
         transition={transition}
       >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: 1,
+            y: 5,
+            transition: { delay: 1.2, ...transition },
+          }}
+          style={{
+            marginTop: "2rem",
+            marginLeft: "2.5rem",
+            maxWidth: "5rem",
+          }}
+        >
+          <Link to={location}>
+            <Button
+              css={{
+                display: "flex",
+                maxWidth: "10rem",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              colorScheme="teal"
+              variant="solid"
+            >
+              <div css={{ paddingRight: ".5rem" }}>
+                <i className="fas fa-arrow-left"></i>
+              </div>
+              <div>
+                <span css={{ fontFamily: "Staatliches", fontSize: "1.4rem" }}>
+                  Go Back
+                </span>
+              </div>
+            </Button>
+          </Link>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{
+            opacity: 1,
+            y: -73,
+            transition: { delay: 1.2, ...transition },
+          }}
+          style={{
+            width: "20rem",
+            position: "relative",
+            top: "0.1rem",
+            left: "180px",
+          }}
+        >
+          <SearchBar width="20rem" />
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{
@@ -361,20 +716,54 @@ const ShowData = ({
             variant="outline"
             colorScheme="blue"
           >
-            <Menu placement="auto">
+            <Menu
+              placement="auto"
+              enabled={mygamesadded ? false : true}
+              autoSelect={false}
+              closeOnSelect={true}
+            >
               <MenuButton
                 as={Button}
-                variant="outline"
-                colorScheme="blue"
-                rightIcon={<i className="fas fa-plus"></i>}
+                variant="solid"
+                colorScheme={mygamesadded ? "red" : "green"}
+                rightIcon={
+                  mygamesadded ? (
+                    <i className="fas fa-times"></i>
+                  ) : (
+                    <i className="fas fa-plus"></i>
+                  )
+                }
+                onClick={() => addToMyGamesClick(mygamesType, data.id)}
               >
-                Add to my games
+                {mygamesadded
+                  ? `Remove from ${mygamesType}`
+                  : `Add to my games`}
               </MenuButton>
               <MenuList>
-                <MenuItem command="⌘T">Uncategorized</MenuItem>
-                <MenuItem command="⌘N">Currently Playing</MenuItem>
-                <MenuItem command="⌘⇧N">Finished</MenuItem>
-                <MenuItem command="⌘O">Not played yet</MenuItem>
+                <MenuItem
+                  command="⌘T"
+                  onClick={() => addToMyGamesUncategorized(data.id)}
+                >
+                  Uncategorized
+                </MenuItem>
+                <MenuItem
+                  command="⌘N"
+                  onClick={() => addToMyGamesCurrentPlaying(data.id)}
+                >
+                  Currently Playing
+                </MenuItem>
+                <MenuItem
+                  command="⌘⇧N"
+                  onClick={() => addToMyGamesFinished(data.id)}
+                >
+                  Finished
+                </MenuItem>
+                <MenuItem
+                  command="⌘O"
+                  onClick={() => addToMyGamesNotPlayedYet(data.id)}
+                >
+                  Not played yet
+                </MenuItem>
               </MenuList>
               {/* <IconButton
               aria-label="Add to friends"
@@ -384,21 +773,37 @@ const ShowData = ({
             </Menu>
 
             <Button
-              variant="outline"
-              colorScheme="blue"
+              variant="solid"
+              colorScheme={wishlistadded ? "red" : "green"}
               mr="-px"
-              rightIcon={<i className="fas fa-gift"></i>}
+              rightIcon={
+                wishlistadded ? (
+                  <i class="fas fa-times"></i>
+                ) : (
+                  <i className="fas fa-gift"></i>
+                )
+              }
+              onClick={() => addToWishlistClick(data.id)}
             >
-              Add to Wishlist
+              {wishlistadded ? `Remove from Wishlist` : `Add to Wishlist`}
             </Button>
 
             <Button
-              variant="outline"
-              colorScheme="blue"
+              variant="solid"
+              colorScheme={collectionadded ? "red" : "green"}
               mr="-px"
-              rightIcon={<i className="fas fa-folder-open"></i>}
+              rightIcon={
+                collectionadded ? (
+                  <i class="fas fa-times"></i>
+                ) : (
+                  <i className="fas fa-folder-open"></i>
+                )
+              }
+              onClick={() => addToCollectionClick(data.id)}
             >
-              Save to Collection
+              {collectionadded
+                ? `Remove from Collection`
+                : `Save to Collection`}
             </Button>
           </ButtonGroup>
         </motion.div>
@@ -571,7 +976,10 @@ const ShowData = ({
                               // alt={ele.id}
                               ref={image}
                               hideDownload="true"
-                              css={{ height: "180px", width: "100% " }}
+                              css={{
+                                height: "180px",
+                                width: "100% ",
+                              }}
                             />
                           </div>
                         </Tooltip>
@@ -714,7 +1122,11 @@ const ShowData = ({
           <FadeInWhenVisible>
             {gameInSeries.length !== 0 ? (
               <SubHeadings
-                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+                css={{
+                  display: "grid",
+                  justifyItems: "center",
+                  width: "100%",
+                }}
               >
                 Other games in Series
               </SubHeadings>
@@ -795,7 +1207,11 @@ const ShowData = ({
           <FadeInWhenVisible>
             {dlcs.length !== 0 ? (
               <SubHeadings
-                css={{ display: "grid", justifyItems: "center", width: "100%" }}
+                css={{
+                  display: "grid",
+                  justifyItems: "center",
+                  width: "100%",
+                }}
               >
                 DLC's And Special edition
               </SubHeadings>
@@ -885,9 +1301,11 @@ const Game = ({ match }) => {
   const [gameInSeries, setGameInSeries] = useState(null);
   const [videos, setVideos] = React.useState([]);
   const [current, setCurrent] = React.useState(null);
-
+  const lastLocation = useLastLocation();
   const location = useLocation();
   const history = useHistory();
+
+  console.log(lastLocation);
 
   const Fetch = function (id) {
     try {
@@ -906,7 +1324,6 @@ const Game = ({ match }) => {
       console.log(err);
     }
   };
-
   useEffect(() => {
     const fetch = async function () {
       try {
@@ -952,10 +1369,6 @@ const Game = ({ match }) => {
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
-          // console.log(req);
-          // console.log(stores);
-          // console.log(dlcs);
-          // console.log(yt);
           setVideos(dataYt);
           setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
@@ -998,10 +1411,11 @@ const Game = ({ match }) => {
   // console.log(img);
 
   return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
-    // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
-        <SideBarMemoized />
+        {/* <SideBarMemoized /> */}
+
+        <LoginButton />
         <DataMemoized
           data={data}
           img={img}
@@ -1012,6 +1426,7 @@ const Game = ({ match }) => {
           videos={videos}
           current={current}
           setCurrent={setCurrent}
+          lastLocation={lastLocation}
         />
       </div>
     </ErrorBoundary>

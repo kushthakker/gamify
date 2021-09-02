@@ -34,7 +34,7 @@ const Vidlist = ({ onVideoSelect, videos, current }) => {
   return (
     <Box
       d="grid"
-      templateColumns="1fr 1fr 1fr"
+      templatecolumns="1fr 1fr 1fr"
       //   align="center"
     >
       {renderList}

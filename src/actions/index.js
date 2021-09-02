@@ -1,3 +1,5 @@
+import users from "../api/users";
+
 export const error = () => {
   return {
     type: "INCREMENT",
@@ -24,6 +26,14 @@ export const urlQuery = (value) => {
     payload: value,
   };
 };
+
+export const lastLoginUrlQuery = (value) => {
+  return {
+    type: "LAST_LOGIN_URL_QUERY",
+    payload: value,
+  };
+};
+
 export const homepageData_carousel = (value) => {
   return {
     type: "HOMEPAGE_DATA_CAROUSEL",
@@ -86,9 +96,95 @@ export const email = (value) => {
     payload: value,
   };
 };
-export const profileData = (value) => {
-  return {
-    type: "PROFILEDATA",
-    payload: value,
-  };
+
+export const fetchUser = (id) => async (dispatch) => {
+  const response = await users.get(`/users/${id}`);
+  console.log(response);
+
+  dispatch({
+    type: "FETCH_USER",
+    payload: response.data,
+  });
+};
+
+export const addUser = (values) => async (dispatch, getState) => {
+  const { userId } = getState().user.userID;
+  const response = await users.post("/users", { ...values, userId });
+  console.log(`response`, response);
+  dispatch({
+    type: "CREATE_USER",
+    payload: { ...response.data, id: userId },
+  });
+};
+
+export const addToWishlist = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "ADD_TO_WISHLIST",
+    payload: response.data,
+  });
+};
+
+//remove from wishlist
+export const removeFromWishlist = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "REMOVE_FROM_WISHLIST",
+    payload: response.data,
+  });
+};
+
+export const addToCollection = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "ADD_TO_COLLECTION",
+    payload: response.data,
+  });
+};
+
+//remove from wishlist
+export const removeFromCollection = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "REMOVE_FROM_COLLECTION",
+    payload: response.data,
+  });
+};
+export const addToMygames = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "ADD_TO_MYGAMES",
+    payload: response.data,
+  });
+};
+
+//remove from wishlist
+export const removeFromMygames = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}/`, values);
+
+  dispatch({
+    type: "REMOVE_FROM_MYGAMES",
+    payload: response.data,
+  });
+};
+
+export const editUser = (id, values) => async (dispatch) => {
+  const response = await users.patch(`/users/${id}`, values);
+  dispatch({
+    type: "EDIT_USER",
+    payload: response.data,
+  });
+};
+
+export const deleteUser = (id) => async (dispatch) => {
+  await users.delete(`/users/${id}`);
+  dispatch({
+    type: "DELETE_USER",
+    payload: id,
+  });
 };
