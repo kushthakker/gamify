@@ -1358,17 +1358,19 @@ const Game = ({ match }) => {
             id: gameId,
           },
         });
-        // const yt = await youtube.get(`/search`, {
-        //   params: {
-        //     q: req.data.name,
-        //   },
-        // });
+        const yt = await youtube.get(`/search`, {
+          params: {
+            q: req.data.name,
+          },
+        });
 
-        // const dataYt = yt.data.items;
+        const dataYt = yt.data.items;
 
         if (!req.status) {
           throw new Error(req.statusText);
         } else {
+          setVideos(dataYt);
+          setCurrent(dataYt[0]);
           setGameInSeries(gameInSeries.data.results);
           setDlcs(dlcs.data.results);
           setData(req.data);
@@ -1409,7 +1411,6 @@ const Game = ({ match }) => {
   // console.log(img);
 
   return data && img && storeData && Fetch && dlcs && gameInSeries && videos ? (
-    // videos
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div key={location.key} css={{ maxHeight: "100vh" }}>
         {/* <SideBarMemoized /> */}
