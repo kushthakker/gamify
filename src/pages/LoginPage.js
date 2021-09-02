@@ -12,6 +12,14 @@ import {
   FormErrorMessage,
   Input,
   Grid,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
 import { Link, useHistory, Redirect, useLocation } from "react-router-dom";
 import { Magic } from "magic-sdk";
@@ -84,17 +92,20 @@ const LoginPage = () => {
 
   console.log(lastLocation);
 
+  const value = lastLocation?.pathname ? lastLocation.pathname : "/";
+
   useState(() => {
-    dispatch(lastLoginUrlQuery(lastLocation.pathname));
-    localStorage.setItem(`lastLoginUrlQuery`, lastLocation.pathname);
+    dispatch(lastLoginUrlQuery(value));
+    localStorage.setItem(`lastLoginUrlQuery`, value);
   });
 
   const prompt = localStorage.getItem("lastLoginUrlQuery");
+  const promptValue = prompt === null ? "/" : prompt;
 
   return (
     <div>
       {isLoggedIn ? (
-        history.push(prompt)
+        history.push(promptValue)
       ) : (
         <div
           css={{ maxHeight: "100vh", maxWidth: "100vw", overflow: "hidden" }}
@@ -190,18 +201,35 @@ const LoginPage = () => {
                           </FormControl>
                         )}
                       </Field>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button
+                            disabled={isSubmitting}
+                            type="submit"
+                            mt={4}
+                            colorScheme="teal"
+                            pos="relative"
+                            top="-5rem"
+                          >
+                            Login Without Password
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Warning!</PopoverHeader>
 
-                      <Button
-                        disabled={isSubmitting}
-                        type="submit"
-                        mt={4}
-                        colorScheme="teal"
-                        pos="relative"
-                        top="-5rem"
-                        onClick={onClick}
-                      >
-                        Login Without Password
-                      </Button>
+                          <PopoverBody>
+                            This feture is still in beta. Please use google or
+                            github as login to avoid any bugs.
+                          </PopoverBody>
+                          <PopoverFooter>
+                            <Button colorScheme="red" onClick={onClick}>
+                              Continue
+                            </Button>
+                          </PopoverFooter>
+                        </PopoverContent>
+                      </Popover>
                       <Grid
                         templateColumns="1fr 1fr"
                         justify="center"
