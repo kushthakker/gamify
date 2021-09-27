@@ -45,6 +45,8 @@ const MiniHeading = styled.h1({
   textAlign: "center",
 });
 
+// bug fix
+
 const Recommendedcarousel = ({ carousel }) => {
   return (
     <FadeInWhenVisible>
